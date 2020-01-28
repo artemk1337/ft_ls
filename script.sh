@@ -1,5 +1,4 @@
 #!/bin/sh
 
-git add .
-git commit -am "fix"
-git push
+make re
+./ft_ls src
