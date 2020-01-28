@@ -1,5 +1,5 @@
 #!/bin/sh
 
 git add .
-git commit 0am "fix"
+git commit -am "fix"
 git push
