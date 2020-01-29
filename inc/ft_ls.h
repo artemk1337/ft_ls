@@ -20,14 +20,19 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <pwd.h>
+# include <grp.h>
 # include <sys/xattr.h>
 # include <time.h>
+# include <sys/ioctl.h>
+
 
 # include <../libft/includes/libft.h>
 
 # define BUFF_SIZE 1024
 
 # define ABS(a) (a < 0 ? -a : a)
+# define MAX(a, b) (a >= b ? a : b)
+
 
 /*
 struct stat {
@@ -55,16 +60,43 @@ struct stat {
 
 
 /*
-*struct passwd {
-*    char   *pw_name;        имя пользователя 
-*    char   *pw_passwd;      пароль пользователя 
-*    uid_t   pw_uid;         идентификатор пользователя 
-*    gid_t   pw_gid;         идентификатор группы 
-*    char   *pw_gecos;       информация о пользователе 
-*    char   *pw_dir;         домашний каталог 
-*    char   *pw_shell;       программная оболочка 
-*};
+struct passwd {
+    char   *pw_name;        имя пользователя 
+    char   *pw_passwd;      пароль пользователя 
+    uid_t   pw_uid;         идентификатор пользователя 
+    gid_t   pw_gid;         идентификатор группы 
+    char   *pw_gecos;       информация о пользователе 
+    char   *pw_dir;         домашний каталог 
+    char   *pw_shell;       программная оболочка 
+};
 */
+
+/*
+struct termios {
+ tcflag_t c_iflag;  флаги режима ввода 
+ tcflag_t c_oflag;  флаги режима вывода 
+ tcflag_t c_cflag;  флаги управляющего режима 
+ tcflag_t c_lflag;  флаги локального режима 
+ cc_t c_line;       дисциплина линии связи 
+ cc_t c_cc[NCCS];  управляющие символы 
+};
+*/
+
+
+
+typedef struct	s_dop
+{
+	int				total; // Это не трогаем
+	// Остальное вравниваем через MAX(a, b) и strlen().
+	// Параметры для сравнения можно вытаскивать из stats. Подробнее объясню.
+	int				max_len_owner;
+	int				max_len_group;
+	int				max_len_links;
+	int				max_len_size;
+	int				max_len; // Максимальная длина названий файлов или директорий в текущей директории.
+}				t_dop;
+
+
 
 
 // Структура АНИ!
@@ -76,13 +108,16 @@ struct stat {
 // пример: ./src/main.c или ./libft/srcs
 typedef	struct	s_files
 {
-	char			*filename; // Здесь название файла или название директории. Используй malloc
-	int				len; // Длина названия файла или директории без пути, ft_strlen(<filename без пути>).
-	int				max_len; // Максимальная длина названий файлов или директорий в текущей директории.
-	struct s_files	*next; // Ссылка на след. название в текущем директории.
+	char			*filename; // Здесь название файла или название директории. Используй malloc.
+	char			*short_name; // Название без полного пути. Можно статический массив, т.к. есть ограничение на длину названия файла.
+	int				len; // Длина short_name, ft_strlen(short_name).
+	struct s_files	*next; // Ссылка на след. название в текущей директории.
 	struct s_files	*deeper; // Если это директория, при необходимости уйти вглубь, иначе NULL. Флаг R.
 
-	int				total; // Всегда делать NULL. Я сам заполню.
+	// После перехода в deeper делаешь malloc структуры t_dop.
+	// После перехода в next t_dop ссылаешь на первое создание после перехода в deeper.
+	// Туда помещяем максимальные значения.
+	t_dop			max_;
 }				t_files;
 
 
@@ -122,6 +157,8 @@ void            check_flags(t_ls *ls);
 t_ls            *init_ls(int ac, char **av);
 void            show_dir(t_ls *ls);
 
+void			put_line_with_l(t_ls *ls, const char *filename);
+
 void            error(t_ls *ls);
 
 void            put_mode(t_ls *ls);
@@ -129,7 +166,7 @@ void			put_smth(t_ls *ls, char *tmp, int *ls_len);
 void			put_date(t_ls *ls);
 void			put_filename(t_ls *ls, const char *filename);
 
-
+int				get_columns(void);
 
 
 #endif

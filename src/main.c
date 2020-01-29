@@ -12,12 +12,6 @@
 
 
 #include "../inc/ft_ls.h"
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <time.h>
-#include <pwd.h>
 
 #include <stdio.h>
 
@@ -108,6 +102,7 @@ void    check_flags(t_ls *ls)
 }
 
 
+// Будет работать иначе
 t_ls    *init_ls(int ac, char **av)
 {
 	t_ls    *ls;
@@ -132,31 +127,51 @@ t_ls    *init_ls(int ac, char **av)
 }
 
 
+
+// Будет работать иначе
 void    show_dir(t_ls *ls)
 {
-	int i;
-
+	int		i;
+	char	*filename;
+	
 	i = 0;
 	while (++i < ls->ac)
 	{
-		stat("src", &(ls->stats));
+		filename = "src";
+		put_line_with_l(ls, (const char *)filename);
 
-		put_mode(ls);
-		put_smth(ls, ft_itoa(ls->stats.st_nlink), &(ls->max_len_links)); // Put links
-		//put_owner(ls);
-		//put_group(ls);
-		put_smth(ls, ft_itoa(ls->stats.st_size), &(ls->max_len_size)); // Put size
-		put_date(ls);
-		put_filename(ls, "src");
-
-		ls->buffer[(ls->i)] = '\0';
 		printf("%s\n", ls->buffer);
-		
 
 		// free(&(ls->stats));
 	}
 }
 
+
+// Будет работать иначе
+void	put_line_with_l(t_ls *ls, const char *filename)
+{
+	stat(filename, &(ls->stats));
+	put_mode(ls);
+	put_smth(ls, ft_itoa(ls->stats.st_nlink), &(ls->max_len_links)); // Put links
+	put_smth(ls, getpwuid((uid_t)(ls->stats.st_uid))->pw_name, &(ls->max_len_owner)); // Put owner
+	put_smth(ls, getgrgid((gid_t)(ls->stats.st_gid))->gr_name, &(ls->max_len_group)); // Put group
+	put_smth(ls, ft_itoa(ls->stats.st_size), &(ls->max_len_size)); // Put size
+	put_date(ls);
+	put_filename(ls, filename);
+
+	ls->buffer[(ls->i)] = '\0';
+}
+
+
+int		get_columns(void)
+{
+	struct winsize w;
+
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	// printf ("lines %d\n", w.ws_row);
+    // printf ("columns %d\n", w.ws_col);
+	return (w.ws_col);
+}
 
 void	put_smth(t_ls *ls, char *tmp, int *ls_len)
 {
