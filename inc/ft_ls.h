@@ -27,6 +27,8 @@
 
 # define BUFF_SIZE 1024
 
+# define ABS(a) (a < 0 ? -a : a)
+
 /*
 struct stat {
     dev_t     st_dev;          ID устройства с файлом 
@@ -42,9 +44,9 @@ struct stat {
      Начиная с Linux 2.6, ядро поддерживает точность до
        наносекунд в следующих полям меток времени.
        Подробней о версиях до Linux 2.6, смотрите ЗАМЕЧАНИЯ. 
-    struct timespec st_atim;   время последнего доступа 
-    struct timespec st_mtim;   время последнего изменения 
-    struct timespec st_ctim;   время последней смены состояния 
+    struct timespec st_atime;   время последнего доступа 
+    struct timespec st_mtime;   время последнего изменения 
+    struct timespec st_ctime;   время последней смены состояния 
 #define st_atime st_atim.tv_sec       для обратной совместимости 
 #define st_mtime st_mtim.tv_sec
 #define st_ctime st_ctim.tv_sec
@@ -66,12 +68,18 @@ struct stat {
 
 
 // Структура АНИ!
+// Начать с директории ./, т.е. изначально будет next = NULL, filename = ./, deeper = ...
+// Очень важно, чтобы filename указывался как ./<название файла иди дир. с полным путем>
+// пример: ./src/main.c или ./libft/srcs
 typedef	struct	s_files
 {
 	char			*filename; // Здесь название файла или название директории. Используй malloc
-	size_t			len; // Длина названия файла или директории, ft_strlen(filename).
-	struct s_files	*next; // Здесь указываешь название следующего файла или директории или NULL.
-	struct s_files	*deeper; // Если это директория, то нужно уйти вглубь. Если нет, то NULL.
+	int				len; // Длина названия файла или директории без пути, ft_strlen(<filename без пути>).
+	int				max_len; // Максимальная длина названий файлов или директорий в текущей директории.
+	struct s_files	*next; // Ссылка на след. название в текущем директории.
+	struct s_files	*deeper; // Если это директория, при необходимости уйти вглубь, иначе NULL. Флаг R.
+
+	int				total; // Всегда делать NULL. Я сам заполню.
 }				t_files;
 
 
@@ -90,6 +98,12 @@ typedef struct	s_ls
 	int             i;
 	unsigned int    total;
 
+	int				max_len_owner;
+	int				max_len_group;
+	int				max_len_links;
+	int				max_len_size;
+	int				max_len_time;
+
 	char            **av;
 	char            ac;
 
@@ -100,6 +114,7 @@ typedef struct	s_ls
 
 
 int             main(int ac, char **av);
+
 void            check_flags(t_ls *ls);
 t_ls            *init_ls(int ac, char **av);
 void            show_dir(t_ls *ls);
@@ -107,8 +122,9 @@ void            show_dir(t_ls *ls);
 void            error(t_ls *ls);
 
 void            put_mode(t_ls *ls);
-void			put_link(t_ls *ls);
-void			put_size(t_ls *ls);
+void			put_smth(t_ls *ls, char *tmp, int *ls_len);
+void			put_date(t_ls *ls);
+void			put_filename(t_ls *ls, const char *filename);
 
 
 

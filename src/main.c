@@ -123,7 +123,11 @@ t_ls    *init_ls(int ac, char **av)
 	ls->t = 0;
 	ls->flags = 0;
 	ls->i = 0;
-	ls->total = 0;
+	ls->max_len_owner = 0;
+	ls->max_len_group = 0;
+	ls->max_len_links = 0;
+	ls->max_len_size = 0;
+	ls->max_len_time = 12;
 	return (ls);
 }
 
@@ -138,39 +142,68 @@ void    show_dir(t_ls *ls)
 		stat("src", &(ls->stats));
 
 		put_mode(ls);
-		put_link(ls);
+		put_smth(ls, ft_itoa(ls->stats.st_nlink), &(ls->max_len_links)); // Put links
 		//put_owner(ls);
 		//put_group(ls);
-		put_size(ls);
+		put_smth(ls, ft_itoa(ls->stats.st_size), &(ls->max_len_size)); // Put size
+		put_date(ls);
+		put_filename(ls, "src");
 
 		ls->buffer[(ls->i)] = '\0';
 		printf("%s\n", ls->buffer);
 		
+
 		// free(&(ls->stats));
 	}
 }
 
 
-
-
+void	put_smth(t_ls *ls, char *tmp, int *ls_len)
 {
-	char *tmp;
+	int		len;
 
 	ls->buffer[(ls->i)++] = ' ';
-	tmp = ft_itoa(ls->stats.st_size);
+	len = ft_strlen(tmp);
+	if (len >= *ls_len)
+		*ls_len = len;
+	else
+		while (++len <= *ls_len)
+			ls->buffer[(ls->i)++] = ' ';
 	while (*tmp)
 		ls->buffer[(ls->i)++] = *(tmp++);
 }
 
-void	put_link(t_ls *ls)
+void	put_date(t_ls *ls)
 {
-	char *tmp;
+	char	*tmp;
+	int		i;
+	time_t	time_;
 
+	i = -1;
 	ls->buffer[(ls->i)++] = ' ';
-	tmp = ft_itoa(ls->stats.st_nlink);
-	while (*tmp)
-		ls->buffer[(ls->i)++] = *(tmp++);
+	time_ = ls->stats.st_mtime;
+	tmp = &(ctime(&time_)[4]);
+	while (++i < 7)
+		ls->buffer[(ls->i)++] = tmp[i];
+	i--;
+	// if >= полгода
+	if (ABS(difftime(time(NULL), time_)) >= 15768000 && (i = 15))
+		while (++i < 20)
+			ls->buffer[(ls->i)++] = tmp[i];
+	while (++i < 12)
+		ls->buffer[(ls->i)++] = tmp[i];
 }
+
+void	put_filename(t_ls *ls, const char *filename)
+{
+	int i;
+
+	i = -1;
+	ls->buffer[(ls->i)++] = ' ';
+	while (filename[++i])
+		ls->buffer[(ls->i)++] = filename[i];
+}
+
 
 void    put_mode(t_ls *ls)
 {
