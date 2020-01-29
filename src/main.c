@@ -17,6 +17,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
+#include <pwd.h>
 
 #include <stdio.h>
 
@@ -77,7 +78,7 @@ int     main(int ac, char **av)
 
 
 /*
- * a - unvisible files
+ * a - invisible files
  * l - format
  * R - recursive all files in folders
  * r - sort in reverse order
@@ -134,14 +135,17 @@ void    show_dir(t_ls *ls)
 	i = 0;
 	while (++i < ls->ac)
 	{
-		lstat("src", &(ls->stats));
+		stat("src", &(ls->stats));
 
 		put_mode(ls);
 		put_link(ls);
+		//put_owner(ls);
+		//put_group(ls);
+		put_size(ls);
 
 		ls->buffer[(ls->i)] = '\0';
 		printf("%s\n", ls->buffer);
-
+		
 		// free(&(ls->stats));
 	}
 }
@@ -149,18 +153,24 @@ void    show_dir(t_ls *ls)
 
 
 
+{
+	char *tmp;
+
+	ls->buffer[(ls->i)++] = ' ';
+	tmp = ft_itoa(ls->stats.st_size);
+	while (*tmp)
+		ls->buffer[(ls->i)++] = *(tmp++);
+}
 
 void	put_link(t_ls *ls)
 {
+	char *tmp;
+
 	ls->buffer[(ls->i)++] = ' ';
-	ls->buffer[(ls->i)++] = ls->stats.st_nlink; // Num in str
-	printf("%d", ls->i);
+	tmp = ft_itoa(ls->stats.st_nlink);
+	while (*tmp)
+		ls->buffer[(ls->i)++] = *(tmp++);
 }
-
-
-
-
-
 
 void    put_mode(t_ls *ls)
 {

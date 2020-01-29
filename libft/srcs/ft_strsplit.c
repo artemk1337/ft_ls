@@ -104,7 +104,6 @@ char		**ft_strsplit(char const *s, char c)
 {
 	char	**tmp;
 	int		i;
-	int		j;
 
 	i = 0;
 	tmp = (NULL);
@@ -112,7 +111,6 @@ char		**ft_strsplit(char const *s, char c)
 		return (NULL);
 	while (s[i] == c)
 		i++;
-	j = 0;
 	i = 0;
 	if (!(tmp = (char**)malloc(sizeof(*tmp) * ft_count_words((char*)s, c))))
 		return (0);
