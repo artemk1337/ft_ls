@@ -135,15 +135,32 @@ void    show_dir(t_ls *ls)
 	while (++i < ls->ac)
 	{
 		lstat("src", &(ls->stats));
+
 		put_mode(ls);
+		put_link(ls);
 
 		ls->buffer[(ls->i)] = '\0';
-		printf("%d", ls->stats.st_dev);
-		printf("%s", ls->buffer);
+		printf("%s\n", ls->buffer);
 
 		// free(&(ls->stats));
 	}
 }
+
+
+
+
+
+void	put_link(t_ls *ls)
+{
+	ls->buffer[(ls->i)++] = ' ';
+	ls->buffer[(ls->i)++] = ls->stats.st_nlink; // Num in str
+	printf("%d", ls->i);
+}
+
+
+
+
+
 
 void    put_mode(t_ls *ls)
 {

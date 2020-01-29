@@ -63,6 +63,7 @@ t_ls            *init_ls(int ac, char **av);
 void            show_dir(t_ls *ls);
 void            error(t_ls *ls);
 void            put_mode(t_ls *ls);
+void			put_link(t_ls *ls);
 
 
 
