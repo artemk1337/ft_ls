@@ -68,6 +68,9 @@ struct stat {
 
 
 // Структура АНИ!
+
+// Тебе понадобится проверка флага ls->r и ls->a
+// К этой структуре можно обращаться через структуру t_ls
 // Начать с директории ./, т.е. изначально будет next = NULL, filename = ./, deeper = ...
 // Очень важно, чтобы filename указывался как ./<название файла иди дир. с полным путем>
 // пример: ./src/main.c или ./libft/srcs
@@ -94,9 +97,9 @@ typedef struct	s_ls
 	int             r;
 	int             t;
 
+	// Only use to print information
 	char            buffer[BUFF_SIZE];
 	int             i;
-	unsigned int    total;
 
 	int				max_len_owner;
 	int				max_len_group;
