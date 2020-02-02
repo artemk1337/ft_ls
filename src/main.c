@@ -209,6 +209,30 @@ int			file_hide(char *file)
 
 
 
+void		sort_files_t(int start, int finish, t_files **arr)
+{
+	int		i;
+	int		pos;
+	t_files	**tmp;
+
+	if (start >= finish - 1)
+		return ;
+	pos = finish - 1;
+	i = start - 1;
+	while (++i < finish - 1)
+	{
+		if (arr[i]->stats.st_mtime >= arr[pos]->stats.st_mtime)
+		{
+			tmp = arr[i];
+			arr[i] = arr[pos];
+			arr[pos] = tmp;
+			pos = i;
+		}
+	}
+	sort_files_l(start, pos, arr); // Left
+	sort_files_д(pos + 1, finish, arr); // Right
+}
+
 void		sort_files_l(int start, int finish, t_files **arr)
 {
 	int		i;
