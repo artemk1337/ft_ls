@@ -239,7 +239,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	tmp = start;
 	while (i < max)
 	{
-		arr[i++] = tmp;
+		arr_f[i++] = tmp;
 		tmp = start->next;
 	}
 		
