@@ -223,6 +223,7 @@ t_files		**reverse_arr(t_files **arr, int max)
 	t_files	*tmp;
 
 	i = 0;
+	ft_putstr("CHECK\n");
 	while (i < (max - i))
 	{
 		tmp = arr[i];
@@ -259,6 +260,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 
 
 	arr_f = reverse_arr(arr_f, max);
+
 	i = 0;
 	while (i < max)
 		printf("%s\n", arr_f[i++]->filename);
