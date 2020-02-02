@@ -217,19 +217,19 @@ int			file_hide(char *file)
 
 
 
-void		reverse_arr(t_files ***arr, int max)
+t_files		**reverse_arr(t_files **arr, int max)
 {
 	int		i;
 	t_files	*tmp;
 
 	while (i < max)
 	{
-		tmp = arr[0][i];
-		arr[0][i] = arr[0][max - i];
-		arr[0][max - i] = tmp;
+		tmp = ar[i];
+		arr[i] = arr[max - i];
+		arr[max - i] = tmp;
 		i++;
 	}
-
+	return (arr);
 }
 
 
@@ -257,7 +257,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	}
 
 
-	reverse_arr(&arr_f, max);
+	arr_f = reverse_arr(arr_f, max);
 	i = 0;
 	while (i < max)
 		printf("%s\n", arr_f[i++]->filename);
