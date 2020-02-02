@@ -229,7 +229,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 
 	t_files		**arr_f;
 
-	if (!(*arr_f = malloc(sizeof(t_files *) * (max + 1))))
+	if (!(arr_f = malloc(sizeof(t_files *) * (max + 1))))
 		ERROR;
 	arr_f[max] = NULL;
 	arr_f = arr_f;
