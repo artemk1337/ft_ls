@@ -214,7 +214,7 @@ t_files		*revive(t_files **arr)
 
 	i = 0;
 	start = arr[i];
-	while (++i < 12)
+	while (++i < 11)
 	{
 		start->next = arr[i];
 		start = start->next;
