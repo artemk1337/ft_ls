@@ -240,9 +240,11 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	while (i < max)
 	{
 		arr_f[i++] = tmp;
-		tmp = start->next;
+		tmp = tmp->next;
 	}
 		
+
+
 	return (tmp);
 }
 
