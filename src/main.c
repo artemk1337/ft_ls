@@ -211,32 +211,33 @@ int			file_hide(char *file)
 
 
 
-void		revive(t_path *curr_d, t_files ***arr, t_ls *ls, int end)
+void		revive(t_path *curr_d, t_files **arr, t_ls *ls, int end)
 {
 	t_files	*tmp_f;
+	int		i;
 
 	if (ls->r == 1)
 	{
-		curr_d->files = (*arr)[end--];
+		curr_d->files = ar)[end--];
 		tmp_f = curr_d->files;
 		
 		printf("END %d\n", end);
 		while (end > 0)
-			{tmp_f->next = (*arr)[end--];
+			{tmp_f->next = arr[end--];
 			printf("END %d\n", end);}
 		tmp_f->next = NULL;
 	}
 	else
 	{
-		end = 0;
-		curr_d->files = (*arr)[end++];
+		i = 0;
+		curr_d->files = arr[i++];
 		tmp_f = curr_d->files;
-		while (arr[end])
+		while (arr[i])
 		{
-			tmp_f->next = (*arr)[end++];
-			//printf("%s\n", tmp_f->filename);
+			tmp_f->next = arr[i++];
+			printf("%s\n", tmp_f->filename);
 		}
-		//printf("%s\n", tmp_f->filename);
+		printf("%s\n", tmp_f->filename);
 		tmp_f->next = NULL;
 	}
 }
@@ -328,24 +329,18 @@ t_files		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 	while (arr[++i])
 		printf("%s\n", arr[i]->filename);
 		
-	//revive(curr_d, &arr, ls, size - 1);
+	revive(curr_d, arr, ls, size - 1);
 
 	printf("\n%s\n\n", "START REVIVE");
 
 	i = -1;
 	if (ls->r == 0)
 	{
-		new_f = arr[i];
 		while (arr[++i])
 		{
-			new_f = arr[i];
 			printf("%s - %d\n", arr[i]->filename, i);
-			ft_putstr("11\n");
-			new_f = new_f->next;
-			ft_putstr("22\n");
 		}
-		printf("%s\n", arr[i]->filename);
-		new_f->next = NULL;
+
 	}
 	
 
