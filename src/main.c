@@ -310,7 +310,7 @@ t_path		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 		curr_f = curr_f->next;
 	}
 	arr[i] = '\0';
-	printf("%d\n, i");
+	printf("%d\n", i);
 	if (ls->t == 1)
 		sort_files_t(0, size, &arr);
 	else
