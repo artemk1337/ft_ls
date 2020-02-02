@@ -299,8 +299,8 @@ void		sort_files_l(int start, int finish, t_files ***arr)
 
 t_files		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 {
+	
 	t_files	**arr;
-	t_files	*new_f;
 	int		i;
 
 	curr_d = curr_d;
