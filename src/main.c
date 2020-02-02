@@ -209,13 +209,47 @@ int			file_hide(char *file)
 
 
 
+
+
+void		revive(t_path *curr_d, t_files ***arr, t_ls *ls, int end)
+{
+	t_files	*tmp_f;
+
+	if (ls->r == 1)
+	{
+		curr_d->files = (*arr)[end--];
+		tmp_f = curr_d->files;
+		
+		printf("END %d\n", end);
+		while (end > 0)
+			{tmp_f->next = (*arr)[end--];
+			printf("END %d\n", end);}
+		tmp_f->next = NULL;
+	}
+	else
+	{
+		end = 0;
+		curr_d->files = (*arr)[end++];
+		tmp_f = curr_d->files;
+		printf("%s\n", tmp_f->filename);
+		while (arr[end])
+		{
+			tmp_f->next = (*arr)[end++];
+			printf("%s\n", tmp_f->filename);
+		}
+		tmp_f->next = NULL;
+	}
+}
+
+
+
 void		sort_files_t(int start, int finish, t_files ***arr)
 {
 	int		i;
 	int		pos;
 	t_files	*tmp;
 
-	if (start >= finish - 1)
+	if (finish - start < 1)
 		return ;
 	pos = finish - 1;
 	i = start - 1;
@@ -259,35 +293,7 @@ void		sort_files_l(int start, int finish, t_files ***arr)
 	sort_files_l(pos + 1, finish, arr); // Right
 }
 
-void		revive(t_path *curr_d, t_files ***arr, t_ls *ls, int end)
-{
-	t_files	*tmp_f;
 
-	if (ls->r == 1)
-	{
-		curr_d->files = (*arr)[end--];
-		tmp_f = curr_d->files;
-		
-		printf("END %d\n", end);
-		while (end > 0)
-			{tmp_f->next = (*arr)[end--];
-			printf("END %d\n", end);}
-		tmp_f->next = NULL;
-	}
-	else
-	{
-		end = 0;
-		curr_d->files = (*arr)[end++];
-		tmp_f = curr_d->files;
-		printf("%s\n", tmp_f->filename);
-		while (arr[end])
-		{
-			tmp_f->next = (*arr)[end++];
-			printf("%s\n", tmp_f->filename);
-		}
-		tmp_f->next = NULL;
-	}
-}
 
 t_path		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 {
