@@ -233,6 +233,8 @@ void		sort_files_t(int start, int finish, t_files **arr)
 	sort_files_t(pos + 1, finish, arr); // Right
 }
 
+
+
 void		sort_files_l(int start, int finish, t_files **arr)
 {
 	int		i;
@@ -257,6 +259,30 @@ void		sort_files_l(int start, int finish, t_files **arr)
 	sort_files_l(pos + 1, finish, arr); // Right
 }
 
+void		revive(t_path *curr_d, t_files **arr, t_ls *ls, int end)
+{
+	t_files	*tmp_f;
+
+	if (ls->r == 1)
+	{
+		curr_d->files = arr[end--];
+		tmp_f = curr_d->files;
+		while (end > 0)
+			tmp_f->next = arr[end--];
+		tmr_f->next = NULL;
+	}
+	else
+	{
+		end = 0;
+		curr_d->files = arr[end++];
+		tmp_f = curr_d->files;
+		while (arr[end])
+			tmp_f->next = arr[end++];
+		tmr_f->next = NULL;
+	}
+	return 
+}
+
 void		sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 {
 	t_files	**arr;
@@ -275,9 +301,7 @@ void		sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 		sort_files_t(0, size, arr);
 	else if (ls->l == 1)
 		sort_files_l(0, size, arr);
-	if (ls->r == 1)
-		arr = sort_reverse_order(arr);
-	revive(curr_f, arr)
+	revive(curr_d, arr, ls, size - 1);
 }
 
 
@@ -349,7 +373,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	closedir(dir);
 
 
-	curr_d->files = sort_files(ls, curr_d->files, tmp);
+	curr_d = sort_files(ls, curr_d->files, tmp);
 
 
 	/// TEST END
