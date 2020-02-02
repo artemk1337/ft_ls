@@ -222,18 +222,7 @@ t_files		**reverse_arr(t_files **arr, int max)
 	int		i;
 	t_files	*tmp;
 
-	i = 0;
-	ft_putstr("CHECK\n");
-	while (i < (max - i))
-	{
-		ft_putnbr(max);
-		ft_putstr("CHECK\n");
-		tmp = arr[i];
-		arr[i] = arr[max - i];
-		arr[max - i] = tmp;
-		i++;
-	}
-	return (arr);
+
 }
 
 
@@ -243,29 +232,6 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	ls = ls;
 	start = start;
 	max = max;
-
-	t_files		**arr_f;
-	int			i;
-	t_files		*tmp;
-
-	if (!(arr_f = malloc(sizeof(t_files *) * (max + 1))))
-		ERROR;
-	arr_f[max] = NULL;
-	arr_f = arr_f;
-	i = 0;
-	tmp = start;
-	while (i < max)
-	{
-		arr_f[i++] = tmp;
-		tmp = tmp->next;
-	}
-
-
-	arr_f = reverse_arr(arr_f, max);
-
-	i = 0;
-	while (i < max)
-		printf("%s\n", arr_f[i++]->filename);
 
 
 	return (start);
