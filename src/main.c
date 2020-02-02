@@ -350,7 +350,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	}
 	else
 		curr_f = curr_d->files;
-	tmp = 0
+	tmp = 0;
 	while ((entry = readdir(dir)))
 	{
 		if ((ls->a == 1 || file_hide(entry->d_name) == 0) && ft_strcmp(entry->d_name, ".") != 0)
