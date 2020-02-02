@@ -209,7 +209,7 @@ int			file_hide(char *file)
 
 
 
-void		sort_files_t(int start, int finish, t_files **arr)
+void		sort_files_t(int start, int finish, t_files ***arr)
 {
 	int		i;
 	int		pos;
