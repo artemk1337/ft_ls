@@ -242,10 +242,12 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 		arr_f[i++] = tmp;
 		tmp = tmp->next;
 	}
-		
+	i = 0;
+	while (i < max)
+		printf("%s\n", arr_f[i++]->filename);
 
 
-	return (tmp);
+	return (start);
 }
 
 
