@@ -276,10 +276,9 @@ void		sort_files(t_ls *ls, t_files *curr_f, int size)
 	else if (ls->l == 1)
 		sort_files_l(0, size, arr);
 	if (ls->r == 1)
-		curr_f = sort_reverse_order(arr);
+		return (sort_reverse_order(arr));
 	else
-		curr_f = sort_normal_order(arr);
-	return (curr_f);
+		return (sort_normal_order(arr));
 }
 
 
