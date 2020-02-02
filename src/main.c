@@ -296,7 +296,7 @@ void		sort_files_l(int start, int finish, t_files ***arr)
 
 
 
-t_path		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
+t_files		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 {
 	t_files	**arr;
 	t_files	*new_f;
@@ -329,12 +329,22 @@ t_path		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 	revive(curr_d, &arr, ls, size - 1);
 
 	i = -1;
-	while (arr[++i])
+	if (ls-r == 0)
+	{
+		new_f = arr[i];
+		while (arr[++i])
+		{
+			printf("%s\n", arr[i]->filename);
+			new_f = new_f->next;
+		}
 		printf("%s\n", arr[i]->filename);
+		new_f->next = NULL;
+	}
+	
 
 		
 	//curr_d = revive(curr_d, &arr, ls, size - 1);
-	return (curr_d);
+	return (new_f);
 }
 
 
@@ -409,8 +419,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	}
 	closedir(dir);
 
-
-	curr_d = sort_files(ls, curr_d->files, curr_d, tmp);
+	if (tmp > 1)
+		curr_d->files = sort_files(ls, curr_d->files, curr_d, tmp);
 
 
 	/// TEST END
