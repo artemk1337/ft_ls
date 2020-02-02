@@ -338,6 +338,7 @@ t_files		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 		new_f = arr[i];
 		while (arr[++i])
 		{
+			new_f = arr[i];
 			printf("%s - %d\n", arr[i]->filename, i);
 			new_f = new_f->next;
 			ft_putstr("new_f\n");
