@@ -231,7 +231,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 
 	curr = start;
 	ft_putstr("test\n");
-	if (ls->r)
+	if (ls->r == 0)
 	{
 		ft_putstr("test\n");
 		prev = NULL;
@@ -244,10 +244,8 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 			prev = curr;
 			curr = next;
 		}
+		return (prev);
 	}
-
-
-	return (prev);
 }
 
 
