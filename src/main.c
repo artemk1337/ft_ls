@@ -510,7 +510,7 @@ void	put_line_without(t_ls *ls, t_path *curr_d)
 	printf("%d\n", width);
 	printf("%d\n", curr_d->info->max_len);
 	printf("%ld\n", curr_d->stats.st_nlink);
-	printf("%s\n", ft_strcmp(".", ".."));
+	printf("%d\n", ft_strcmp(".", ".."));
 
 }
 
