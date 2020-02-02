@@ -209,20 +209,36 @@ int			file_hide(char *file)
 
 
 
-void		sort_files_t(int start, int finish, t_files *arr)
+void		sort_files_l(int start, int finish, t_files **arr)
 {
-	int	i;
+	int		i;
+	int		pos;
+	t_files	**tmp;
 
-	i = start;
-	
+	if (start >= finish - 1)
+		return ;
+	pos = finish - 1;
+	i = start - 1;
+	while (+i < finish - 1)
+	{
+		if (ft_strcmp(arr[i]->filename, arr[pos]->filename) >= 0)
+		{
+			tmp = arr[i];
+			arr[i] = arr[pos];
+			arr[pos] = tmp;
+			pos = i;
+		}
+	}
+	sort_files_l(start, pos, arr);
+	sort_files_r(pos + 1, finish, arr);
 }
 
 void		sort_files(t_ls *ls, t_files *curr_f, int size)
 {
-	t_files	*arr;
+	t_files	**arr;
 	int		i;
 
-	if (!(arr = malloc(sizeof(t_files) * (size + 1))))
+	if (!(arr = malloc(sizeof(t_files *) * (size + 1))))
 		ERROR;
 	i = -1;
 	while (++i < size)
