@@ -340,6 +340,7 @@ t_files		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 		{
 			printf("%s - %d\n", arr[i]->filename, i);
 			new_f = new_f->next;
+			printf("%s - %d\n", arr[i]->filename, i);
 		}
 		printf("%s\n", arr[i]->filename);
 		new_f->next = NULL;
