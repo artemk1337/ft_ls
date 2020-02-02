@@ -203,6 +203,46 @@ int			file_hide(char *file)
 	return (0);
 }
 
+
+
+
+
+
+
+void		sort_files_t(int start, int finish, t_files *arr)
+{
+	int	i;
+
+	i = start;
+	
+}
+
+void		sort_files(t_ls *ls, t_files *curr_f, int size)
+{
+	t_files	*arr;
+	int		i;
+
+	if (!(arr = malloc(sizeof(t_files) * (size + 1))))
+		ERROR;
+	i = -1;
+	while (++i < size)
+	{
+		arr[i] = curr_f;
+		curr_f = curr_f->next;
+	}
+	arr[i] = '\0';
+	if (ls->t = 1)
+		sort_files_t(0, size, arr);
+	else if (ls->l = 1)
+		sort_files_l(0, size, arr);
+	if (ls->r = 1)
+		curr_f = sort_reverse_order(arr);
+	else
+		curr_f = sort_normal_order(arr);
+	return (curr_f);
+}
+
+
 void		get_files(t_ls *ls, t_path *curr_d)
 {
 	DIR             *dir;
@@ -249,6 +289,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	}
 	else
 		curr_f = curr_d->files;
+	tmp = 0
 	while ((entry = readdir(dir)))
 	{
 		if ((ls->a == 1 || file_hide(entry->d_name) == 0) && ft_strcmp(entry->d_name, ".") != 0)
@@ -262,9 +303,15 @@ void		get_files(t_ls *ls, t_path *curr_d)
 				curr_f = (curr_f->next = init_files());
 			}
 			curr_f->filename = ft_strdup(ft_short_name(entry->d_name));
+			curr_f->len_name = ft_strlen(curr_f->filename);
+			stat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
+			tmp++;
 		}
 	}
 	closedir(dir);
+
+
+	curr_d->files = sort_files(ls, curr_d->files, tmp);
 
 
 	/// TEST END
@@ -309,9 +356,6 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	curr_f = curr_d->files;
 	while(curr_f)
 	{
-		curr_f->len_name = ft_strlen(curr_f->filename);
-
-		stat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
 		// printf("Current file: \t%s\n", curr_f->filename);
 
 		//printf("Current path: %s\n", curr_d->path);
