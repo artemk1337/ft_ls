@@ -275,7 +275,7 @@ void		sort_files_l(int start, int finish, t_files ***arr)
 	int		pos;
 	t_files	*tmp;
 
-	if (start >= finish - 1)
+	if (finish - start < 1)
 		return ;
 	pos = finish - 1;
 	i = start - 1;
