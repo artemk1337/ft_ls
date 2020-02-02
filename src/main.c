@@ -230,14 +230,14 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 
 
 	curr = start;
-	printf("test\n");
+	ft_putstr("test\n");
 	if (ls->r)
 	{
-		printf("test\n");
+		ft_putstr("test\n");
 		prev = NULL;
 		while (curr)
 		{
-			printf("test\n");
+			ft_putstr("test\n");
 			next = curr->next;
 			curr->next = prev;
 			prev = curr;
