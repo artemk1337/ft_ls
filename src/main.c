@@ -232,14 +232,20 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		curr_d->info->max_len_size = tmp;
 	// printf("dir enter %s 2\n", curr_d->path);
 
+	dir = opendir(curr_d->path);
+	if (!dir)
+		ERROR; // Error for open dir
+	entry = readdir(dir);
+	while ((entry = readdir(dir)))
+		;
+	closedir(dir);
+
 
 	dir = opendir(curr_d->path);
 	if (!dir)
 		ERROR;
 	// printf("dir enter %s 3\n", curr_d->path);
 	entry = readdir(dir);
-	while ((entry = readdir(dir)))
-		tmp = 0;
 	// printf("%s\n", curr_d->dir_name);
 	if (ls->a == 1)
 	{
