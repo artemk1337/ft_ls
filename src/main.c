@@ -342,11 +342,8 @@ t_files		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 		}
 
 	}
-	
-
-		
 	//curr_d = revive(curr_d, &arr, ls, size - 1);
-	return (new_f);
+	return (curr_d->files);
 }
 
 
