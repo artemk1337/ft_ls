@@ -283,6 +283,7 @@ void		sort_files_l(int start, int finish, t_files ***arr)
 	{
 		if (ft_strcmp((*arr)[i]->filename, (*arr)[pos]->filename) >= 0)
 		{
+			printf("%s - %s\n", (*arr)[i]->filename, (*arr)[pos]->filename);
 			tmp = (*arr)[i];
 			(*arr)[i] = (*arr)[pos];
 			(*arr)[pos] = tmp;
