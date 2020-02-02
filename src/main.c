@@ -283,7 +283,6 @@ void		revive(t_path *curr_d, t_files ***arr, t_ls *ls, int end)
 			tmp_f->next = (*arr)[end++];
 		tmp_f->next = NULL;
 	}
-	return (curr_d);
 }
 
 t_path		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
