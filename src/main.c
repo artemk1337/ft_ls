@@ -226,7 +226,7 @@ t_files		**reverse_arr(t_files **arr, int max)
 	ft_putstr("CHECK\n");
 	while (i < (max - i))
 	{
-		ft_putnbr(i);
+		ft_putnbr(max);
 		ft_putstr("CHECK\n");
 		tmp = arr[i];
 		arr[i] = arr[max - i];
