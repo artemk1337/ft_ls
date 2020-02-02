@@ -235,6 +235,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 		prev = NULL;
 		while (curr)
 		{
+			printf("test\n");
 			next = curr->next;
 			curr->next = prev;
 			prev = curr;
