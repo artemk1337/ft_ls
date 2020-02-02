@@ -216,6 +216,11 @@ int			file_hide(char *file)
 
 
 
+
+
+
+
+
 t_files		*sort_files(t_ls *ls, t_files *start, int max)
 {
 	ls = ls;
