@@ -329,7 +329,7 @@ t_files		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 	revive(curr_d, &arr, ls, size - 1);
 
 	i = -1;
-	if (ls-r == 0)
+	if (ls->r == 0)
 	{
 		new_f = arr[i];
 		while (arr[++i])
