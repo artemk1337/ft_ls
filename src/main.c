@@ -238,6 +238,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		ERROR;
 	// printf("dir enter %s 3\n", curr_d->path);
 	entry = readdir(dir);
+	while ((entry = readdir(dir)))
+		tmp = 0;
 	// printf("%s\n", curr_d->dir_name);
 	if (ls->a == 1)
 	{
@@ -338,7 +340,6 @@ void		print_dirs(t_ls *ls)
 	int		i;
 
 	i = -1;
-	//sort_files(ls);
 	while (ls->arr[++i])
 	{
 		curr_d = ls->arr[i];
@@ -488,6 +489,8 @@ void    show_dir(t_ls *ls, t_path *curr_d)
 	}
 }
 
+
+
 void		show_flag_R(t_path *curr_d)
 {
 	ft_putstr(curr_d->path);
@@ -559,6 +562,21 @@ void	put_line_with_l(t_ls *ls, t_path *curr_d)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Correct
 int		get_columns(void)
 {
 	struct winsize w;
@@ -569,7 +587,6 @@ int		get_columns(void)
 	return (w.ws_col);
 }
 
-// Correct
 void	put_smth(t_ls *ls, char *tmp, int *ls_len)
 {
 	int		len;
@@ -584,7 +601,6 @@ void	put_smth(t_ls *ls, char *tmp, int *ls_len)
 		ls->buffer[(ls->i)++] = tmp[i];
 }
 
-// Correct
 void	put_date(t_ls *ls, time_t time_)
 {
 	char	*tmp;
@@ -603,10 +619,6 @@ void	put_date(t_ls *ls, time_t time_)
 	while (++i < 12)
 		ls->buffer[(ls->i)++] = tmp[i];
 }
-
-
-
-
 
 void    put_mode(t_ls *ls, struct stat fileStat)
 {
