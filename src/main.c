@@ -234,9 +234,9 @@ void		revive(t_path *curr_d, t_files ***arr, t_ls *ls, int end)
 		while (arr[end])
 		{
 			tmp_f->next = (*arr)[end++];
-			printf("%s\n", tmp_f->filename);
+			//printf("%s\n", tmp_f->filename);
 		}
-		printf("%s\n", tmp_f->filename);
+		//printf("%s\n", tmp_f->filename);
 		tmp_f->next = NULL;
 	}
 }
@@ -326,6 +326,11 @@ t_path		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 		printf("%s\n", arr[i]->filename);
 		
 	revive(curr_d, &arr, ls, size - 1);
+
+	i = -1;
+	while (arr[++i])
+		printf("%s\n", arr[i]->filename);
+		
 	//curr_d = revive(curr_d, &arr, ls, size - 1);
 	return (curr_d);
 }
