@@ -299,6 +299,7 @@ void		sort_files_l(int start, int finish, t_files ***arr)
 t_path		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 {
 	t_files	**arr;
+	t_files	*new_f;
 	int		i;
 
 	if (!(arr = malloc(sizeof(t_files *) * (size + 1))))
@@ -330,6 +331,7 @@ t_path		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 	i = -1;
 	while (arr[++i])
 		printf("%s\n", arr[i]->filename);
+
 		
 	//curr_d = revive(curr_d, &arr, ls, size - 1);
 	return (curr_d);
