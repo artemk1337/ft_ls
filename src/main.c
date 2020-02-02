@@ -219,7 +219,7 @@ void		sort_files_l(int start, int finish, t_files **arr)
 		return ;
 	pos = finish - 1;
 	i = start - 1;
-	while (+i < finish - 1)
+	while (++i < finish - 1)
 	{
 		if (ft_strcmp(arr[i]->filename, arr[pos]->filename) >= 0)
 		{
@@ -229,8 +229,8 @@ void		sort_files_l(int start, int finish, t_files **arr)
 			pos = i;
 		}
 	}
-	sort_files_l(start, pos, arr);
-	sort_files_r(pos + 1, finish, arr);
+	sort_files_l(start, pos, arr); // Left
+	sort_files_д(pos + 1, finish, arr); // Right
 }
 
 void		sort_files(t_ls *ls, t_files *curr_f, int size)
