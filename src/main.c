@@ -308,6 +308,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 
 	curr_f = curr_d->files;
 	while(curr_f)
+	{
 		curr_f->len_name = ft_strlen(curr_f->filename);
 
 		stat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
