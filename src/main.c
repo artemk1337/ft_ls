@@ -213,7 +213,7 @@ void		sort_files_t(int start, int finish, t_files **arr)
 {
 	int		i;
 	int		pos;
-	t_files	**tmp;
+	t_files	*tmp;
 
 	if (start >= finish - 1)
 		return ;
@@ -233,11 +233,11 @@ void		sort_files_t(int start, int finish, t_files **arr)
 	sort_files_t(pos + 1, finish, arr); // Right
 }
 
-void		sort_files_l(int start, int finish, t_files **arr)
+void		sort_files_l(int start, int finish, t_files **arr, t_ls *ls)
 {
 	int		i;
 	int		pos;
-	t_files	**tmp;
+	t_files	*tmp;
 
 	if (start >= finish - 1)
 		return ;
