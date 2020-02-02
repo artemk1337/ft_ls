@@ -269,7 +269,7 @@ void		revive(t_path *curr_d, t_files **arr, t_ls *ls, int end)
 		tmp_f = curr_d->files;
 		while (end > 0)
 			tmp_f->next = arr[end--];
-		tmr_f->next = NULL;
+		tmp_f->next = NULL;
 	}
 	else
 	{
@@ -278,7 +278,7 @@ void		revive(t_path *curr_d, t_files **arr, t_ls *ls, int end)
 		tmp_f = curr_d->files;
 		while (arr[end])
 			tmp_f->next = arr[end++];
-		tmr_f->next = NULL;
+		tmp_f->next = NULL;
 	}
 	return 
 }
