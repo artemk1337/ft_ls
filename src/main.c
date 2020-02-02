@@ -278,7 +278,7 @@ void		sort_files(t_ls *ls, t_files *curr_f, int size)
 	if (ls->r == 1)
 		return (sort_reverse_order(arr));
 	else
-		return (sort_normal_order(arr));
+		return (arr);
 }
 
 
