@@ -311,13 +311,20 @@ t_path		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 	}
 	arr[i] = '\0';
 	printf("%d\n", i);
+
 	i = -1;
 	while (arr[++i])
 		printf("%s\n", arr[i]->filename);
+
 	if (ls->t == 1)
 		sort_files_t(0, size, &arr);
 	else
 		sort_files_l(0, size, &arr);
+
+	i = -1;
+	while (arr[++i])
+		printf("%s\n", arr[i]->filename);
+		
 	revive(curr_d, &arr, ls, size - 1);
 	//curr_d = revive(curr_d, &arr, ls, size - 1);
 	return (curr_d);
