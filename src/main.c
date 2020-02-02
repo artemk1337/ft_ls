@@ -232,15 +232,46 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		curr_d->info->max_len_size = tmp;
 	// printf("dir enter %s 2\n", curr_d->path);
 
+
+	/// TEST START
+
 	dir = opendir(curr_d->path);
 	if (!dir)
 		ERROR; // Error for open dir
 	entry = readdir(dir);
+	if (ls->a == 1)
+	{
+		curr_d->files = init_files();
+		curr_f = curr_d->files;
+		curr_f->filename = ft_strdup(".");
+		curr_f->len_name = 1;
+		curr_f->stats = curr_d->stats;
+	}
+	else
+		curr_f = curr_d->files;
 	while ((entry = readdir(dir)))
-		;
+	{
+		if ((ls->a == 1 || file_hide(entry->d_name) == 0) && ft_strcmp(entry->d_name, ".") != 0)
+		{
+			if (!(curr_f))
+				curr_f = (curr_d->files = init_files());
+			else
+			{
+				while (curr_f->next)
+					curr_f = curr_f->next;
+				curr_f = (curr_f->next = init_files());
+			}
+			curr_f->filename = ft_strdup(ft_short_name(entry->d_name));
+		}
+	}
 	closedir(dir);
 
 
+	/// TEST END
+
+
+
+	/*
 	dir = opendir(curr_d->path);
 	if (!dir)
 		ERROR;
@@ -271,44 +302,50 @@ void		get_files(t_ls *ls, t_path *curr_d)
 				curr_f = (curr_f->next = init_files());
 			}
 			curr_f->filename = ft_strdup(ft_short_name(entry->d_name));
-			curr_f->len_name = ft_strlen(curr_f->filename);
+	*/
 
-			stat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
-			// printf("Current file: \t%s\n", curr_f->filename);
+	/// NEW
 
-			//printf("Current path: %s\n", curr_d->path);
-			//printf("DIR: %s FN: %s FullName: %s 0\n", curr_d->dir_name, curr_f->filename, convert_filename(prepare_path(curr_d->path), curr_f->filename));
-			//printf("Current file %s \t\t Full path to file: %s\n", curr_f->filename, convert_filename(prepare_path(curr_d->path), curr_f->filename));
+	curr_f = curr_d->files;
+	while(curr_f)
+		curr_f->len_name = ft_strlen(curr_f->filename);
+
+		stat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
+		// printf("Current file: \t%s\n", curr_f->filename);
+
+		//printf("Current path: %s\n", curr_d->path);
+		//printf("DIR: %s FN: %s FullName: %s 0\n", curr_d->dir_name, curr_f->filename, convert_filename(prepare_path(curr_d->path), curr_f->filename));
+		//printf("Current file %s \t\t Full path to file: %s\n", curr_f->filename, convert_filename(prepare_path(curr_d->path), curr_f->filename));
 
 
-			// Сравнение названия
-			if (curr_d->info->max_len_links < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_nlink))))
-				curr_d->info->max_len_links = tmp;
-			if (curr_d->info->max_len < (tmp = ft_strlen(curr_f->filename)))
-				curr_d->info->max_len = tmp;
-			if (curr_d->info->max_len_owner < (tmp = ft_strlen(getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name)))
-				curr_d->info->max_len_owner = tmp;
-			if (curr_d->info->max_len_group < (tmp = ft_strlen(getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name)))
-				curr_d->info->max_len_group = tmp;
-			if (curr_d->info->max_len_size < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_size))))
-				curr_d->info->max_len_size = tmp;
+		// Сравнение названия
+		if (curr_d->info->max_len_links < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_nlink))))
+			curr_d->info->max_len_links = tmp;
+		if (curr_d->info->max_len < (tmp = ft_strlen(curr_f->filename)))
+			curr_d->info->max_len = tmp;
+		if (curr_d->info->max_len_owner < (tmp = ft_strlen(getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name)))
+			curr_d->info->max_len_owner = tmp;
+		if (curr_d->info->max_len_group < (tmp = ft_strlen(getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name)))
+			curr_d->info->max_len_group = tmp;
+		if (curr_d->info->max_len_size < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_size))))
+			curr_d->info->max_len_size = tmp;
 
-			//printf("DIR: %s FN: %s 1\n", curr_d->dir_name, curr_f->filename);
+		//printf("DIR: %s FN: %s 1\n", curr_d->dir_name, curr_f->filename);
 
-			tmp_d = curr_d;
-			if (S_ISDIR(curr_f->stats.st_mode) && ft_strcmp((const char *)curr_f->filename, (const char *)"..") != 0 && ls->R == 1)
-			{
-				while (curr_d->next)
-					curr_d = curr_d->next;
-				// printf("Enter in: %s\n", convert_filename(prepare_path(tmp_d->path), curr_f->filename));
-				curr_d->next = init_path(convert_filename(prepare_path(tmp_d->path), curr_f->filename));
-				curr_d->next->depth = tmp_d->depth + 1;
-				get_files(ls, curr_d->next);
-			}
-			curr_d = tmp_d;
-			//printf("DIR: %s FN: %s \n", curr_d->dir_name, curr_f->filename);
-			//printf("DIR: %s FN: %s 2\n", curr_d->dir_name, curr_f->filename);
+		tmp_d = curr_d;
+		if (S_ISDIR(curr_f->stats.st_mode) && ft_strcmp((const char *)curr_f->filename, (const char *)"..") != 0 && ls->R == 1)
+		{
+			while (curr_d->next)
+				curr_d = curr_d->next;
+			// printf("Enter in: %s\n", convert_filename(prepare_path(tmp_d->path), curr_f->filename));
+			curr_d->next = init_path(convert_filename(prepare_path(tmp_d->path), curr_f->filename));
+			curr_d->next->depth = tmp_d->depth + 1;
+			get_files(ls, curr_d->next);
 		}
+		curr_d = tmp_d;
+		//printf("DIR: %s FN: %s \n", curr_d->dir_name, curr_f->filename);
+		//printf("DIR: %s FN: %s 2\n", curr_d->dir_name, curr_f->filename);
+		curr_f = curr_f->next;
 	}
 
 	closedir(dir);
