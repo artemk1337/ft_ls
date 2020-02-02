@@ -259,7 +259,7 @@ void		sort_files_l(int start, int finish, t_files **arr)
 	sort_files_l(pos + 1, finish, arr); // Right
 }
 
-void		revive(t_path *curr_d, t_files **arr, t_ls *ls, int end)
+t_path		**revive(t_path *curr_d, t_files **arr, t_ls *ls, int end)
 {
 	t_files	*tmp_f;
 
@@ -286,7 +286,7 @@ void		revive(t_path *curr_d, t_files **arr, t_ls *ls, int end)
 	return (curr_d);
 }
 
-void		sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
+t_path		**sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 {
 	t_files	**arr;
 	int		i;
