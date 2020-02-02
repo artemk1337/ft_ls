@@ -217,15 +217,6 @@ int			file_hide(char *file)
 
 
 
-t_files		**reverse_arr(t_files **arr, int max)
-{
-	int		i;
-	t_files	*tmp;
-
-
-}
-
-
 
 t_files		*sort_files(t_ls *ls, t_files *start, int max)
 {
@@ -233,7 +224,23 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	start = start;
 	max = max;
 
-	
+	t_files	*curr;
+	t_files	*next;
+	t_files	*prev;
+
+
+	curr = start;
+	if (ls->r)
+	{
+
+		prev = NULL;
+		while (curr)
+			next = curr->next;
+			curr->next = prev;
+			prev = curr;
+			curr = next;
+	}
+
 
 	return (start);
 }
