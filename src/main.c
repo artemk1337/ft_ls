@@ -216,7 +216,25 @@ int			file_hide(char *file)
 
 
 
+t_files		*reverse_order_files(t_files *start)
+{
+	t_files	*curr;
+	t_files	*next;
+	t_files	*prev;
 
+	ft_putstr("test\n");
+	prev = NULL;
+	ft_putstr("test\n");
+	while (curr)
+	{
+		ft_putstr("test\n");
+		next = curr->next;
+		curr->next = prev;
+		prev = curr;
+		curr = next;
+	}
+	return (prev);
+}
 
 t_files		*sort_files(t_ls *ls, t_files *start, int max)
 {
@@ -233,18 +251,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	ft_putstr("test\n");
 	if (ls->r == 1)
 	{
-		ft_putstr("test\n");
-		prev = NULL;
-		ft_putstr("test\n");
-		while (curr)
-		{
-			ft_putstr("test\n");
-			next = curr->next;
-			curr->next = prev;
-			prev = curr;
-			curr = next;
-		}
-		return (prev);
+		return(reverse_order_files(start));
 	}
 	return (start);
 }
