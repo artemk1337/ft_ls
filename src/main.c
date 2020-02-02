@@ -283,6 +283,7 @@ void		revive(t_path *curr_d, t_files **arr, t_ls *ls, int end)
 			tmp_f->next = arr[end++];
 		tmp_f->next = NULL;
 	}
+	return (curr_d);
 }
 
 void		sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
@@ -303,7 +304,8 @@ void		sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 		sort_files_t(0, size, arr);
 	else if (ls->l == 1)
 		sort_files_l(0, size, arr);
-	revive(curr_d, arr, ls, size - 1);
+	curr_d = revive(curr_d, arr, ls, size - 1);
+	return (cuur_d);
 }
 
 
@@ -375,7 +377,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	closedir(dir);
 
 
-	sort_files(ls, curr_d->files, curr_d, tmp);
+	curr_d = sort_files(ls, curr_d->files, curr_d, tmp);
 
 
 	/// TEST END
