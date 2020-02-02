@@ -207,128 +207,22 @@ int			file_hide(char *file)
 
 
 
-t_files		*revive(t_files **arr)
-{
-	t_files	*start;
-	int		i;
 
-	i = 0;
-	start = arr[i];
-	while (++i < 11)
-	{
-		start->next = arr[i];
-		start = start->next;
-	}
-	start->next = NULL;
+
+
+
+
+
+
+
+
+t_files		*sort_files(t_ls *ls, t_files *start, int max)
+{
+	ls = ls;
+	start = start;
+	max = max;
 	return (start);
 }
-
-
-
-
-
-void		sort_files_t(int start, int finish, t_files ***arr)
-{
-	int		i;
-	int		pos;
-	t_files	*tmp;
-
-	if (finish - start < 1)
-		return ;
-	pos = finish - 1;
-	i = start - 1;
-	while (++i < finish - 1)
-	{
-		if ((*arr)[i]->stats.st_mtime >= (*arr)[pos]->stats.st_mtime)
-		{
-			tmp = (*arr)[i];
-			(*arr)[i] = (*arr)[pos];
-			(*arr)[pos] = tmp;
-			pos = i;
-		}
-	}
-	sort_files_t(start, pos, arr); // Left
-	sort_files_t(pos + 1, finish, arr); // Right
-}
-
-
-
-void		sort_files_l(int start, int finish, t_files ***arr)
-{
-	int		i;
-	int		pos;
-	t_files	*tmp;
-
-	if (finish - start < 1)
-		return ;
-	pos = finish - 1;
-	i = start - 1;
-	while (++i < finish - 1)
-	{
-		if (ft_strcmp((*arr)[i]->filename, (*arr)[pos]->filename) >= 0)
-		{
-			//printf("%s - %s, %d, %d\n", (*arr)[i]->filename, (*arr)[pos]->filename, ft_strcmp((*arr)[i]->filename, (*arr)[pos]->filename), (*arr)[i]->filename[0] - (*arr)[pos]->filename[0]);
-			tmp = (*arr)[i];
-			(*arr)[i] = (*arr)[pos];
-			(*arr)[pos] = tmp;
-			pos = i;
-		}
-	}
-	sort_files_l(start, pos, arr); // Left
-	sort_files_l(pos + 1, finish, arr); // Right
-}
-
-
-
-t_files		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
-{
-	t_files	**arr;
-	int		i;
-
-	curr_d = curr_d;
-	if (!(arr = malloc(sizeof(t_files *) * (size + 1))))
-		ERROR;
-	i = -1;
-	while (++i < size)
-	{
-		arr[i] = curr_f;
-		curr_f = curr_f->next;
-	}
-	arr[i] = '\0';
-
-	i = -1;
-	while (arr[++i])
-		printf("%s\n", arr[i]->filename);
-	
-	printf("\n%s\n\n", "START SORT");
-
-	if (ls->t == 1)
-		sort_files_t(0, size, &arr);
-	else
-		sort_files_l(0, size, &arr);
-
-	i = -1;
-	while (arr[++i])
-		printf("%s\n", arr[i]->filename);
-		
-	curr_d->files = revive(arr);
-
-	printf("\n%s\n\n", "START REVIVE");
-
-	i = -1;
-	if (ls->r == 0)
-	{
-		while (arr[++i])
-		{
-			printf("%s - %d\n", arr[i]->filename, i);
-		}
-
-	}
-	//curr_d = revive(curr_d, &arr, ls, size - 1);
-	return (curr_d->files);
-}
-
-
 
 
 
@@ -401,7 +295,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	closedir(dir);
 
 	if (tmp > 1)
-		curr_d->files = sort_files(ls, curr_d->files, curr_d, tmp);
+		curr_d->files = sort_files(ls, curr_d->files, tmp);
 
 
 	/// TEST END
