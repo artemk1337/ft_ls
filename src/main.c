@@ -225,7 +225,7 @@ t_files		**reverse_arr(t_files **arr, int max)
 	i = 0;
 	while (i < max)
 	{
-		tmp = ar[i];
+		tmp = arr[i];
 		arr[i] = arr[max - i];
 		arr[max - i] = tmp;
 		i++;
