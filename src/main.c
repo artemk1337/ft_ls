@@ -222,12 +222,9 @@ t_files		*reverse_order_files(t_files *start)
 	t_files	*next;
 	t_files	*prev;
 
-	ft_putstr("test\n");
-	prev = NULL;
-	ft_putstr("test\n");
+	curr = start;
 	while (curr)
 	{
-		ft_putstr("test\n");
 		next = curr->next;
 		curr->next = prev;
 		prev = curr;
@@ -242,12 +239,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	start = start;
 	max = max;
 
-	t_files	*curr;
-	t_files	*next;
-	t_files	*prev;
 
-
-	curr = start;
 	ft_putstr("test\n");
 	if (ls->r == 1)
 	{
