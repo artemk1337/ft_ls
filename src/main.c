@@ -372,7 +372,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	closedir(dir);
 
 
-	curr_d = sort_files(ls, curr_d->files, tmp);
+	curr_d = sort_files(ls, curr_d->files, curr_d, tmp);
 
 
 	/// TEST END
