@@ -311,6 +311,9 @@ t_path		*sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 	}
 	arr[i] = '\0';
 	printf("%d\n", i);
+	i = -1;
+	while (arr[++i])
+		printf("%s\n", arr[i]->filename);
 	if (ls->t == 1)
 		sort_files_t(0, size, &arr);
 	else
