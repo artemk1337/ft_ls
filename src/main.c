@@ -243,10 +243,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 		tmp = start->next;
 	}
 		
-
-
-
-	return (start);
+	return (tmp);
 }
 
 
