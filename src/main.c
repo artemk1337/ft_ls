@@ -257,7 +257,7 @@ void		sort_files_l(int start, int finish, t_files **arr)
 	sort_files_l(pos + 1, finish, arr); // Right
 }
 
-void		sort_files(t_ls *ls, t_files *curr_f, int size)
+void		sort_files(t_ls *ls, t_files *curr_f, t_path *curr_d, int size)
 {
 	t_files	**arr;
 	int		i;
@@ -276,9 +276,8 @@ void		sort_files(t_ls *ls, t_files *curr_f, int size)
 	else if (ls->l == 1)
 		sort_files_l(0, size, arr);
 	if (ls->r == 1)
-		return (sort_reverse_order(arr));
-	else
-		return (arr);
+		arr = sort_reverse_order(arr);
+	revive(curr_f, arr)
 }
 
 
