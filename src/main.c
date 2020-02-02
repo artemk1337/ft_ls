@@ -229,8 +229,8 @@ void		sort_files_t(int start, int finish, t_files **arr)
 			pos = i;
 		}
 	}
-	sort_files_l(start, pos, arr); // Left
-	sort_files_д(pos + 1, finish, arr); // Right
+	sort_files_t(start, pos, arr); // Left
+	sort_files_t(pos + 1, finish, arr); // Right
 }
 
 void		sort_files_l(int start, int finish, t_files **arr)
@@ -254,7 +254,7 @@ void		sort_files_l(int start, int finish, t_files **arr)
 		}
 	}
 	sort_files_l(start, pos, arr); // Left
-	sort_files_д(pos + 1, finish, arr); // Right
+	sort_files_l(pos + 1, finish, arr); // Right
 }
 
 void		sort_files(t_ls *ls, t_files *curr_f, int size)
