@@ -503,14 +503,52 @@ void		get_files(t_ls *ls, t_path *curr_d)
             }
 
             ft_putstr(ls->buffer);
-
-	        char  l[1024];
-	        listxattr(convert_filename(prepare_path(curr_d->path), curr_f->filename), l, 1024,  XATTR_SHOWCOMPRESSION);
-	        printf("\n%s", l);
-
-
             ft_putchar('\n');
             ls->i = 0;
+
+
+
+	        #include <sys/types.h>
+			#include <sys/xattr.h>
+			#include <sys/types.h>
+			#include <sys/acl.h>
+			#include <stdio.h>
+
+
+	        acl_t acl = NULL;
+	        acl_entry_t dummy;
+	        ssize_t xattr = 0;
+	        char chr;
+	        char * filename = "/Users/john/desktop/mutations.txt";
+
+	        acl = acl_get_link_np(filename, ACL_TYPE_EXTENDED);
+	        if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1) {
+		        acl_free(acl);
+		        acl = NULL;
+	        }
+	        xattr = listxattr(filename, NULL, 0, XATTR_NOFOLLOW);
+	        if (xattr < 0)
+		        xattr = 0;
+
+	        if (xattr > 0)
+		        chr = '@';
+	        else if (acl != NULL)
+		        chr = '+';
+	        else
+		        chr = ' ';
+
+	        printf("%c\n", chr);
+        }
+
+
+
+
+
+
+
+
+
+
             curr_f = curr_f->next;
         }
     }
