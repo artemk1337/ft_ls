@@ -483,8 +483,21 @@ void		get_files(t_ls *ls, t_path *curr_d)
             put_date(ls, curr_f->stats.st_mtime); // Date. Correct
             put_filename(ls, curr_f->filename); // Filename. Correct
 
+
             ls->buffer[(ls->i)] = '\0';
+            // ft_putstr(ls->buffer);
+
+
+            /// TEST
+
+            //stat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
+            //ft_putstr("");
+            readlink(convert_filename(prepare_path(curr_d->path), curr_f->filename),
+                     &(ls->buffer[ls->i]),
+                    100);
             ft_putstr(ls->buffer);
+
+
             ft_putchar('\n');
             ls->i = 0;
             curr_f = curr_f->next;
