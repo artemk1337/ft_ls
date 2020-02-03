@@ -95,6 +95,7 @@ typedef struct	s_info
 	int				max_len_links;
 	int				max_len_size;
 	int				max_len;
+	int             max_len_time;
 }				t_info;
 
 
@@ -165,6 +166,7 @@ void			put_smth(t_ls *ls, char *tmp, int *ls_len, int k);
 void			put_date(t_ls *ls, time_t time_);
 void	        put_filename(t_ls *ls, char *tmp);
 void		    show_flag_R(t_path *curr_d);
+void            put_owner(t_ls *ls, char *tmp, int *ls_len, int k);
 
 int				get_columns(void);
 

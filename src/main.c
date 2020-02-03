@@ -86,6 +86,7 @@ t_info		*init_info(void)
 	a->max_len_links = 0;
 	a->max_len_size = 0;
 	a->max_len = 0;
+    a->max_len_time = 0;
 	return (a);
 }
 
@@ -204,6 +205,29 @@ int			file_hide(char *file)
 
 
 
+
+
+
+
+
+
+
+
+
+
+int     get_size_time(time_t time_)
+{
+    int		i;
+    int     start;
+
+    start = (i = 7);
+    // if >= полгода
+    if (ABS(difftime(time(NULL), time_)) >= 15768000 && (start = (i = 15)))
+        i = 21;
+    else
+        i = 13;
+    return (i - start);
+}
 
 
 
@@ -364,7 +388,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	/// Current dir
 	if (ls->a == 1)
 	{
-        stat(curr_d->path, &(curr_d->stats)); // STAT! Not stats!
+        lstat(curr_d->path, &(curr_d->stats)); // STAT! Not stats!
         if (curr_d->info->max_len_links < (tmp = ft_strlen(ft_itoa(curr_d->stats.st_nlink))))
             curr_d->info->max_len_links = tmp;
         if (curr_d->info->max_len_owner < (tmp = ft_strlen(getpwuid((uid_t)(curr_d->stats.st_uid))->pw_name)))
@@ -373,6 +397,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
             curr_d->info->max_len_group = tmp;
         if (curr_d->info->max_len_size < (tmp = ft_strlen(ft_itoa(curr_d->stats.st_size))))
             curr_d->info->max_len_size = tmp;
+        if (curr_d->info->max_len_time < (tmp = get_size_time(curr_d->stats.st_mtime)))
+            curr_d->info->max_len_time = tmp;
 		curr_d->files = init_files();
 		curr_f = curr_d->files;
 		curr_f->filename = ft_strdup(".");
@@ -398,7 +424,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 			}
             curr_f->filename = ft_strdup(ft_short_name(entry->d_name));
             curr_f->len_name = ft_strlen(curr_f->filename);
-            stat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
+            lstat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
 
             if (curr_d->info->max_len_links < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_nlink))))
                 curr_d->info->max_len_links = tmp;
@@ -410,6 +436,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
                 curr_d->info->max_len_group = tmp;
             if (curr_d->info->max_len_size < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_size))))
                 curr_d->info->max_len_size = tmp;
+            if (curr_d->info->max_len_time < (tmp = get_size_time(curr_f->stats.st_mtime)))
+                curr_d->info->max_len_time = tmp;
             counter++;
 		}
 	}
@@ -447,8 +475,10 @@ void		get_files(t_ls *ls, t_path *curr_d)
         {
             put_mode(ls, curr_f->stats); // Correct
             put_smth(ls, ft_itoa(curr_f->stats.st_nlink), &(curr_d->info->max_len_links), 2); // Put links. Corect.
-            put_smth(ls, getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name, &(curr_d->info->max_len_owner), 1); // Put owner. Correct
-            put_smth(ls, getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name, &(curr_d->info->max_len_group), 2); // Put group. Correct
+            //put_smth(ls, getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name, &(curr_d->info->max_len_owner), 1); // Put owner. Correct
+            put_owner(ls, getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name, &(curr_d->info->max_len_owner), 1);
+            put_owner(ls, getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name, &(curr_d->info->max_len_group), 2);
+            // put_smth(ls, getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name, &(curr_d->info->max_len_group), 2); // Put group. Correct
             put_smth(ls, ft_itoa(curr_f->stats.st_size), &(curr_d->info->max_len_size), 2); // Put size. Correct
             put_date(ls, curr_f->stats.st_mtime); // Date. Correct
             put_filename(ls, curr_f->filename); // Filename. Correct
@@ -462,17 +492,17 @@ void		get_files(t_ls *ls, t_path *curr_d)
     }
     else
     {
-        // t_files		*tmp_f;
-        int			width;
+        int max_size;
 
-        //ls = ls;
-        ls->flags = 0;
+        max_size = curr_d->info->max_len;
         curr_f = curr_d->files;
-        //curr_f = curr_f;
-        width = get_columns();
-        printf("%d\n", width);
-        printf("%d\n", curr_d->info->max_len);
-        printf("%hu\n", curr_d->stats.st_nlink);
+        while (curr_f)
+        {
+            ft_putstr(curr_f->filename);
+            ft_putstr("\n");
+            curr_f = curr_f->next;
+        }
+
     }
 
 
@@ -490,10 +520,9 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		ls->R == 1)
 		{
             ft_putchar('\n');
-			while (curr_d->next)
-				curr_d = curr_d->next;
 			curr_d->next = init_path(convert_filename(prepare_path(tmp_d->path), curr_f->filename));
 			curr_d->next->depth = tmp_d->depth + 1;
+			curr_d->next->info->max_len_size = 0;
 			get_files(ls, curr_d->next);
 		}
 		curr_d = tmp_d;
@@ -502,26 +531,6 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		curr_f = curr_f->next;
 	}
 }
-
-
-
-
-
-void		print_dirs(t_ls *ls)
-{
-	t_path	*curr_d;
-	// t_files	*curr_file;
-	int		i;
-
-	i = -1;
-	while (ls->arr[++i])
-	{
-		curr_d = ls->arr[i];
-		show_dir(ls, curr_d);
-	}
-
-}
-
 
 
 
@@ -650,20 +659,6 @@ t_ls    *init_ls(void)
 
 
 
-void    show_dir(t_ls *ls, t_path *curr_d)
-{
-	while (curr_d)
-	{
-		if (ls->l == 1)
-			put_line_with_l(ls, curr_d);
-		if (ls->l == 0)
-			put_line_without(ls, curr_d);
-		curr_d = curr_d->next;
-		if (curr_d)
-			ft_putstr("\n");
-	}
-}
-
 
 
 void		show_flag_R(t_path *curr_d)
@@ -671,68 +666,6 @@ void		show_flag_R(t_path *curr_d)
 	ft_putstr(curr_d->path);
 	ft_putstr(":");
 	ft_putchar('\n');
-}
-
-
-
-void	put_line_without(t_ls *ls, t_path *curr_d)
-{
-	t_files		*curr_f;
-	// t_files		*tmp_f;
-	int			width;
-
-	//ls = ls;
-	ls->flags = 0;
-	curr_f = curr_d->files;
-	//curr_f = curr_f;
-	width = get_columns();
-	printf("%d\n", width);
-	printf("%d\n", curr_d->info->max_len);
-	printf("%hu\n", curr_d->stats.st_nlink);
-	printf("%d\n", ft_strcmp(".", ".."));
-
-}
-
-
-
-void	put_line_with_l(t_ls *ls, t_path *curr_d)
-{
-	t_files		*curr_f;
-	// t_files		*tmp_f;
-
-	// Count total
-	curr_f = curr_d->files;
-	curr_d->info->total += curr_d->stats.st_blocks;
-	while (curr_f)
-	{
-		curr_d->info->total += (int)curr_f->stats.st_blocks;
-		curr_f = curr_f->next;
-	}
-	curr_f = curr_d->files;
-
-	if (ls->R == 1)
-		show_flag_R(curr_d);
-
-	ft_putstr("total ");
-	ft_putstr(ft_itoa(curr_d->info->total));
-	ft_putchar('\n');
-
-	while (curr_f)
-	{
-		put_mode(ls, curr_f->stats); // Correct
-		put_smth(ls, ft_itoa(curr_f->stats.st_nlink), &(curr_d->info->max_len_links), 2); // Put links. Corect.
-		put_smth(ls, getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name, &(curr_d->info->max_len_owner), 1); // Put owner. Correct
-		put_smth(ls, getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name, &(curr_d->info->max_len_group), 2); // Put group. Correct
-		put_smth(ls, ft_itoa(curr_f->stats.st_size), &(curr_d->info->max_len_size), 2); // Put size. Correct
-		put_date(ls, curr_f->stats.st_mtime); // Date. Correct
-		put_filename(ls, curr_f->filename); // Filename. Correct
-
-		ls->buffer[(ls->i)] = '\0';
-		ft_putstr(ls->buffer);
-		ft_putchar('\n');
-		ls->i = 0;
-		curr_f = curr_f->next;
-	}
 }
 
 
@@ -785,6 +718,20 @@ void	put_smth(t_ls *ls, char *tmp, int *ls_len, int k)
 		ls->buffer[(ls->i)++] = tmp[i];
 }
 
+void    put_owner(t_ls *ls, char *tmp, int *ls_len, int k)
+{
+    int		i;
+
+    ls->buffer[(ls->i)++] = ' ';
+    if (k == 2)
+        ls->buffer[(ls->i)++] = ' ';
+    i = -1;
+    while (tmp[++i])
+        ls->buffer[(ls->i)++] = tmp[i];
+    while (i++ < *ls_len)
+        ls->buffer[(ls->i)++] = ' ';
+}
+
 void	put_date(t_ls *ls, time_t time_)
 {
 	char	*tmp;
@@ -798,8 +745,11 @@ void	put_date(t_ls *ls, time_t time_)
 	i--;
 	// if >= полгода
 	if (ABS(difftime(time(NULL), time_)) >= 15768000 && (i = 15))
-		while (++i < 20)
-			ls->buffer[(ls->i)++] = tmp[i];
+	{
+        ls->buffer[(ls->i)++] = ' ';
+        while (++i < 20)
+            ls->buffer[(ls->i)++] = tmp[i];
+    }
 	while (++i < 12)
 		ls->buffer[(ls->i)++] = tmp[i];
 }
