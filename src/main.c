@@ -490,7 +490,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
             curr_f = curr_f->next;
         }
     }
-    else {
+    else
+    {
         int max_size;
         int term_size;
         int columns;
@@ -499,7 +500,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
         char **arr;
         int i;
 
-
+        if (ls->R == 1)
+            show_flag_R(curr_d);
         max_size = curr_d->info->max_len;
         term_size = get_columns();
         words = counter;
@@ -508,7 +510,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
         while ((max_size * columns + columns) <= term_size)
             columns++;
         columns--;
-        lines = words / columns + 1;
+        lines = words / columns + ((words % columns > 0) ? 1 : 0);
         //ft_putnbr(lines);
         //ft_putnbr(columns);
         ///
@@ -526,18 +528,18 @@ void		get_files(t_ls *ls, t_path *curr_d)
 
         int k;
         int shift;
-        k = 0;
         shift = 0;
-        ft_putstr("test");
         while (shift < lines)
         {
-            ft_utnbr(shift);
-            while (k < columns) {
+            k = 0;
+            while (k < columns)
+            {
                 i = 0;
-                while (arr[k * lines + shift]) {
+                while (arr[k * lines + shift] && arr[k * lines + shift][i])
+                {
                     ls->buffer[(ls->i)++] = arr[k * lines + shift][i++];
                 }
-                while (i++ < max_size)
+                while (i++ <= max_size)
                     ls->buffer[(ls->i)++] = ' ';
                 k++;
             }
