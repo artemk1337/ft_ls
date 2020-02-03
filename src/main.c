@@ -400,7 +400,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	dir = opendir(curr_d->path);
 	if (!dir)
 	{
-		if (check_permission(curr_d->stats))
+		if (check_permission(curr_d->stats) == 1)
 		{
 			ft_putstr(curr_d->path);
 			ft_putstr(ls->arr[0]->path);
