@@ -497,15 +497,18 @@ void		get_files(t_ls *ls, t_path *curr_d)
         int columns;
         int words;
 
-        columns = 1;
+
         max_size = curr_d->info->max_len;
         term_size = get_columns();
-        while ((max_size * columns + columns) <= term_size)
+        words = counter;
+        ///Correct
+        columns = 1;
+        while ((max_size * columns + columns * 4) <= term_size)
             columns++;
+        columns--;
+        ///
         ft_putnbr(columns);
         curr_f = curr_d->files;
-        words = counter;
-
 
         while (curr_f)
         {
