@@ -260,7 +260,6 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 
 	t_files	**arr;
 	t_files	*tmp;
-	t_files	*new_start;
 
 
 	if (!(arr = (t_files **)malloc(sizeof(t_files *) * (max + 1))))
@@ -274,6 +273,9 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 		tmp = tmp->next;
 	}
 
+
+
+	// Need fix with simbols
 	max_copy = max;
 	while (max_copy--)
 	{
@@ -289,24 +291,15 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 			i++;
 		}
 	}
-
 	i = 0;
-	while (i < max)
-	{
-		ft_putstr(arr[i++]->filename);
-		ft_putstr("\n");
-	}
-
-	i = 0
-	new_start = arr[0];
-	tmp = new_start;
+	start = arr[0];
+	tmp = start;
 	while (arr[++i])
 	{
 		tmp->next = arr[i];
 		tmp = tmp->next;
 	}
 	tmp->next = NULL;
-	start = new_start;
 
 	if (ls->r == 1)
 		return(reverse_order_files(start));
