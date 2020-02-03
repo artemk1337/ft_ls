@@ -272,6 +272,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	{
 		while (max-- > 0)
 		{
+			ft_putnbr(max);
 			curr = new_start;
 			prev = NULL;
 			while (curr->next)
