@@ -277,6 +277,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 			prev = NULL;
 			while (curr->next)
 			{
+				ft_putstr("%s\n", curr->filename);
 				if (ft_strcmp(curr->filename, curr->next->filename) > 0)
 				{
 					if (prev)
