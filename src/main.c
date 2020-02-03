@@ -215,6 +215,9 @@ int			file_hide(char *file)
 
 
 
+
+
+
 // Perfect
 t_files		*reverse_order_files(t_files *start)
 {
@@ -238,15 +241,6 @@ t_files		*reverse_order_files(t_files *start)
 
 
 
-
-
-
-
-
-
-
-
-
 t_files     *revive_t_files(t_files **arr)
 {
     t_files *start;
@@ -265,15 +259,56 @@ t_files     *revive_t_files(t_files **arr)
     return (start);
 }
 
+void        sort_files_t(t_files **arr, int max)
+{
+    int        i;
+    t_files *tmp;
+
+    i = 0;
+    while (max--)
+    {
+        i = 0;
+        while (arr[i + 1] != NULL)
+        {
+            if (arr[i]->stats.st_mtime - arr[i + 1]->stats.st_mtime < 0)
+            {
+                tmp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = tmp;
+            }
+            i++;
+        }
+    }
+}
+
+void        sort_files_l(t_files **arr, int max)
+{
+    int        i;
+    t_files *tmp;
+
+    i = 0;
+    while (max--)
+    {
+        i = 0;
+        while (arr[i + 1] != NULL)
+        {
+            if (ft_strcmp(arr[i]->filename, arr[i + 1]->filename) > 0)
+            {
+                tmp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = tmp;
+            }
+            i++;
+        }
+    }
+
+}
 
 t_files		*sort_files(t_ls *ls, t_files *start, int max)
 {
 	int		i;
-	int		max_copy;
-
 	t_files	**arr;
 	t_files	*tmp;
-
 
 	if (!(arr = (t_files **)malloc(sizeof(t_files *) * (max + 1))))
 		ERROR;
@@ -285,29 +320,11 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 		arr[i++] = tmp;
 		tmp = tmp->next;
 	}
-
-
-
-	// Need fix with simbols
-	max_copy = max;
-	while (max_copy--)
-	{
-		i = 0;
-		while (arr[i + 1] != NULL)
-		{ 
-			if (ft_strcmp(arr[i]->filename, arr[i + 1]->filename) > 0)
-			{
-				tmp = arr[i];
-				arr[i] = arr[i + 1];
-				arr[i + 1] = tmp;
-			}
-			i++;
-		}
-	}
-
+    if (ls->t == 1)
+        sort_files_t(arr, max);
+    else
+        sort_files_l(arr, max);
 	start = revive_t_files(arr);
-
-
 	if (ls->r == 1)
 		return(reverse_order_files(start));
 	return (start);
@@ -326,33 +343,29 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	int				tmp;
 
 	/// Take info about curr. dir
-	//printf("\n\tOPEN DIR %s \tDEPTH - %d \n\n", curr_d->path, curr_d->depth);
-	stat(curr_d->path, &(curr_d->stats)); // STAT! Not stats!
+	// printf("\n\tOPEN DIR %s \tDEPTH - %d \n\n", curr_d->path, curr_d->depth);
 	if (curr_d->depth == 0)
 		curr_d->dir_name = ft_strdup(curr_d->path);
 	else
 		curr_d->dir_name = ft_strdup(ft_short_name(curr_d->path));
 	curr_d->len_name = ft_strlen(curr_d->dir_name); // Correct!
-	// printf("dir enter %s 1\n", curr_d->path);
-
-	if (curr_d->info->max_len_links < (tmp = ft_strlen(ft_itoa(curr_d->stats.st_nlink))))
-		curr_d->info->max_len_links = tmp;
-	if (curr_d->info->max_len_owner < (tmp = ft_strlen(getpwuid((uid_t)(curr_d->stats.st_uid))->pw_name)))
-		curr_d->info->max_len_owner = tmp;
-	if (curr_d->info->max_len_group < (tmp = ft_strlen(getgrgid((gid_t)(curr_d->stats.st_gid))->gr_name)))
-		curr_d->info->max_len_group = tmp;
-	if (curr_d->info->max_len_size < (tmp = ft_strlen(ft_itoa(curr_d->stats.st_size))))
-		curr_d->info->max_len_size = tmp;
-	// printf("dir enter %s 2\n", curr_d->path);
-
     /// Read and sort
 	dir = opendir(curr_d->path);
 	if (!dir)
 		ERROR; // Error for open dir
 	entry = readdir(dir);
-    // printf("dir enter %s 3\n", curr_d->path);
+	/// Current dir
 	if (ls->a == 1)
 	{
+        stat(curr_d->path, &(curr_d->stats)); // STAT! Not stats!
+        if (curr_d->info->max_len_links < (tmp = ft_strlen(ft_itoa(curr_d->stats.st_nlink))))
+            curr_d->info->max_len_links = tmp;
+        if (curr_d->info->max_len_owner < (tmp = ft_strlen(getpwuid((uid_t)(curr_d->stats.st_uid))->pw_name)))
+            curr_d->info->max_len_owner = tmp;
+        if (curr_d->info->max_len_group < (tmp = ft_strlen(getgrgid((gid_t)(curr_d->stats.st_gid))->gr_name)))
+            curr_d->info->max_len_group = tmp;
+        if (curr_d->info->max_len_size < (tmp = ft_strlen(ft_itoa(curr_d->stats.st_size))))
+            curr_d->info->max_len_size = tmp;
 		curr_d->files = init_files();
 		curr_f = curr_d->files;
 		curr_f->filename = ft_strdup(".");
@@ -362,11 +375,9 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	else
 		curr_f = curr_d->files;
 	tmp = 0;
-    // printf("dir enter %s 4\n", curr_d->path);
+	/// Files
 	while ((entry = readdir(dir)))
 	{
-        //ft_putstr(entry->d_name);
-        //ft_putstr("\n");
 		if ((ls->a == 1 || file_hide(entry->d_name) == 0) && ft_strcmp(entry->d_name, ".") != 0)
 		{
 			if (!(curr_f))
@@ -377,81 +388,79 @@ void		get_files(t_ls *ls, t_path *curr_d)
 					curr_f = curr_f->next;
 				curr_f = (curr_f->next = init_files());
 			}
+            if (curr_d->info->max_len_links < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_nlink))))
+                curr_d->info->max_len_links = tmp;
+            if (curr_d->info->max_len < (tmp = ft_strlen(curr_f->filename)))
+                curr_d->info->max_len = tmp;
+            if (curr_d->info->max_len_owner < (tmp = ft_strlen(getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name)))
+                curr_d->info->max_len_owner = tmp;
+            if (curr_d->info->max_len_group < (tmp = ft_strlen(getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name)))
+                curr_d->info->max_len_group = tmp;
+            if (curr_d->info->max_len_size < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_size))))
+                curr_d->info->max_len_size = tmp;
 			curr_f->filename = ft_strdup(ft_short_name(entry->d_name));
 			curr_f->len_name = ft_strlen(curr_f->filename);
 			stat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
 			tmp++;
 		}
-        //ft_putstr(entry->d_name);
-        //ft_putstr("\n");
 	}
-
+	if (ls->a == 1)
+	    tmp++;
+	/// Sorting
 	if (tmp > 1)
 		curr_d->files = sort_files(ls, curr_d->files, tmp);
-
-
+	/// Files
 	curr_f = curr_d->files;
 	while(curr_f)
 	{
-		// printf("Current file: \t%s\n", curr_f->filename);
+//		if (curr_d->info->max_len_links < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_nlink))))
+//			curr_d->info->max_len_links = tmp;
+//		if (curr_d->info->max_len < (tmp = ft_strlen(curr_f->filename)))
+//			curr_d->info->max_len = tmp;
+//		if (curr_d->info->max_len_owner < (tmp = ft_strlen(getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name)))
+//			curr_d->info->max_len_owner = tmp;
+//		if (curr_d->info->max_len_group < (tmp = ft_strlen(getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name)))
+//			curr_d->info->max_len_group = tmp;
+//		if (curr_d->info->max_len_size < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_size))))
+//			curr_d->info->max_len_size = tmp;
 
-		//printf("Current path: %s\n", curr_d->path);
-		//printf("DIR: %s FN: %s FullName: %s 0\n", curr_d->dir_name, curr_f->filename, convert_filename(prepare_path(curr_d->path), curr_f->filename));
-		//printf("Current file %s \t\t Full path to file: %s\n", curr_f->filename, convert_filename(prepare_path(curr_d->path), curr_f->filename));
+		/// NEW PRINT
 
+		if (ls->l == 1)
+        {
+            put_mode(ls, curr_f->stats); // Correct
+            put_smth(ls, ft_itoa(curr_f->stats.st_nlink), &(curr_d->info->max_len_links), 2); // Put links. Corect.
+            put_smth(ls, getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name, &(curr_d->info->max_len_owner), 1); // Put owner. Correct
+            put_smth(ls, getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name, &(curr_d->info->max_len_group), 2); // Put group. Correct
+            put_smth(ls, ft_itoa(curr_f->stats.st_size), &(curr_d->info->max_len_size), 2); // Put size. Correct
+            put_date(ls, curr_f->stats.st_mtime); // Date. Correct
+            put_filename(ls, curr_f->filename); // Filename. Correct
 
-		// Сравнение названия
-		if (curr_d->info->max_len_links < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_nlink))))
-			curr_d->info->max_len_links = tmp;
-		if (curr_d->info->max_len < (tmp = ft_strlen(curr_f->filename)))
-			curr_d->info->max_len = tmp;
-		if (curr_d->info->max_len_owner < (tmp = ft_strlen(getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name)))
-			curr_d->info->max_len_owner = tmp;
-		if (curr_d->info->max_len_group < (tmp = ft_strlen(getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name)))
-			curr_d->info->max_len_group = tmp;
-		if (curr_d->info->max_len_size < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_size))))
-			curr_d->info->max_len_size = tmp;
+            ls->buffer[(ls->i)] = '\0';
+            ft_putstr(ls->buffer);
+            ft_putchar('\n');
+            ls->i = 0;
+        }
 
-		//printf("DIR: %s FN: %s 1\n", curr_d->dir_name, curr_f->filename);
+		/// END
 
 		tmp_d = curr_d;
-		if (S_ISDIR(curr_f->stats.st_mode) && ft_strcmp((const char *)curr_f->filename, (const char *)"..") != 0 && ls->R == 1)
+		if (S_ISDIR(curr_f->stats.st_mode) &&
+		ft_strcmp((const char *)curr_f->filename, (const char *)"..") != 0 &&
+        ft_strcmp((const char *)curr_f->filename, (const char *)".") != 0 &&
+		ls->R == 1)
 		{
 			while (curr_d->next)
 				curr_d = curr_d->next;
-			// printf("Enter in: %s\n", convert_filename(prepare_path(tmp_d->path), curr_f->filename));
 			curr_d->next = init_path(convert_filename(prepare_path(tmp_d->path), curr_f->filename));
 			curr_d->next->depth = tmp_d->depth + 1;
 			get_files(ls, curr_d->next);
 		}
 		curr_d = tmp_d;
-		//printf("DIR: %s FN: %s \n", curr_d->dir_name, curr_f->filename);
-		//printf("DIR: %s FN: %s 2\n", curr_d->dir_name, curr_f->filename);
 		curr_f = curr_f->next;
 	}
-	// printf("\n\tCLOSE DIR %s \tDEPTH - %d \n\n", curr_d->path, curr_d->depth);
 }
 
-
-/*
-void		sort_files(t_ls *ls)
-{
-	t_path		*tmp_d;
-	t_path		*curr_d;
-	t_files		*curr_f;
-	int			i;
-	
-	i = -1;
-	while (ls->arr[++i])
-	{
-		curr_d = ls->arr[i];
-		if (ls->a != 1)
-		{
-			tmp_d = curr_d;
-		}
-	}
-}
-*/
 
 
 
@@ -521,7 +530,7 @@ int     main(int ac, char **av)
 			get_files(ls, curr);
 		}
 	}
-	print_dirs(ls);
+	// print_dirs(ls);
 	return (0);
 }
 
@@ -543,6 +552,8 @@ int     main(int ac, char **av)
 */
 
 
+
+/// CORRECT
 char		**check_flags(t_ls *ls, char **av)
 {
 	if (av[1][0] != '-')
@@ -569,7 +580,6 @@ char		**check_flags(t_ls *ls, char **av)
 	}
 	return (&(av[2]));
 }
-
 
 t_ls    *init_ls(void)
 {
@@ -654,7 +664,6 @@ void	put_line_with_l(t_ls *ls, t_path *curr_d)
 	while (curr_f)
 	{
 		curr_d->info->total += (int)curr_f->stats.st_blocks;
-		//printf("%s - total - %ld\n", curr_f->filename, curr_f->stats.st_blocks);
 		curr_f = curr_f->next;
 	}
 	curr_f = curr_d->files;
@@ -663,13 +672,13 @@ void	put_line_with_l(t_ls *ls, t_path *curr_d)
 		show_flag_R(curr_d);
 
 	ft_putstr("total ");
-	ft_putstr(ft_itoa(curr_d->info->total / 2));
+	ft_putstr(ft_itoa(curr_d->info->total));
 	ft_putchar('\n');
 
 	while (curr_f)
 	{
 		put_mode(ls, curr_f->stats); // Correct
-		put_smth(ls, ft_itoa(curr_f->stats.st_nlink), &(curr_d->info->max_len_links), 1); // Put links. Corect.
+		put_smth(ls, ft_itoa(curr_f->stats.st_nlink), &(curr_d->info->max_len_links), 2); // Put links. Corect.
 		put_smth(ls, getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name, &(curr_d->info->max_len_owner), 1); // Put owner. Correct
 		put_smth(ls, getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name, &(curr_d->info->max_len_group), 2); // Put group. Correct
 		put_smth(ls, ft_itoa(curr_f->stats.st_size), &(curr_d->info->max_len_size), 2); // Put size. Correct
