@@ -278,13 +278,17 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	{
 		i = 0;
 		ft_putstr(arr[i]->filename);
-		while (arr[i + 1] && ft_strcmp(arr[i]->filename, arr[i + 1]->filename) > 0)
+		while (arr[i + 1])
 		{
-			ft_putstr(arr[i]->filename);
-			tmp = arr[i];
-			arr[i] = arr[i + 1];
-			arr[i + 1] = tmp;
-			i++;
+			if (ft_strcmp(arr[i]->filename, arr[i + 1]->filename) > 0)
+			{
+				ft_putstr(arr[i]->filename);
+				tmp = arr[i];
+				arr[i] = arr[i + 1];
+				arr[i + 1] = tmp;
+				i++;
+			}
+			
 		}
 	}
 
