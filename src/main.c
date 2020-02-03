@@ -383,10 +383,14 @@ size_t      return_time(t_ls *ls, struct stat stats)
 
 
 
-int         check_permission( struct stat stats)
+int         check_permission(struct stat stats)
 {
 	if (!((stats.st_mode & S_IRUSR) && (stats.st_mode & S_IWUSR)))
 		return (1);
+	if (!(stats.st_mode & S_IRUSR))
+		return (1);
+	else if (!((stats.st_mode & S_IRUSR) && (stats.st_mode & S_IWUSR)))
+		return (2);
 	return (0);
 }
 
@@ -416,7 +420,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	dir = opendir(curr_d->path);
 	if (!dir)
 	{
-		if (check_permission(curr_d->stats))
+		if (check_permission(curr_d->stats) == 1)
 		{
 			ft_putstr(curr_d->path);
 			ft_putstr(ls->arr[0]->path);
@@ -424,6 +428,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
 			ft_putstr(curr_d->path);
 			return ;
 		}
+		else if (check_permission(curr_d->stats) == 2)
+			return ;
 		else
 			error(2, curr_d->path);
 
