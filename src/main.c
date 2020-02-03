@@ -531,6 +531,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
         ft_putstr("test");
         while (shift < lines)
         {
+            ft_utnbr(shift);
             while (k < columns) {
                 i = 0;
                 while (arr[k * lines + shift]) {
