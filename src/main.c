@@ -111,25 +111,8 @@ t_path		*init_path(char *path)
 
 
 
-char	*ft_strdup_f(t_ls *ls, const char *src)
-{
-	char	*s2;
-	size_t	i;
-	size_t	n;
 
-	n = ft_strlen(src) + 1;
-	i = 0;
-	if (!(s2 = ft_strnew(n)))
-		return (NULL);
-	while (src[i] && i < n)
-	{
-		s2[i] = src[i];
-		i++;
-	}
-	if (ls->F == 1)
-		s2[i] = '/';
-	return (s2);
-}
+
 
 
 
@@ -166,11 +149,13 @@ char        *convert_filename(char *s1, char *s2)
 	i = -1;
 	while (s1[++i])
 		;
+
 	k = -1;
 	while (s2[++k])
 		s1[i++] = s2[k];
 	s1[i] = '\0';
 	// printf("CONVERT %s\n", s1);
+	//ft_putstr(s2);
 	return (s1);
 }
 
@@ -469,7 +454,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
             curr_d->info->max_len_time = tmp;
 		curr_d->files = init_files();
 		curr_f = curr_d->files;
-		curr_f->filename = ft_strdup_f(ls, ".");
+		curr_f->filename = ft_strdup(".");
 		curr_f->len_name = 1;
 		curr_f->stats = curr_d->stats;
 	}
@@ -490,7 +475,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 					curr_f = curr_f->next;
 				curr_f = (curr_f->next = init_files());
 			}
-            curr_f->filename = ft_strdup_f(ls, ft_short_name(entry->d_name));
+            curr_f->filename = ft_strdup(ft_short_name(entry->d_name));
             curr_f->len_name = ft_strlen(curr_f->filename);
             lstat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
 
@@ -574,6 +559,16 @@ void		get_files(t_ls *ls, t_path *curr_d)
             curr_f = curr_f->next;
         }
     }
+    else if (ls->_1 == 1)
+	{
+		curr_f = curr_d->files;
+		while (curr_f)
+		{
+			ft_putstr(curr_f->filename);
+			ft_putstr("\n");
+			curr_f = curr_f->next;
+		}
+	}
     else
     {
         int max_size;
@@ -759,8 +754,8 @@ char		**check_flags(t_ls *ls, char **av)
 			ls->t = 1;
 		else if (*((av)[1]) == 'u')
 			ls->u = 1;
-		else if (*((av)[1]) == 'F')
-			ls->F = 1;
+		else if (*((av)[1]) == '1')
+			ls->_1 = 1;
 		else
 			error(3, &(*((av)[1])));
 		((av)[1])++;
@@ -780,6 +775,7 @@ t_ls    *init_ls(void)
 	ls->r = 0;
 	ls->t = 0;
 	ls->u = 0;
+	ls->_1 = 0;
 	ls->flags = 0;
 	ls->i = 0;
 	ls->arr = NULL;

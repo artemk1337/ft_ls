@@ -149,7 +149,7 @@ typedef struct	s_ls
 	// dop
 
 	int             u;
-	int             F;
+	int             _1;
 
 	// Only use to print information
 	char            buffer[PATH_MAX * 2];
