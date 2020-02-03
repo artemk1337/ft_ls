@@ -494,8 +494,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
             //ft_putstr("");
             i = readlink(convert_filename(prepare_path(curr_d->path), curr_f->filename),
                      &(ls->buffer[ls->i]),
-                    100);
-            ft_putnbr(i);
+                     0);
+
             ft_putstr(ls->buffer);
 
 
