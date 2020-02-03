@@ -496,7 +496,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	/// Sorting
 	if (tmp > 1)
 		curr_d->files = sort_files(ls, curr_d->files,counter);
-	close(dir);
+	closedir(dir);
 
 	/// Files
 
