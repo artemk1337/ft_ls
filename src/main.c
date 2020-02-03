@@ -221,7 +221,6 @@ int     get_size_time(time_t time_)
     int     start;
 
     start = (i = 7);
-    // if >= полгода
     if (ABS(difftime(time(NULL), time_)) >= 15768000 && (start = (i = 15)))
         i = 21;
     else
@@ -360,6 +359,21 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 
 
 
+int         check_args(char *name, t_path **arr)
+{
+	int i;
+
+	i = 0;
+	while (arr[i])
+	{
+		if (ft_strcmp(arr[i]->path, name) == 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+
 size_t      return_time(t_ls *ls, struct stat stats)
 {
 	if (ls->u == 1)
@@ -371,7 +385,9 @@ size_t      return_time(t_ls *ls, struct stat stats)
 
 int         check_permission( struct stat stats)
 {
-	return (1);
+	if (!((stats.st_mode & S_IRUSR) && (stats.st_mode & S_IWUSR)))
+		return (1);
+	return (0);
 }
 
 
@@ -400,7 +416,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	dir = opendir(curr_d->path);
 	if (!dir)
 	{
-		if (check_permission(curr_d->stats) == 1)
+		if (check_permission(curr_d->stats))
 		{
 			ft_putstr(curr_d->path);
 			ft_putstr(ls->arr[0]->path);
