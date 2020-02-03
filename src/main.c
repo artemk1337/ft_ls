@@ -459,7 +459,6 @@ void		get_files(t_ls *ls, t_path *curr_d)
             ls->i = 0;
             curr_f = curr_f->next;
         }
-        ft_putchar('\n');
     }
     else
     {
@@ -490,6 +489,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
         ft_strcmp((const char *)curr_f->filename, (const char *)".") != 0 &&
 		ls->R == 1)
 		{
+            ft_putchar('\n');
 			while (curr_d->next)
 				curr_d = curr_d->next;
 			curr_d->next = init_path(convert_filename(prepare_path(tmp_d->path), curr_f->filename));
