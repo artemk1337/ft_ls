@@ -494,10 +494,10 @@ void		get_files(t_ls *ls, t_path *curr_d)
                          &(ls->buffer[ls->i]), 0);
             if (i >= 0)
             {
-                ls->buffer[(ls->i)] = ' ';
-                ls->buffer[(ls->i)] = '-';
-                ls->buffer[(ls->i)] = '>';
-                ls->buffer[(ls->i)] = ' ';
+                ls->buffer[(ls->i)++] = ' ';
+                ls->buffer[(ls->i)++] = '-';
+                ls->buffer[(ls->i)++] = '>';
+                ls->buffer[(ls->i)++] = ' ';
                 readlink(convert_filename(prepare_path(curr_d->path), curr_f->filename),
                         &(ls->buffer[ls->i]), NAME_MAX);
             }
