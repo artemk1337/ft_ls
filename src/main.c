@@ -505,7 +505,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
             ft_putstr(ls->buffer);
 
 	        char  l[1024];
-	        listxattr("/Users/john/desktop/mutations.txt", l, 1024,  XATTR_SHOWCOMPRESSION);
+	        listxattr("convert_filename(prepare_path(curr_d->path), curr_f->filename)", l, 1024,  XATTR_SHOWCOMPRESSION);
 	        printf("%s\n", l);
 
 
