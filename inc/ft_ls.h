@@ -26,6 +26,7 @@
 # include <sys/types.h>
 # include <sys/xattr.h>
 # include <sys/acl.h>
+# include <string.h>
 
 # include <sys/syslimits.h>
 
@@ -37,6 +38,10 @@
 
 # define ABS(a) (a < 0 ? -a : a)
 # define MAX(a, b) (a >= b ? a : b)
+
+
+
+enum	{ERRNO, USAGE, MALL_ERR};
 
 
 /*
@@ -176,6 +181,6 @@ void		    show_flag_R(t_path *curr_d);
 void            put_owner(t_ls *ls, char *tmp, int *ls_len, int k);
 
 int				get_columns(void);
-
+int             ls_error(char *s, int error);
 
 #endif
