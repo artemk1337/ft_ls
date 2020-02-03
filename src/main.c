@@ -255,12 +255,24 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	ls = ls;
 	start = start;
 	max = max;
+	int		i;
 
 	t_files	**arr;
+	t_files	*tmp;
 
 
 	if (!(arr = (t_files **)malloc(sizeof(t_files *) * (max + 1))))
 		ERROR;
+	arr[max] = NULL;
+	i = 0;
+	tmp = start;
+	while (i < max)
+	{
+		ft_putstr((arr[i++] = tmp));
+		ft_putstr("\n");
+	}
+
+	
 	
 
 
