@@ -261,55 +261,16 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	t_files	*prev;
 	t_files	*new_start;
 
+	t_files	**arr;
 
 
-	new_start = start;
-	if (ls->t == 1)
-	{
-		return (new_start);
-	}
-	else
-	{
-		while (max-- > 0)
-		{
-			ft_putnbr(max);
-			curr = new_start;
-			prev = NULL;
-			while (curr->next)
-			{
-				ft_putstr(curr->filename);
-				ft_putstr("\n");
-				if (ft_strcmp(curr->filename, curr->next->filename) > 0)
-				{
-					if (prev)
-					{
-						prev->next = next;
-						curr->next = next->next;
-						next->next = curr;
-						prev = prev->next;
-						curr = curr->next;
-						next = next->next;
-					}
-					else
-					{
-						prev = next;
-						curr->next = next->next;
-						next->next = curr;
-						new_start = prev;
-						prev = prev;
-						curr = curr;
-						next = curr->next;
-					}
-				}
-				else
-				{
-					prev = curr;
-					curr = curr->next;
-				}
-			}
-		
-		}
-	}
+	if (!(arr = (t_files **)malloc(sizeof(t_files *) * (max + 1))))
+		ERROR;
+	
+
+
+
+	
 
 
 	if (ls->r == 1)
