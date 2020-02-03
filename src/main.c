@@ -289,12 +289,12 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 		}
 	}
 
-	// i = 0;
-	// while (i < max)
-	// {
-	// 	ft_putstr(arr[i++]->filename);
-	// 	ft_putstr("\n");
-	// }
+	i = 0;
+	while (i < max)
+	{
+		ft_putstr(arr[i++]->filename);
+		ft_putstr("\n");
+	}
 	
 	
 
