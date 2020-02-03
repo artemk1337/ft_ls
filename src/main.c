@@ -501,7 +501,12 @@ void		get_files(t_ls *ls, t_path *curr_d)
                 readlink(convert_filename(prepare_path(curr_d->path), curr_f->filename),
                         &(ls->buffer[ls->i]), NAME_MAX);
             }
+
             ft_putstr(ls->buffer);
+
+	        char  l[1024];
+	        listxattr("/Users/john/desktop/mutations.txt", l, 1024,  XATTR_SHOWCOMPRESSION);
+	        printf("%s\n", l);
 
 
             ft_putchar('\n');

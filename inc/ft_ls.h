@@ -23,7 +23,6 @@
 # include <time.h>
 # include <sys/ioctl.h>
 # include <dirent.h>
-# include <attr/xattr.h>
 
 # include <sys/syslimits.h>
 
