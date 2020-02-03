@@ -360,6 +360,23 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 
 
 
+int         check_args(char *name, t_path **arr)
+{
+	int i;
+
+	i = 0;
+	while (arr[i])
+	{
+		if (ft_strcmp(arr[i]->path, name) == 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+
+
+
 
 
 
@@ -383,7 +400,12 @@ void		get_files(t_ls *ls, t_path *curr_d)
     /// Read and sort
 	dir = opendir(curr_d->path);
 	if (!dir)
-		ERROR; // Error for open dir
+	{
+		ft_putstr(curr_d->path);
+		ft_putstr("\nFAILE TO OPEN DIR\n");
+
+		ERROR;
+	}
 	entry = readdir(dir);
 	/// Current dir
 	if (ls->a == 1)
@@ -464,7 +486,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
         }
         curr_f = curr_d->files;
 
-        if (ls->R == 1)
+        if (ls->R == 1 && check_args(curr_d->path, ls->arr))
             show_flag_R(curr_d);
 
         ft_putstr("total ");
@@ -487,8 +509,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	        ft_putstr(ls->buffer);
 
 
-
-            /// TEST
+			/// Show link
             int     i;
             char    s_tmp[NAME_MAX];
             i = readlink(convert_filename(prepare_path(curr_d->path), curr_f->filename),
@@ -503,7 +524,6 @@ void		get_files(t_ls *ls, t_path *curr_d)
 
             ft_putchar('\n');
             ls->i = 0;
-
             curr_f = curr_f->next;
         }
     }
@@ -538,7 +558,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
         arr[words] = NULL;
         curr_f = curr_d->files;
         i = 0;
-        while (curr_f) {
+        while (curr_f)
+        {
             arr[i++] = curr_f->filename;
             curr_f = curr_f->next;
         }
@@ -549,7 +570,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
         while (shift < lines)
         {
             k = 0;
-            while (k < columns)
+            while (k < columns && arr[k * lines + shift])
             {
                 i = 0;
                 while (arr[k * lines + shift] && arr[k * lines + shift][i])
