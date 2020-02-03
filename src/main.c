@@ -490,13 +490,15 @@ void		get_files(t_ls *ls, t_path *curr_d)
             curr_f = curr_f->next;
         }
     }
-    else
-    {
+    else {
         int max_size;
         int term_size;
         int columns;
         int words;
         int lines;
+        int lines_copy;
+        char **arr;
+        int i;
 
 
         max_size = curr_d->info->max_len;
@@ -507,17 +509,42 @@ void		get_files(t_ls *ls, t_path *curr_d)
         while ((max_size * columns + columns) <= term_size)
             columns++;
         columns--;
-        ///
         lines = words / columns + 1;
-        ft_putnbr(lines);
-        ft_putnbr(columns);
-        curr_f = curr_d->files;
+        //ft_putnbr(lines);
+        //ft_putnbr(columns);
+        ///
 
-        while (curr_f)
-        {
-            ft_putstr(curr_f->filename);
-            ft_putstr(" ");
+
+        if (!(arr = malloc(sizeof(char *) * (words + 1))))
+            ERROR;
+        arr[words] = NULL;
+        curr_f = curr_d->files;
+        i = 0;
+        while (curr_f) {
+            arr[i++] = curr_f->filename;
             curr_f = curr_f->next;
+        }
+
+        int k;
+        int shift;
+        k = 0;
+        shift = 0;
+        while (shift < lines)
+        {
+            while (k < columns) {
+                i = 0;
+                while (arr[k * lines + shift]) {
+                    ls->buffer[(ls->i)++] = arr[k * lines + shift][i++];
+                }
+                while (i++ < max_size)
+                    ls->buffer[(ls->i)++] = ' ';
+                k++;
+            }
+            ls->buffer[(ls->i)++] = '\0';
+            ft_putstr(ls->buffer);
+            ft_putchar('\n');
+            ls->i = 0;
+            shift++;
         }
 
     }
