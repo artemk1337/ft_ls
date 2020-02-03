@@ -280,6 +280,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 		ft_putstr(arr[i]->filename);
 		while (arr[i + 1] != NULL)
 		{ 
+			ft_putstr(arr[i]->filename);
 			if (ft_strcmp(arr[i]->filename, arr[i + 1]->filename) > 0)
 			{
 				ft_putstr(arr[i]->filename);
