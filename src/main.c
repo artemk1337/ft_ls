@@ -496,6 +496,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
         int term_size;
         int columns;
         int words;
+        int lines;
 
 
         max_size = curr_d->info->max_len;
@@ -507,6 +508,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
             columns++;
         columns--;
         ///
+        lines = words / columns + 1;
+        ft_putnbr(lines);
         ft_putnbr(columns);
         curr_f = curr_d->files;
 
