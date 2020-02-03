@@ -170,7 +170,6 @@ t_ls            *init_ls(void);
 void			put_line_with_l(t_ls *ls, t_path *curr_d);
 void			put_line_without(t_ls *ls, t_path *curr_d);
 
-void            error(t_ls *ls);
 
 void    		show_dir(t_ls *ls, t_path *curr_d);
 void			put_mode(t_ls *ls, struct stat fileStat, char *filename);
@@ -181,6 +180,6 @@ void		    show_flag_R(t_path *curr_d);
 void            put_owner(t_ls *ls, char *tmp, int *ls_len, int k);
 
 int				get_columns(void);
-int             ls_error(char *s, int error);
+void            error(int code, char *file);
 
 #endif

@@ -409,10 +409,13 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	dir = opendir(curr_d->path);
 	if (!dir)
 	{
+		counter = 0;
+		while (ls->arr[counter])
+			if (ft_strcmp(curr_d->path, ls->arr[counter++]->path) == 0)
+				error(2, curr_d->path);
+		error(1, curr_d->path);
 		ft_putstr(curr_d->path);
-		ft_putstr("\nFAILE TO OPEN DIR\n");
-
-		ERROR;
+		return ;
 	}
 	entry = readdir(dir);
 	/// Current dir
@@ -703,7 +706,7 @@ char		**check_flags(t_ls *ls, char **av)
 	if (av[1][0] != '-')
 		return (&(av[1]));
 	if (!(av[1][1]))
-		return (&(av[1]));
+		error(2, (av)[1]);
 	(av[1])++;
 	while (*((av)[1]))
 	{
@@ -721,7 +724,7 @@ char		**check_flags(t_ls *ls, char **av)
 		else if (*((av)[1]) == 'u')
 			ls->u = 1;
 		else
-			exit(-1);
+			error(3, &(*((av)[1])));
 		((av)[1])++;
 	}
 	return (&(av[2]));
@@ -888,30 +891,45 @@ void    put_mode(t_ls *ls, struct stat fileStat, char *filename)
 
 
 
-#include <uuid/uuid.h>
 
-int			ls_error(char *s, int error)
+
+
+
+
+void        error(int code, char *file)
 {
-	if (error == USAGE)
+	if (code == 1)
 	{
-		ft_putstr_fd("ft_ls: illegal option -- ", 2);
-		ft_putchar_fd(*s, 2);
-		ft_putchar_fd('\n', 2);
-		ft_putendl_fd("usage: ft_ls [-alRrtdG1Ss] [file ...]", 2);
+		ft_putstr("ls: ");
+		ft_putstr(file);
+		ft_putstr(": Permission denied\n");
+		return ;
 	}
-	else if (error == ERRNO || error == MALL_ERR)
-		ft_putstr_fd("ft_ls: ", 2);
-	if (error == ERRNO)
+	else if (code == 2)
 	{
-		ft_putstr_fd(s, 2);
-		ft_putstr_fd(": ", 2);
-		ft_putendl_fd(strerror(error), 2);
+		ft_putstr("ls: ");
+		ft_putstr(file);
+		ft_putstr(": No such file or directory\n");
 	}
-	else if (error == ERRNO)
-		ft_putendl_fd(strerror(error), 2);
-	if (error == USAGE || error == MALL_ERR)
-		exit(EXIT_FAILURE);
-	return (0);
+	else if (code == 3)
+	{
+		ft_putstr("ls: ");
+		ft_putstr("illegal option -- ");
+		ft_putchar(*file);
+		ft_putchar('\n');
+		ft_putstr("usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n");
+	}
+	exit(1);
 }
+
+
+
+
+
+
+
+
+
+
 
 
