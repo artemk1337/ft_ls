@@ -375,6 +375,14 @@ int         check_args(char *name, t_path **arr)
 }
 
 
+size_t      return_time(t_ls *ls, struct stat stats)
+{
+	if (ls->u == 1)
+		return (stats.st_atime);
+	return (stats.st_mtime);
+}
+
+
 
 
 
@@ -419,7 +427,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
             curr_d->info->max_len_group = tmp;
         if (curr_d->info->max_len_size < (tmp = ft_strlen(ft_itoa(curr_d->stats.st_size))))
             curr_d->info->max_len_size = tmp;
-        if (curr_d->info->max_len_time < (tmp = get_size_time(curr_d->stats.st_mtime)))
+        if (curr_d->info->max_len_time < (tmp = get_size_time(return_time(ls, curr_d->stats))))
             curr_d->info->max_len_time = tmp;
 		curr_d->files = init_files();
 		curr_f = curr_d->files;
@@ -458,7 +466,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
                 curr_d->info->max_len_group = tmp;
             if (curr_d->info->max_len_size < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_size))))
                 curr_d->info->max_len_size = tmp;
-            if (curr_d->info->max_len_time < (tmp = get_size_time(curr_f->stats.st_mtime)))
+            if (curr_d->info->max_len_time < (tmp = get_size_time(return_time(ls, curr_f->stats))))
                 curr_d->info->max_len_time = tmp;
             counter++;
 		}
@@ -502,7 +510,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
             put_owner(ls, getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name, &(curr_d->info->max_len_group), 2);
             // put_smth(ls, getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name, &(curr_d->info->max_len_group), 2); // Put group. Correct
             put_smth(ls, ft_itoa(curr_f->stats.st_size), &(curr_d->info->max_len_size), 2); // Put size. Correct
-            put_date(ls, curr_f->stats.st_mtime); // Date. Correct
+            put_date(ls, return_time(ls, curr_f->stats)); // Date. Correct
             put_filename(ls, curr_f->filename); // Filename. Correct
 
 	        ls->buffer[(ls->i)] = '\0';
@@ -710,6 +718,8 @@ char		**check_flags(t_ls *ls, char **av)
 			ls->r = 1;
 		else if (*((av)[1]) == 't')
 			ls->t = 1;
+		else if (*((av)[1]) == 'u')
+			ls->u = 1;
 		else
 			ERROR;
 		((av)[1])++;
@@ -728,6 +738,7 @@ t_ls    *init_ls(void)
 	ls->R = 0;
 	ls->r = 0;
 	ls->t = 0;
+	ls->u = 0;
 	ls->flags = 0;
 	ls->i = 0;
 	ls->arr = NULL;
