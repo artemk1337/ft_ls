@@ -215,7 +215,7 @@ int			file_hide(char *file)
 
 
 
-
+// Perfect
 t_files		*reverse_order_files(t_files *start)
 {
 	t_files	*curr;
@@ -226,7 +226,6 @@ t_files		*reverse_order_files(t_files *start)
 	prev = NULL;
 	while (curr)
 	{
-		ft_putstr("test\n");
 		next = curr->next;
 		curr->next = prev;
 		prev = curr;
@@ -235,18 +234,73 @@ t_files		*reverse_order_files(t_files *start)
 	return (prev);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 t_files		*sort_files(t_ls *ls, t_files *start, int max)
 {
 	ls = ls;
 	start = start;
 	max = max;
 
+	t_files	*curr;
+	t_files	*next;
+	t_files	*prev;
+	t_files	*new_start;
+
+
+
+	new_start = start;
+	if (ls->t == 1)
+	{
+		return (new_start);
+	}
+	else
+	{
+		curr = start;
+		prev = NULL;
+		while (curr->next && ft_strcmp(curr->filename, curr->next->filename) > 0)
+		{
+			if (prev)
+			{
+				prev->next = next;
+				curr->next = next->next;
+				next->next = curr;
+				prev = prev->next;
+				curr = curr->next;
+				next = next->next;
+			}
+			else
+			{
+				prev = next;
+				curr->next = next->next;
+				next->next = curr;
+				new_start = prev;
+				prev = prev
+				curr = curr;
+				next = curr->next;
+			}
+		
+		}
+	}
+
 
 	if (ls->r == 1)
-	{
-		return(reverse_order_files(start));
-	}
-	return (start);
+		return(reverse_order_files(new_start));
+	return (new_start);
 }
 
 
