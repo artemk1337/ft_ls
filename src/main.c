@@ -410,7 +410,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	int             counter;
 
 	/// Take info about curr. dir
-	printf("\n\tOPEN DIR %s \tDEPTH - %d \n\n", curr_d->path, curr_d->depth);
+	// printf("\n\tOPEN DIR %s \tDEPTH - %d \n\n", curr_d->path, curr_d->depth);
 	if (curr_d->depth == 0)
 		curr_d->dir_name = ft_strdup(curr_d->path);
 	else
@@ -928,7 +928,6 @@ void        error(int code, char *file)
 		ft_putstr("ls: ");
 		ft_putstr(file);
 		ft_putstr(": No such file or directory\n");
-		return ;
 	}
 	else if (code == 3)
 	{
