@@ -111,7 +111,25 @@ t_path		*init_path(char *path)
 
 
 
+char	*ft_strdup_f(t_ls *ls, const char *src)
+{
+	char	*s2;
+	size_t	i;
+	size_t	n;
 
+	n = ft_strlen(src) + 1;
+	i = 0;
+	if (!(s2 = ft_strnew(n)))
+		return (NULL);
+	while (src[i] && i < n)
+	{
+		s2[i] = src[i];
+		i++;
+	}
+	if (ls->F == 1)
+		s2[i] = '/';
+	return (s2);
+}
 
 
 
@@ -451,7 +469,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
             curr_d->info->max_len_time = tmp;
 		curr_d->files = init_files();
 		curr_f = curr_d->files;
-		curr_f->filename = ft_strdup(".");
+		curr_f->filename = ft_strdup_f(ls, ".");
 		curr_f->len_name = 1;
 		curr_f->stats = curr_d->stats;
 	}
@@ -472,7 +490,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 					curr_f = curr_f->next;
 				curr_f = (curr_f->next = init_files());
 			}
-            curr_f->filename = ft_strdup(ft_short_name(entry->d_name));
+            curr_f->filename = ft_strdup_f(ls, ft_short_name(entry->d_name));
             curr_f->len_name = ft_strlen(curr_f->filename);
             lstat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
 
@@ -741,6 +759,8 @@ char		**check_flags(t_ls *ls, char **av)
 			ls->t = 1;
 		else if (*((av)[1]) == 'u')
 			ls->u = 1;
+		else if (*((av)[1]) == 'F')
+			ls->F = 1;
 		else
 			error(3, &(*((av)[1])));
 		((av)[1])++;
