@@ -274,26 +274,34 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 		{
 			curr = new_start;
 			prev = NULL;
-			while (curr->next && ft_strcmp(curr->filename, curr->next->filename) > 0)
+			while (curr->next)
 			{
-				if (prev)
+				if (ft_strcmp(curr->filename, curr->next->filename) > 0)
 				{
-					prev->next = next;
-					curr->next = next->next;
-					next->next = curr;
-					prev = prev->next;
-					curr = curr->next;
-					next = next->next;
+					if (prev)
+					{
+						prev->next = next;
+						curr->next = next->next;
+						next->next = curr;
+						prev = prev->next;
+						curr = curr->next;
+						next = next->next;
+					}
+					else
+					{
+						prev = next;
+						curr->next = next->next;
+						next->next = curr;
+						new_start = prev;
+						prev = prev;
+						curr = curr;
+						next = curr->next;
+					}
 				}
 				else
 				{
-					prev = next;
-					curr->next = next->next;
-					next->next = curr;
-					new_start = prev;
-					prev = prev;
-					curr = curr;
-					next = curr->next;
+					prev = curr;
+					curr = curr->next;
 				}
 			}
 		
