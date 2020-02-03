@@ -360,21 +360,6 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 
 
 
-int         check_args(char *name, t_path **arr)
-{
-	int i;
-
-	i = 0;
-	while (arr[i])
-	{
-		if (ft_strcmp(arr[i]->path, name) == 0)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-
 size_t      return_time(t_ls *ls, struct stat stats)
 {
 	if (ls->u == 1)
@@ -383,6 +368,11 @@ size_t      return_time(t_ls *ls, struct stat stats)
 }
 
 
+
+int         check_permission( struct stat stats)
+{
+	return (1);
+}
 
 
 
@@ -405,23 +395,27 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		curr_d->dir_name = ft_strdup(curr_d->path);
 	else
 		curr_d->dir_name = ft_strdup(ft_short_name(curr_d->path));
+	lstat(curr_d->path, &(curr_d->stats)); // STAT! Not stats!
     /// Read and sort
 	dir = opendir(curr_d->path);
 	if (!dir)
 	{
-		counter = 0;
-		while (ls->arr[counter])
-			if (ft_strcmp(curr_d->path, ls->arr[counter++]->path) == 0)
-				error(2, curr_d->path);
-		error(1, curr_d->path);
-		ft_putstr(curr_d->path);
-		return ;
+		if (check_permission(curr_d->stats))
+		{
+			ft_putstr(curr_d->path);
+			ft_putstr(ls->arr[0]->path);
+			error(1, curr_d->path);
+			ft_putstr(curr_d->path);
+			return ;
+		}
+		else
+			error(2, curr_d->path);
+
 	}
 	entry = readdir(dir);
 	/// Current dir
 	if (ls->a == 1)
 	{
-        lstat(curr_d->path, &(curr_d->stats)); // STAT! Not stats!
         if (curr_d->info->max_len_links < (tmp = ft_strlen(ft_itoa(curr_d->stats.st_nlink))))
             curr_d->info->max_len_links = tmp;
         if (curr_d->info->max_len_owner < (tmp = ft_strlen(getpwuid((uid_t)(curr_d->stats.st_uid))->pw_name)))
