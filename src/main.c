@@ -528,6 +528,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
         int shift;
         k = 0;
         shift = 0;
+        ft_putstr("test");
         while (shift < lines)
         {
             while (k < columns) {
