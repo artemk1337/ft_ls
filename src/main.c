@@ -721,7 +721,7 @@ char		**check_flags(t_ls *ls, char **av)
 		else if (*((av)[1]) == 'u')
 			ls->u = 1;
 		else
-			ERROR;
+			exit(-1);
 		((av)[1])++;
 	}
 	return (&(av[2]));
@@ -888,6 +888,7 @@ void    put_mode(t_ls *ls, struct stat fileStat, char *filename)
 
 
 
+#include <uuid/uuid.h>
 
 int			ls_error(char *s, int error)
 {
@@ -904,10 +905,10 @@ int			ls_error(char *s, int error)
 	{
 		ft_putstr_fd(s, 2);
 		ft_putstr_fd(": ", 2);
-		ft_putendl_fd(strerror(errno), 2);
+		ft_putendl_fd(strerror(error), 2);
 	}
 	else if (error == ERRNO)
-		ft_putendl_fd(strerror(errno), 2);
+		ft_putendl_fd(strerror(error), 2);
 	if (error == USAGE || error == MALL_ERR)
 		exit(EXIT_FAILURE);
 	return (0);
