@@ -489,12 +489,13 @@ void		get_files(t_ls *ls, t_path *curr_d)
 
 
             /// TEST
-
+            int i;
             //stat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
             //ft_putstr("");
-            readlink(convert_filename(prepare_path(curr_d->path), curr_f->filename),
+            i = readlink(convert_filename(prepare_path(curr_d->path), curr_f->filename),
                      &(ls->buffer[ls->i]),
                     100);
+            ft_putnbr(i);
             ft_putstr(ls->buffer);
 
 
