@@ -269,9 +269,21 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	while (i < max)
 	{
 		arr[i] = tmp;
-		ft_putstr(arr[i++->filename]);
+		ft_putstr(arr[i++]->filename);
 		ft_putstr("\n");
 		tmp = tmp->next;
+	}
+
+	while (max--)
+	{
+		i = 0;
+		while (arr[i + 1] && ft_strcmp(arr[i]->filename, arr[i + 1]->filename) > 0)
+		{
+			tmp = arr[i];
+			arr[i] = arr[i + 1];
+			arr[i + 1] = tmp;
+			i++;
+		}
 	}
 
 	
