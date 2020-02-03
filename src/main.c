@@ -503,7 +503,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
         words = counter;
         ///Correct
         columns = 1;
-        while ((max_size * columns + columns * 4) <= term_size)
+        while ((max_size * columns + columns) <= term_size)
             columns++;
         columns--;
         ///
