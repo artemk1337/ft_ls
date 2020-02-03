@@ -307,10 +307,6 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	}
 	tmp->next = NULL;
 	start = new_start;
-	
-
-
-
 
 	if (ls->r == 1)
 		return(reverse_order_files(start));
