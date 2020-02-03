@@ -256,16 +256,12 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	start = start;
 	max = max;
 
-	t_files	*curr;
-	t_files	*next;
-	t_files	*prev;
-	t_files	*new_start;
-
 	t_files	**arr;
 
 
 	if (!(arr = (t_files **)malloc(sizeof(t_files *) * (max + 1))))
 		ERROR;
+	
 	
 
 
