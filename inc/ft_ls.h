@@ -24,6 +24,8 @@
 # include <sys/ioctl.h>
 # include <dirent.h>
 
+# include <sys/syslimits.h>
+
 
 # include <../libft/includes/libft.h>
 
@@ -160,8 +162,9 @@ void            error(t_ls *ls);
 
 void    		show_dir(t_ls *ls, t_path *curr_d);
 void			put_mode(t_ls *ls, struct stat fileStat);
-void			put_smth(t_ls *ls, char *tmp, int *ls_len);
+void			put_smth(t_ls *ls, char *tmp, int *ls_len, int k);
 void			put_date(t_ls *ls, time_t time_);
+void	        put_filename(t_ls *ls, char *tmp);
 
 int				get_columns(void);
 

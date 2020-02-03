@@ -13,7 +13,7 @@
 
 #include "../inc/ft_ls.h"
 
-//#include <sys/syslimits.h>
+// #include <sys/syslimits.h>
 
 #include <stdio.h>
 
@@ -247,14 +247,27 @@ t_files		*reverse_order_files(t_files *start)
 
 
 
+t_files     *revive_t_files(t_files **arr)
+{
+    t_files *start;
+    int     i;
+    t_files *tmp;
 
+    i = 0;
+    start = arr[0];
+    tmp = start;
+    while (arr[++i])
+    {
+        tmp->next = arr[i];
+        tmp = tmp->next;
+    }
+    tmp->next = NULL;
+    return (start);
+}
 
 
 t_files		*sort_files(t_ls *ls, t_files *start, int max)
 {
-	ls = ls;
-	start = start;
-	max = max;
 	int		i;
 	int		max_copy;
 
@@ -291,15 +304,9 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 			i++;
 		}
 	}
-	i = 0;
-	start = arr[0];
-	tmp = start;
-	while (arr[++i])
-	{
-		tmp->next = arr[i];
-		tmp = tmp->next;
-	}
-	tmp->next = NULL;
+
+	start = revive_t_files(arr);
+
 
 	if (ls->r == 1)
 		return(reverse_order_files(start));
@@ -318,7 +325,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	t_path			*tmp_d;
 	int				tmp;
 
-	// printf("\n\tOPEN DIR %s \tDEPTH - %d \n\n", curr_d->path, curr_d->depth);
+	/// Take info about curr. dir
+	//printf("\n\tOPEN DIR %s \tDEPTH - %d \n\n", curr_d->path, curr_d->depth);
 	stat(curr_d->path, &(curr_d->stats)); // STAT! Not stats!
 	if (curr_d->depth == 0)
 		curr_d->dir_name = ft_strdup(curr_d->path);
@@ -326,7 +334,6 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		curr_d->dir_name = ft_strdup(ft_short_name(curr_d->path));
 	curr_d->len_name = ft_strlen(curr_d->dir_name); // Correct!
 	// printf("dir enter %s 1\n", curr_d->path);
-
 
 	if (curr_d->info->max_len_links < (tmp = ft_strlen(ft_itoa(curr_d->stats.st_nlink))))
 		curr_d->info->max_len_links = tmp;
@@ -338,13 +345,12 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		curr_d->info->max_len_size = tmp;
 	// printf("dir enter %s 2\n", curr_d->path);
 
-
-	/// TEST START
-
+    /// Read and sort
 	dir = opendir(curr_d->path);
 	if (!dir)
 		ERROR; // Error for open dir
 	entry = readdir(dir);
+    // printf("dir enter %s 3\n", curr_d->path);
 	if (ls->a == 1)
 	{
 		curr_d->files = init_files();
@@ -356,8 +362,11 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	else
 		curr_f = curr_d->files;
 	tmp = 0;
+    // printf("dir enter %s 4\n", curr_d->path);
 	while ((entry = readdir(dir)))
 	{
+        //ft_putstr(entry->d_name);
+        //ft_putstr("\n");
 		if ((ls->a == 1 || file_hide(entry->d_name) == 0) && ft_strcmp(entry->d_name, ".") != 0)
 		{
 			if (!(curr_f))
@@ -373,51 +382,13 @@ void		get_files(t_ls *ls, t_path *curr_d)
 			stat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
 			tmp++;
 		}
+        //ft_putstr(entry->d_name);
+        //ft_putstr("\n");
 	}
-	closedir(dir);
 
 	if (tmp > 1)
 		curr_d->files = sort_files(ls, curr_d->files, tmp);
 
-
-	/// TEST END
-
-
-
-	/*
-	dir = opendir(curr_d->path);
-	if (!dir)
-		ERROR;
-	// printf("dir enter %s 3\n", curr_d->path);
-	entry = readdir(dir);
-	// printf("%s\n", curr_d->dir_name);
-	if (ls->a == 1)
-	{
-		curr_d->files = init_files();
-		curr_f = curr_d->files;
-		curr_f->filename = ft_strdup(".");
-		curr_f->len_name = 1;
-		curr_f->stats = curr_d->stats;
-	}
-	else
-		curr_f = curr_d->files;
-	while ((entry = readdir(dir)))
-	{
-		// printf("DIR: %s FN: %s \n", curr_d->dir_name, entry->d_name);
-		if ((ls->a == 1 || file_hide(entry->d_name) == 0) && ft_strcmp(entry->d_name, ".") != 0)
-		{
-			if (!(curr_f))
-				curr_f = (curr_d->files = init_files());
-			else
-			{
-				while (curr_f->next)
-					curr_f = curr_f->next;
-				curr_f = (curr_f->next = init_files());
-			}
-			curr_f->filename = ft_strdup(ft_short_name(entry->d_name));
-	*/
-
-	/// NEW
 
 	curr_f = curr_d->files;
 	while(curr_f)
@@ -458,8 +429,6 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		//printf("DIR: %s FN: %s 2\n", curr_d->dir_name, curr_f->filename);
 		curr_f = curr_f->next;
 	}
-
-	closedir(dir);
 	// printf("\n\tCLOSE DIR %s \tDEPTH - %d \n\n", curr_d->path, curr_d->depth);
 }
 
@@ -660,13 +629,14 @@ void	put_line_without(t_ls *ls, t_path *curr_d)
 	// t_files		*tmp_f;
 	int			width;
 
-	ls = ls;
+	//ls = ls;
+	ls->flags = 0;
 	curr_f = curr_d->files;
-	curr_f = curr_f;
+	//curr_f = curr_f;
 	width = get_columns();
 	printf("%d\n", width);
 	printf("%d\n", curr_d->info->max_len);
-	printf("%ld\n", curr_d->stats.st_nlink);
+	printf("%hu\n", curr_d->stats.st_nlink);
 	printf("%d\n", ft_strcmp(".", ".."));
 
 }
@@ -699,12 +669,12 @@ void	put_line_with_l(t_ls *ls, t_path *curr_d)
 	while (curr_f)
 	{
 		put_mode(ls, curr_f->stats); // Correct
-		put_smth(ls, ft_itoa(curr_f->stats.st_nlink), &(curr_d->info->max_len_links)); // Put links. Corect.
-		put_smth(ls, getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name, &(curr_d->info->max_len_owner)); // Put owner. Correct
-		put_smth(ls, getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name, &(curr_d->info->max_len_group)); // Put group. Correct
-		put_smth(ls, ft_itoa(curr_f->stats.st_size), &(curr_d->info->max_len_size)); // Put size. Correct
+		put_smth(ls, ft_itoa(curr_f->stats.st_nlink), &(curr_d->info->max_len_links), 1); // Put links. Corect.
+		put_smth(ls, getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name, &(curr_d->info->max_len_owner), 1); // Put owner. Correct
+		put_smth(ls, getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name, &(curr_d->info->max_len_group), 2); // Put group. Correct
+		put_smth(ls, ft_itoa(curr_f->stats.st_size), &(curr_d->info->max_len_size), 2); // Put size. Correct
 		put_date(ls, curr_f->stats.st_mtime); // Date. Correct
-		put_smth(ls, curr_f->filename, &(curr_d->info->max_len)); // Filename. Correct
+		put_filename(ls, curr_f->filename); // Filename. Correct
 
 		ls->buffer[(ls->i)] = '\0';
 		ft_putstr(ls->buffer);
@@ -741,13 +711,22 @@ int		get_columns(void)
 	return (w.ws_col);
 }
 
-void	put_smth(t_ls *ls, char *tmp, int *ls_len)
+void	put_filename(t_ls *ls, char *tmp)
+{
+    ls->buffer[(ls->i)++] = ' ';
+    while (*tmp)
+        ls->buffer[(ls->i)++] = *(tmp++);
+}
+
+void	put_smth(t_ls *ls, char *tmp, int *ls_len, int k)
 {
 	int		len;
 	int		i;
 
 	i = -1;
 	ls->buffer[(ls->i)++] = ' ';
+	if (k == 2)
+        ls->buffer[(ls->i)++] = ' ';
 	len = ft_strlen(tmp);
 	while (++len <= *ls_len)
 		ls->buffer[(ls->i)++] = ' ';
