@@ -493,9 +493,14 @@ void		get_files(t_ls *ls, t_path *curr_d)
             //stat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
             //ft_putstr("");
             i = readlink(convert_filename(prepare_path(curr_d->path), curr_f->filename),
-                     &(ls->buffer[ls->i]),
-                     0);
-
+                         &(ls->buffer[ls->i]),
+                         0);
+            if (i >= 0)
+            {
+                readlink(convert_filename(prepare_path(curr_d->path), curr_f->filename),
+                        &(ls->buffer[ls->i]),
+                        NAME_MAX);
+            }
             ft_putstr(ls->buffer);
 
 
