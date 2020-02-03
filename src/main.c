@@ -538,7 +538,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		        chr = ' ';
 
 	        printf("%c\n", chr);
-        }
+
 
 
 
