@@ -165,6 +165,7 @@ void			put_mode(t_ls *ls, struct stat fileStat);
 void			put_smth(t_ls *ls, char *tmp, int *ls_len, int k);
 void			put_date(t_ls *ls, time_t time_);
 void	        put_filename(t_ls *ls, char *tmp);
+void		    show_flag_R(t_path *curr_d);
 
 int				get_columns(void);
 

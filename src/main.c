@@ -333,6 +333,14 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 
 
 
+
+
+
+
+
+
+
+
 void		get_files(t_ls *ls, t_path *curr_d)
 {
 	DIR             *dir;
@@ -412,35 +420,53 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	/// Sorting
 	if (tmp > 1)
 		curr_d->files = sort_files(ls, curr_d->files,counter);
+
 	/// Files
 
 
-	///
+	/// NEW TEST
+
+    curr_f = curr_d->files;
+    curr_d->info->total += curr_d->stats.st_blocks;
+    while (curr_f)
+    {
+        curr_d->info->total += (int)curr_f->stats.st_blocks;
+        curr_f = curr_f->next;
+    }
+    curr_f = curr_d->files;
+
+    if (ls->R == 1)
+        show_flag_R(curr_d);
+
+    ft_putstr("total ");
+    ft_putstr(ft_itoa(curr_d->info->total));
+    ft_putchar('\n');
+
+    while (curr_f)
+    {
+        put_mode(ls, curr_f->stats); // Correct
+        put_smth(ls, ft_itoa(curr_f->stats.st_nlink), &(curr_d->info->max_len_links), 2); // Put links. Corect.
+        put_smth(ls, getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name, &(curr_d->info->max_len_owner), 1); // Put owner. Correct
+        put_smth(ls, getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name, &(curr_d->info->max_len_group), 2); // Put group. Correct
+        put_smth(ls, ft_itoa(curr_f->stats.st_size), &(curr_d->info->max_len_size), 2); // Put size. Correct
+        put_date(ls, curr_f->stats.st_mtime); // Date. Correct
+        put_filename(ls, curr_f->filename); // Filename. Correct
+
+        ls->buffer[(ls->i)] = '\0';
+        ft_putstr(ls->buffer);
+        ft_putchar('\n');
+        ls->i = 0;
+        curr_f = curr_f->next;
+    }
+    ft_putchar('\n');
+
+
+	/// END TEST
 
 
 	curr_f = curr_d->files;
 	while(curr_f)
 	{
-        /// NEW PRINT
-
-        if (ls->l == 1)
-        {
-            put_mode(ls, curr_f->stats); // Correct
-            put_smth(ls, ft_itoa(curr_f->stats.st_nlink), &(curr_d->info->max_len_links), 2); // Put links. Corect.
-            put_smth(ls, getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name, &(curr_d->info->max_len_owner), 1); // Put owner. Correct
-            put_smth(ls, getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name, &(curr_d->info->max_len_group), 2); // Put group. Correct
-            put_smth(ls, ft_itoa(curr_f->stats.st_size), &(curr_d->info->max_len_size), 2); // Put size. Correct
-            put_date(ls, curr_f->stats.st_mtime); // Date. Correct
-            put_filename(ls, curr_f->filename); // Filename. Correct
-
-            ls->buffer[(ls->i)] = '\0';
-            ft_putstr(ls->buffer);
-            ft_putchar('\n');
-            ls->i = 0;
-        }
-
-        /// END
-
         /// Recursive dir
 		tmp_d = curr_d;
 		if (S_ISDIR(curr_f->stats.st_mode) &&
