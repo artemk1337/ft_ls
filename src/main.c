@@ -499,7 +499,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
         while (curr_f)
         {
             ft_putstr(curr_f->filename);
-            ft_putstr("\n");
+            ft_putstr(" ");
             curr_f = curr_f->next;
         }
 
