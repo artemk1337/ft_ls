@@ -326,7 +326,28 @@ void        sort_files_l(t_files **arr, int max)
             i++;
         }
     }
+}
 
+void        sort_files_S(t_files **arr, int max)
+{
+	int        i;
+	t_files *tmp;
+
+	i = 0;
+	while (max--)
+	{
+		i = 0;
+		while (arr[i + 1] != NULL)
+		{
+			if (arr[i]->stats.st_size - arr[i + 1]->stats.st_size < 0)
+			{
+				tmp = arr[i];
+				arr[i] = arr[i + 1];
+				arr[i + 1] = tmp;
+			}
+			i++;
+		}
+	}
 }
 
 t_files		*sort_files(t_ls *ls, t_files *start, int max)
@@ -345,7 +366,9 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 		arr[i++] = tmp;
 		tmp = tmp->next;
 	}
-    if (ls->t == 1)
+	if (ls->S == 1)
+		sort_files_S(arr, max);
+    else if (ls->t == 1)
         sort_files_t(arr, max);
     else
         sort_files_l(arr, max);
@@ -561,6 +584,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
     }
     else if (ls->_1 == 1)
 	{
+		if (ls->R == 1)
+			show_flag_R(curr_d);
 		curr_f = curr_d->files;
 		while (curr_f)
 		{
@@ -569,6 +594,65 @@ void		get_files(t_ls *ls, t_path *curr_d)
 			curr_f = curr_f->next;
 		}
 	}
+    else if (ls->x == 1)
+    {
+	    int max_size;
+	    int term_size;
+	    int columns;
+	    int words;
+	    int lines;
+	    char **arr;
+	    int i;
+
+	    if (ls->R == 1)
+		    show_flag_R(curr_d);
+	    max_size = curr_d->info->max_len;
+	    term_size = get_columns();
+	    words = counter;
+	    ///Correct
+	    columns = 1;
+	    while ((max_size * columns + columns) <= term_size)
+		    columns++;
+	    columns--;
+	    lines = words / columns + ((words % columns > 0) ? 1 : 0);
+	    //ft_putnbr(lines);
+	    //ft_putnbr(columns);
+	    ///
+
+
+	    if (!(arr = malloc(sizeof(char *) * (words + 1))))
+		    ERROR;
+	    arr[words] = NULL;
+	    curr_f = curr_d->files;
+	    i = 0;
+	    while (curr_f)
+	    {
+		    arr[i++] = curr_f->filename;
+		    curr_f = curr_f->next;
+	    }
+
+	    int k;
+	    int i_lines = 0;
+	    while (i_lines < lines)
+	    {
+	    	k = 0;
+	    	while (k < columns && arr[i_lines * columns + k])
+		    {
+			    i = 0;
+			    while (arr[i_lines * columns + k][i])
+				    ls->buffer[(ls->i)++] = arr[i_lines * columns + k][i++];
+			    while (i++ <= max_size)
+				    ls->buffer[(ls->i)++] = ' ';
+			    k++;
+		    }
+		    ls->buffer[(ls->i)++] = '\0';
+		    ft_putstr(ls->buffer);
+		    ft_putchar('\n');
+		    ls->i = 0;
+	    	i_lines++;
+	    }
+
+    }
     else
     {
         int max_size;
@@ -756,6 +840,10 @@ char		**check_flags(t_ls *ls, char **av)
 			ls->u = 1;
 		else if (*((av)[1]) == '1')
 			ls->_1 = 1;
+		else if (*((av)[1]) == 'x')
+			ls->x = 1;
+		else if (*((av)[1]) == 'S')
+			ls->S = 1;
 		else
 			error(3, &(*((av)[1])));
 		((av)[1])++;
@@ -776,6 +864,7 @@ t_ls    *init_ls(void)
 	ls->t = 0;
 	ls->u = 0;
 	ls->_1 = 0;
+	ls->x = 0;
 	ls->flags = 0;
 	ls->i = 0;
 	ls->arr = NULL;
