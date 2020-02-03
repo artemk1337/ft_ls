@@ -262,13 +262,13 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	if (!(arr = (t_files **)malloc(sizeof(t_files *) * (max + 1))))
 		ERROR;
 	
-	
+
 
 
 
 	if (ls->r == 1)
-		return(reverse_order_files(new_start));
-	return (new_start);
+		return(reverse_order_files(start));
+	return (start);
 }
 
 
