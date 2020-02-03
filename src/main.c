@@ -410,7 +410,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	int             counter;
 
 	/// Take info about curr. dir
-	// printf("\n\tOPEN DIR %s \tDEPTH - %d \n\n", curr_d->path, curr_d->depth);
+	printf("\n\tOPEN DIR %s \tDEPTH - %d \n\n", curr_d->path, curr_d->depth);
 	if (curr_d->depth == 0)
 		curr_d->dir_name = ft_strdup(curr_d->path);
 	else
@@ -422,16 +422,17 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	{
 		if (check_permission(curr_d->stats) == 1)
 		{
-			ft_putstr(curr_d->path);
 			ft_putstr(ls->arr[0]->path);
 			error(1, curr_d->path);
-			ft_putstr(curr_d->path);
 			return ;
 		}
 		else if (check_permission(curr_d->stats) == 2)
 			return ;
 		else
+		{
 			error(2, curr_d->path);
+			return ;
+		}
 
 	}
 	entry = readdir(dir);
@@ -495,6 +496,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	/// Sorting
 	if (tmp > 1)
 		curr_d->files = sort_files(ls, curr_d->files,counter);
+	close(dir);
 
 	/// Files
 
@@ -926,6 +928,7 @@ void        error(int code, char *file)
 		ft_putstr("ls: ");
 		ft_putstr(file);
 		ft_putstr(": No such file or directory\n");
+		return ;
 	}
 	else if (code == 3)
 	{
