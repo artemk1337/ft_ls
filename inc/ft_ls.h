@@ -116,7 +116,6 @@ typedef	struct	s_path
 	char			*path;
 	char			*dir_name;
 	struct stat		stats;
-	int				len_name;
 	int				depth;
 	
 	t_info			*info;

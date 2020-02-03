@@ -101,7 +101,6 @@ t_path		*init_path(char *path)
 	if (!(a->path = ft_strdup(path)))
 		ERROR;
 	a->dir_name = NULL;
-	a->len_name = 0;
 	a->depth = 0;
 
 	a->info = init_info();
@@ -357,7 +356,6 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		curr_d->dir_name = ft_strdup(curr_d->path);
 	else
 		curr_d->dir_name = ft_strdup(ft_short_name(curr_d->path));
-	curr_d->len_name = ft_strlen(curr_d->dir_name); // Correct!
     /// Read and sort
 	dir = opendir(curr_d->path);
 	if (!dir)
