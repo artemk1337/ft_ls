@@ -496,7 +496,6 @@ void		get_files(t_ls *ls, t_path *curr_d)
         int columns;
         int words;
         int lines;
-        int lines_copy;
         char **arr;
         int i;
 
