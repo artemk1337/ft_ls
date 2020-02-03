@@ -493,8 +493,12 @@ void		get_files(t_ls *ls, t_path *curr_d)
     else
     {
         int max_size;
+        int term_size;
 
         max_size = curr_d->info->max_len;
+        ft_putnbr(max_size * 4);
+        ft_putnbr(term_size);
+        term_size = get_columns();
         curr_f = curr_d->files;
         while (curr_f)
         {
