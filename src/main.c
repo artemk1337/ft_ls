@@ -277,6 +277,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	while (max_copy--)
 	{
 		i = 0;
+		ft_putstr(arr[i]->filename);
 		while (arr[i + 1])
 		{
 			if (ft_strcmp(arr[i]->filename, arr[i + 1]->filename) > 0)
