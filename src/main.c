@@ -256,6 +256,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	start = start;
 	max = max;
 	int		i;
+	int		max_copy;
 
 	t_files	**arr;
 	t_files	*tmp;
@@ -274,7 +275,8 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 		tmp = tmp->next;
 	}
 
-	while (max--)
+	max_copy = max;
+	while (max_copy--)
 	{
 		i = 0;
 		while (arr[i + 1] && ft_strcmp(arr[i]->filename, arr[i + 1]->filename) > 0)
@@ -286,6 +288,12 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 		}
 	}
 
+	i = 0;
+	while (i < max)
+	{
+		ft_putstr(arr[i++]->filename);
+		ft_putstr("\n");
+	}
 	
 	
 
