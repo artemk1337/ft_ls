@@ -473,8 +473,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
 
         while (curr_f)
         {
-            put_mode(ls, curr_f->stats); // Correct
-            put_smth(ls, ft_itoa(curr_f->stats.st_nlink), &(curr_d->info->max_len_links), 2); // Put links. Corect.
+            put_mode(ls, curr_f->stats, convert_filename(prepare_path(curr_d->path), curr_f->filename)); // Correct
+            put_smth(ls, ft_itoa(curr_f->stats.st_nlink), &(curr_d->info->max_len_links), 1); // Put links. Corect.
             //put_smth(ls, getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name, &(curr_d->info->max_len_owner), 1); // Put owner. Correct
             put_owner(ls, getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name, &(curr_d->info->max_len_owner), 1);
             put_owner(ls, getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name, &(curr_d->info->max_len_group), 2);
@@ -505,49 +505,6 @@ void		get_files(t_ls *ls, t_path *curr_d)
             ft_putstr(ls->buffer);
             ft_putchar('\n');
             ls->i = 0;
-
-
-
-	        #include <sys/types.h>
-			#include <sys/xattr.h>
-			#include <sys/types.h>
-			#include <sys/acl.h>
-			#include <stdio.h>
-
-
-	        acl_t acl = NULL;
-	        acl_entry_t dummy;
-	        ssize_t xattr = 0;
-	        char chr;
-	        char * filename = "/Users/john/desktop/mutations.txt";
-
-	        acl = acl_get_link_np(filename, ACL_TYPE_EXTENDED);
-	        if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1) {
-		        acl_free(acl);
-		        acl = NULL;
-	        }
-	        xattr = listxattr(filename, NULL, 0, XATTR_NOFOLLOW);
-	        if (xattr < 0)
-		        xattr = 0;
-
-	        if (xattr > 0)
-		        chr = '@';
-	        else if (acl != NULL)
-		        chr = '+';
-	        else
-		        chr = ' ';
-
-	        printf("%c\n", chr);
-
-
-
-
-
-
-
-
-
-
 
             curr_f = curr_f->next;
         }
@@ -863,8 +820,13 @@ void	put_date(t_ls *ls, time_t time_)
 		ls->buffer[(ls->i)++] = tmp[i];
 }
 
-void    put_mode(t_ls *ls, struct stat fileStat)
+void    put_mode(t_ls *ls, struct stat fileStat, char *filename)
 {
+	char chr;
+	acl_t acl;
+	acl_entry_t dummy;
+	ssize_t xattr;
+
 	ls->buffer[(ls->i)++] = (S_ISDIR(fileStat.st_mode)) ? 'd' : '-';
 	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IWUSR) ? 'r' : '-';
 	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IWUSR) ? 'w' : '-';
@@ -875,6 +837,23 @@ void    put_mode(t_ls *ls, struct stat fileStat)
 	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IROTH) ? 'r' : '-';
 	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IWOTH) ? 'w' : '-';
 	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IXOTH) ? 'x' : '-';
+
+	acl = acl_get_link_np(filename, ACL_TYPE_EXTENDED);
+	if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1)
+	{
+		acl_free(acl);
+		acl = NULL;
+	}
+	xattr = listxattr(filename, NULL, 0, XATTR_NOFOLLOW);
+	if (xattr < 0)
+		xattr = 0;
+	if (xattr > 0)
+		chr = '@';
+	else if (acl != NULL)
+		chr = '+';
+	else
+		chr = ' ';
+	ls->buffer[(ls->i)++] = chr;
 }
 
 /*

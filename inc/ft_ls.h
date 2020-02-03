@@ -23,6 +23,9 @@
 # include <time.h>
 # include <sys/ioctl.h>
 # include <dirent.h>
+# include <sys/types.h>
+# include <sys/xattr.h>
+# include <sys/acl.h>
 
 # include <sys/syslimits.h>
 
