@@ -479,11 +479,6 @@ int     main(int ac, char **av)
 		av = check_flags(ls, av);
 	if (ls->flags == 1)
 		ac--;
-	// Здесь выделил память под сруктуры аргументов.
-	/*
-	* Выделяю память. В каждой ячейке лежит указатель на структуру с директорией.
-	* Если директорий не подано, то будет одна директория "."
-	*/
 	if (ac == 1)
 	{
 		if (!(ls->arr = malloc(sizeof(t_path *) * 2)))
@@ -506,40 +501,10 @@ int     main(int ac, char **av)
 	{
 		i = -1;
 		while (ls->arr[++i])
-		{
-			curr = ls->arr[i];
-			get_files(ls, curr);
-		}
+			get_files(ls, (curr = ls->arr[i]));
 	}
-	//print_dirs(ls);
 	return (0);
 }
-
-
-
-
-
-
-
-
-
-
-/*
- * a - invisible files						OK!
- * l - format
- * R - recursive all files in folders		OK!
- * r - sort in reverse order
- * t - sort time
-*/
-
-
-
-
-
-
-
-
-
 
 
 
