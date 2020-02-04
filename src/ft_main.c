@@ -70,23 +70,19 @@ char        *prepare_path(char *s)
 	{
 		if (s[i] != '/' && !(sign = 0))
 			s1[k++] = s[i++];
-		else if (s[i] == '/')
+		else
 		{
-			if (sign == 0)
-			{
-				sign = 1;
+			if (sign == 0 && (sign = 1))
 				s1[k++] = s[i++];
-			}
 			else
 				i++;
 		}
 	}
 	if (sign == 0)
 		s1[k] = '/';
-	// printf("%s\n", s1);
-	// ft_putstr("PREPARE PATH END\n");
 	return (s1);
 }
+
 
 int			file_hide(char *file)
 {
