@@ -28,6 +28,7 @@ SRCS_NAME = ft_main.c\
 			ft_put.c\
 			ft_error.c\
 			ft_convert.c\
+			get_term_size.c\
 
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_NAME))
 OBJ = $(addprefix $(OBJ_PATH), $(SRCS_NAME:.c=.o))

@@ -205,5 +205,17 @@ char		*ft_short_name(char *path);
 char        *convert_filename(char *s1, char *s2);
 char        *prepare_path(char *s);
 
+/*get_term_size.c*/
+void		show_flag_R(t_path *curr_d);
+int		get_columns(void);
+int			file_hide(char *file);
+int     get_size_time(time_t time_);
+size_t      return_time(t_ls *ls, struct stat stats);
+
+
+
+
+
+
 
 #endif
