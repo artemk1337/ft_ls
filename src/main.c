@@ -417,7 +417,7 @@ int         check_permission(struct stat stats)
 		return (1);
 	else if (!((stats.st_mode & S_IRUSR) && (stats.st_mode & S_IWUSR)))
 		return (2);
-	return (0);
+	return (1);
 }
 
 
