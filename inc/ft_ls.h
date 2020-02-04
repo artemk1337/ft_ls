@@ -200,7 +200,10 @@ void    	put_mode(t_ls *ls, struct stat fileStat, char *filename);
 /*ft_error.c*/
 void		error(int code, char *file);
 
-
+/*ft_convert.c*/
+char		*ft_short_name(char *path);
+char        *convert_filename(char *s1, char *s2);
+char        *prepare_path(char *s);
 
 
 #endif
