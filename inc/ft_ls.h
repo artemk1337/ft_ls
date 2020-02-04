@@ -190,6 +190,12 @@ t_info		*init_info(void);
 t_path		*init_path(char *path);
 t_ls		*init_ls(void);
 
+/*ft_put.c*/
+void	put_filename(t_ls *ls, char *tmp);
+void	put_smth(t_ls *ls, char *tmp, int *ls_len, int k);
+void    put_owner(t_ls *ls, char *tmp, int *ls_len, int k);
+void	put_date(t_ls *ls, time_t time_);
+void    put_mode(t_ls *ls, struct stat fileStat, char *filename);
 
 
 
