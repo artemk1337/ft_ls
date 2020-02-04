@@ -776,10 +776,10 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		}
 		curr_d = tmp_d;
 
-		t_files *tmp_f;
-		tmp_f = curr_f;
+		//t_files *tmp_f;
+		//tmp_f = curr_f;
 		curr_f = curr_f->next;
-		free(tmp_f);
+		//free(tmp_f);
 	}
 }
 
