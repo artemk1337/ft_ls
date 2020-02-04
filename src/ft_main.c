@@ -15,32 +15,12 @@
 
 
 
-
-
-
-
-
-
-
-
-
 int			file_hide(char *file)
 {
 	if (*file == '.')
 		return (1);
 	return (0);
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 int     get_size_time(time_t time_)
@@ -57,19 +37,6 @@ int     get_size_time(time_t time_)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 size_t      return_time(t_ls *ls, struct stat stats)
 {
 	if (ls->u == 1)
@@ -83,30 +50,11 @@ size_t      return_time(t_ls *ls, struct stat stats)
 
 
 
-void		get_files(t_ls *ls, t_path *curr_d)
+t_files		*g_f_check_a(t_ls *ls, t_path *curr_d)
 {
-	DIR             *dir;
-	struct dirent   *entry;
+	t_files	*curr_f;
+	int		tmp;
 	
-	t_files			*curr_f;
-	t_path			*tmp_d;
-	int				tmp;
-	int             counter;
-
-	/// Take info about curr. dir
-	// printf("\n\tOPEN DIR %s \tDEPTH - %d \n\n", curr_d->path, curr_d->depth);
-	if (curr_d->depth == 0)
-		curr_d->dir_name = ft_strdup(curr_d->path);
-	else
-		curr_d->dir_name = ft_strdup(ft_short_name(curr_d->path));
-	lstat(curr_d->path, &(curr_d->stats)); // STAT! Not stats!
-
-
-
-	if (!(dir = check_dir_and_permission(curr_d)))
-		return ;
-	entry = readdir(dir);
-	/// Current dir
 	if (ls->a == 1)
 	{
         if (curr_d->info->max_len_links < (tmp = ft_strlen(ft_itoa(curr_d->stats.st_nlink))))
@@ -127,45 +75,107 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	}
 	else
 		curr_f = curr_d->files;
+	return (curr_f);
+}
+
+
+
+
+
+
+void		g_f_read_files_cheack_stat(t_ls *ls, t_files *curr_f, t_path *curr_d)
+{
+	int	tmp;
+
+	lstat(convert_filename(prepare_path(curr_d->path), curr_f->filename),
+	&(curr_f->stats));
+	if (curr_d->info->max_len_links <
+	(tmp = ft_strlen(ft_itoa(curr_f->stats.st_nlink))))
+		curr_d->info->max_len_links = tmp;
+	if (curr_d->info->max_len <
+	(tmp = ft_strlen(curr_f->filename)))
+		curr_d->info->max_len = tmp;
+	if (curr_d->info->max_len_owner <
+	(tmp = ft_strlen(getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name)))
+		curr_d->info->max_len_owner = tmp;
+	if (curr_d->info->max_len_group <
+	(tmp = ft_strlen(getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name)))
+		curr_d->info->max_len_group = tmp;
+	if (curr_d->info->max_len_size <
+	(tmp = ft_strlen(ft_itoa(curr_f->stats.st_size))))
+		curr_d->info->max_len_size = tmp;
+	if (curr_d->info->max_len_time <
+	(tmp = get_size_time(return_time(ls, curr_f->stats))))
+		curr_d->info->max_len_time = tmp;
+}
+
+
+
+t_files		*g_f_read_files_1(t_files *curr_f, t_path *curr_d)
+{
+	if (!(curr_f))
+		curr_f = (curr_d->files = init_files());
+	else
+	{
+		while (curr_f->next)
+			curr_f = curr_f->next;
+		curr_f = (curr_f->next = init_files());
+	}
+	return (curr_f);
+}
+
+
+
+int			g_f_read_files(t_ls *ls, t_path *curr_d, t_files *curr_f, DIR* dir)
+{
+	int				tmp;
+	int				counter;
+	struct dirent	*entry;
+
+	entry = readdir(dir);
 	tmp = 0;
-    counter = 0;
-	/// Files
+	counter = 0;
 	while ((entry = readdir(dir)))
 	{
-		if ((ls->a == 1 || file_hide(entry->d_name) == 0) && ft_strcmp(entry->d_name, ".") != 0)
+		if ((ls->a == 1 || file_hide(entry->d_name) == 0) &&
+		ft_strcmp(entry->d_name, ".") != 0)
 		{
-			if (!(curr_f))
-				curr_f = (curr_d->files = init_files());
-			else
-			{
-				while (curr_f->next)
-					curr_f = curr_f->next;
-				curr_f = (curr_f->next = init_files());
-			}
-            curr_f->filename = ft_strdup(ft_short_name(entry->d_name));
-            curr_f->len_name = ft_strlen(curr_f->filename);
-            lstat(convert_filename(prepare_path(curr_d->path), curr_f->filename), &(curr_f->stats));
-
-            if (curr_d->info->max_len_links < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_nlink))))
-                curr_d->info->max_len_links = tmp;
-            if (curr_d->info->max_len < (tmp = ft_strlen(curr_f->filename)))
-                curr_d->info->max_len = tmp;
-            if (curr_d->info->max_len_owner < (tmp = ft_strlen(getpwuid((uid_t)(curr_f->stats.st_uid))->pw_name)))
-                curr_d->info->max_len_owner = tmp;
-            if (curr_d->info->max_len_group < (tmp = ft_strlen(getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name)))
-                curr_d->info->max_len_group = tmp;
-            if (curr_d->info->max_len_size < (tmp = ft_strlen(ft_itoa(curr_f->stats.st_size))))
-                curr_d->info->max_len_size = tmp;
-            if (curr_d->info->max_len_time < (tmp = get_size_time(return_time(ls, curr_f->stats))))
-                curr_d->info->max_len_time = tmp;
-            counter++;
+			curr_f = g_f_read_files_1(curr_f, curr_d);
+			curr_f->filename = ft_strdup(ft_short_name(entry->d_name));
+			curr_f->len_name = ft_strlen(curr_f->filename);
+			g_f_read_files_cheack_stat(ls, curr_f, curr_d);
+			counter++;
 		}
 	}
-	if (ls->a == 1)
-	    counter++;
-	/// Sorting
+	counter += (ls->a == 1) ? 1 : 0;
 	if (tmp > 1)
-		curr_d->files = sort_files(ls, curr_d->files,counter);
+		curr_d->files = sort_files(ls, curr_d->files, counter);
+	return (counter);
+}
+
+
+
+
+
+
+
+void		get_files(t_ls *ls, t_path *curr_d)
+{
+	DIR             *dir;
+	
+	t_files			*curr_f;
+	t_path			*tmp_d;
+	int             counter;
+
+	if (curr_d->depth == 0)
+		curr_d->dir_name = ft_strdup(curr_d->path);
+	else
+		curr_d->dir_name = ft_strdup(ft_short_name(curr_d->path));
+	lstat(curr_d->path, &(curr_d->stats)); // STAT! Not stats!
+	if (!(dir = check_dir_and_permission(curr_d)))
+		return ;
+	curr_f = g_f_check_a(ls, curr_d);
+	counter = g_f_read_files(ls, curr_d, curr_f, dir);
 	closedir(dir);
 
 	/// Files
