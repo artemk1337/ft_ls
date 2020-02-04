@@ -435,6 +435,7 @@ DIR         *check_dir_and_permission(t_ls *ls, t_path *curr_d)
 	    S_ISFIFO(curr_d->stats.st_mode) ||
 	    S_ISSOCK(curr_d->stats.st_mode))
 	{
+		ft_putstr("CHECK\n");
 		if (check_permission(curr_d->stats) == 2)
 			return (NULL);
 		else
