@@ -421,6 +421,27 @@ int         check_permission(struct stat stats)
 	return (0);
 }
 
+int         check_permission_for_dir(t_ls *ls, t_path *curr_d)
+{
+	if (S_ISREG(curr_d->stats.st_mode) ||
+	    S_ISDIR(curr_d->stats.st_mode) ||
+	    S_ISLNK(curr_d->stats.st_mode) ||
+	    S_ISCHR(curr_d->stats.st_mode) ||
+	    S_ISBLK(curr_d->stats.st_mode) ||
+	    S_ISFIFO(curr_d->stats.st_mode) ||
+	    S_ISSOCK(curr_d->stats.st_mode))
+	{
+		if (check_permission(curr_d->stats) == 2)
+			return (1);
+		else
+		{
+			ft_putstr(ls->arr[0]->path);
+			error(1, curr_d->path);
+			return (1);
+		}
+	}
+	return (0);
+}
 
 DIR         *check_dir_and_permission(t_ls *ls, t_path *curr_d)
 {
@@ -435,10 +456,9 @@ DIR         *check_dir_and_permission(t_ls *ls, t_path *curr_d)
 	    S_ISFIFO(curr_d->stats.st_mode) ||
 	    S_ISSOCK(curr_d->stats.st_mode))
 	{
-		ft_putstr("CHECK\n");
 		if (check_permission(curr_d->stats) == 2)
 			return (NULL);
-		else
+		else if (check_permission(curr_d->stats) == 1)
 		{
 			ft_putstr(ls->arr[0]->path);
 			error(1, curr_d->path);
@@ -448,7 +468,7 @@ DIR         *check_dir_and_permission(t_ls *ls, t_path *curr_d)
 	else
 	{
 		dir = opendir(curr_d->path);
-		if (!dir)
+		if (!dir && check_permission_for_dir(ls ,curr_d) == 0)
 		{
 			error(2, curr_d->path);
 			return (NULL);
@@ -476,6 +496,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	else
 		curr_d->dir_name = ft_strdup(ft_short_name(curr_d->path));
 	lstat(curr_d->path, &(curr_d->stats)); // STAT! Not stats!
+
+
 
 	if (!(dir = check_dir_and_permission(ls, curr_d)))
 		return ;
