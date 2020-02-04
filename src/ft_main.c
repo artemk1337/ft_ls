@@ -29,14 +29,11 @@ char		*ft_short_name(char *path)
 	i--;
 	while (path[i] == '/' && i > 0)
 		path[i--] = '\0';
-	i = 0;
+	i = -1;
 	k = 0;
-	while (path[i])
-	{
+	while (path[++i])
 		if (path[i] == '/' && i > 0)
 			k = i + 1;
-		i++;
-	}
 	return (&(path[k]));
 }
 
