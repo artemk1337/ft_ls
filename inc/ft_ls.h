@@ -13,6 +13,7 @@
 #ifndef _FT_LS_H_
 # define _FT_LS_H_
 
+# include <../libft/includes/libft.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/types.h>
@@ -31,8 +32,6 @@
 # include <sys/syslimits.h>
 
 
-# include <../libft/includes/libft.h>
-
 # define BUFF_SIZE 1024
 # define ERROR exit(1)
 
@@ -40,9 +39,7 @@
 # define MAX(a, b) (a >= b ? a : b)
 
 
-
 enum	{ERRNO, USAGE, MALL_ERR};
-
 
 /*
 struct stat {
@@ -67,7 +64,6 @@ struct stat {
 #define st_ctime st_ctim.tv_sec
 };
 */
-
 
 /*
 struct passwd {
@@ -97,7 +93,6 @@ struct termios {
 typedef struct	s_info
 {
 	int				total; 
-
 	int				max_len_owner;
 	int				max_len_group;
 	int				max_len_links;
@@ -111,9 +106,7 @@ typedef	struct	s_files
 {
 	char			*filename;
 	int				len_name;
-
 	struct	s_files	*next;
-	
 	struct stat		stats;
 }				t_files;
 
@@ -121,24 +114,18 @@ typedef	struct	s_files
 typedef	struct	s_path
 {
 	struct s_path	*next;
-
 	char			*path;
 	char			*dir_name;
 	struct stat		stats;
 	int				depth;
-	
 	t_info			*info;
-	
 	t_files			*files;
-
-	
 }				t_path;
 
 
 
 typedef struct	s_ls
 {
-	// 0 or 1
 	int             flags;
 	int             a;
 	int             l;
@@ -146,21 +133,15 @@ typedef struct	s_ls
 	int             r;
 	int             t;
 
-	// dop
-
 	int             u;
 	int             _1;
 	int             x;
 	int             S;
 
-	// Only use to print information
 	char            buffer[PATH_MAX * 2];
 	int             i;
-
 	int				max_len_time;
-
 	struct stat		stats;
-
 	t_path			**arr;
 }				t_ls;
 
@@ -184,5 +165,25 @@ void            put_owner(t_ls *ls, char *tmp, int *ls_len, int k);
 
 int				get_columns(void);
 void            error(int code, char *file);
+
+
+
+
+/*ftsort.c*/
+
+t_files     *revive_t_files(t_files **arr);
+void        sort_files_t(t_files **arr, int max);
+void        sort_files_l(t_files **arr, int max);
+void        sort_files_S(t_files **arr, int max);
+t_files		*sort_files(t_ls *ls, t_files *start, int max);
+
+/*ftreverse.c*/
+t_files		*reverse_order_files(t_files *start);
+
+
+
+
+
+
 
 #endif

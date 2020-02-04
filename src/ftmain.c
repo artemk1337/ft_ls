@@ -13,11 +13,6 @@
 
 #include "../inc/ft_ls.h"
 
-// #include <sys/syslimits.h>
-
-#include <stdio.h>
-
-
 /*
 int main(int argc, char **argv)
 {
@@ -108,13 +103,6 @@ t_path		*init_path(char *path)
 	a->files = NULL;
 	return (a);
 }
-
-
-
-
-
-
-
 
 
 
@@ -240,33 +228,6 @@ int     get_size_time(time_t time_)
 
 
 
-
-
-
-// Perfect
-t_files		*reverse_order_files(t_files *start)
-{
-	t_files	*curr;
-	t_files	*next;
-	t_files	*prev;
-
-	curr = start;
-	prev = NULL;
-	while (curr)
-	{
-		next = curr->next;
-		curr->next = prev;
-		prev = curr;
-		curr = next;
-	}
-	return (prev);
-}
-
-
-
-
-
-
 int			check_args(char *name, t_path **arr)
 {
 	int i;
@@ -282,12 +243,18 @@ int			check_args(char *name, t_path **arr)
 }
 
 
+
+
 size_t      return_time(t_ls *ls, struct stat stats)
 {
 	if (ls->u == 1)
 		return (stats.st_atime);
 	return (stats.st_mtime);
 }
+
+
+
+
 
 
 
