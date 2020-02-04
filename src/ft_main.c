@@ -469,7 +469,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 void	main_dop(t_ls *ls, int ac, char **av)
 {
 	int	i;
-	
+
 	if (ac == 1)
 	{
 		if (!(ls->arr = malloc(sizeof(t_path *) * 2)))
@@ -508,7 +508,7 @@ int     main(int ac, char **av)
 		while (ls->arr[++i])
 			get_files(ls, (curr = ls->arr[i]));
 	}
-	return (0);
+	exit(0);
 }
 
 
