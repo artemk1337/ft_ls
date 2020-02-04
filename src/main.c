@@ -1073,6 +1073,7 @@ void        error(int code, char *file)
 		ft_putstr("ls: ");
 		ft_putstr(file);
 		ft_putstr(": No such file or directory\n");
+		return ;
 	}
 	else if (code == 3)
 	{
