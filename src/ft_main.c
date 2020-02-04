@@ -466,19 +466,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
 
 
 
-
-
-int     main(int ac, char **av)
+void	main_dop(t_ls *ls, int ac, char **av)
 {
-	t_ls        *ls;
-	t_path		*curr;
-	int			i;
-
-	ls = init_ls();	
-	if (ac != 1)
-		av = check_flags(ls, av);
-	if (ls->flags == 1)
-		ac--;
 	if (ac == 1)
 	{
 		if (!(ls->arr = malloc(sizeof(t_path *) * 2)))
@@ -495,6 +484,20 @@ int     main(int ac, char **av)
 			ls->arr[i] = init_path(av[i]);
 		ls->arr[i] = NULL;
 	}
+}
+
+int     main(int ac, char **av)
+{
+	t_ls        *ls;
+	t_path		*curr;
+	int			i;
+
+	ls = init_ls();	
+	if (ac != 1)
+		av = check_flags(ls, av);
+	if (ls->flags == 1)
+		ac--;
+	main_dop(ls, ac, av);
 	if (ac == 1)
 		get_files(ls, ls->arr[0]);
 	else
