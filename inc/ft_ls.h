@@ -188,6 +188,7 @@ t_files		*init_files(void);
 t_info		*init_info(void);
 t_path		*init_path(char *path);
 t_ls		*init_ls(void);
+char		**check_flags(t_ls *ls, char **av);
 
 /*ft_put.c*/
 void		put_filename(t_ls *ls, char *tmp);
