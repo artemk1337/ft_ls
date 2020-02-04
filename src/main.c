@@ -412,15 +412,13 @@ size_t      return_time(t_ls *ls, struct stat stats)
 int         check_permission(struct stat stats)
 {
 	if (stats.st_mode & !S_IWUSR)
-	{
 		return (1);
-	}
 	else if (stats.st_mode & S_IWUSR & !S_IXUSR)
 		return (2);
 	return (0);
 }
 
-int         check_permission_for_dir(t_ls *ls, t_path *curr_d)
+int         check_permission_for_dir(t_path *curr_d)
 {
 	if (S_ISREG(curr_d->stats.st_mode) ||
 	    S_ISDIR(curr_d->stats.st_mode) ||
@@ -434,7 +432,6 @@ int         check_permission_for_dir(t_ls *ls, t_path *curr_d)
 			return (1);
 		else
 		{
-			ft_putstr(ls->arr[0]->path);
 			error(1, curr_d->path);
 			return (1);
 		}
@@ -442,13 +439,13 @@ int         check_permission_for_dir(t_ls *ls, t_path *curr_d)
 	return (0);
 }
 
-DIR         *check_dir_and_permission(t_ls *ls, t_path *curr_d)
+DIR         *check_dir_and_permission(t_path *curr_d)
 {
 	DIR *dir;
 
 	dir = opendir(curr_d->path);
 	if (S_ISREG(curr_d->stats.st_mode) ||
-	    S_ISDIR(curr_d->stats.st_mode) ||
+		S_ISDIR(curr_d->stats.st_mode) ||
 	    S_ISLNK(curr_d->stats.st_mode) ||
 	    S_ISCHR(curr_d->stats.st_mode) ||
 	    S_ISBLK(curr_d->stats.st_mode) ||
@@ -459,21 +456,26 @@ DIR         *check_dir_and_permission(t_ls *ls, t_path *curr_d)
 			return (NULL);
 		else if (check_permission(curr_d->stats) == 1)
 		{
-			ft_putstr(ls->arr[0]->path);
 			error(1, curr_d->path);
 			return (NULL);
 		}
 	}
 	else
-	{
-		if (!dir && check_permission_for_dir(ls ,curr_d) == 0)
-		{
+		if (!dir && check_permission_for_dir(curr_d) == 0)
 			error(2, curr_d->path);
-			return (NULL);
-		}
-	}
 	return (dir);
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -497,7 +499,7 @@ void		get_files(t_ls *ls, t_path *curr_d)
 
 
 
-	if (!(dir = check_dir_and_permission(ls, curr_d)))
+	if (!(dir = check_dir_and_permission(curr_d)))
 		return ;
 	entry = readdir(dir);
 	/// Current dir
@@ -776,10 +778,10 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		}
 		curr_d = tmp_d;
 
-		//t_files *tmp_f;
-		//tmp_f = curr_f;
+		t_files *tmp_f;
+		tmp_f = curr_f;
 		curr_f = curr_f->next;
-		//free(tmp_f);
+		free(tmp_f);
 	}
 }
 
