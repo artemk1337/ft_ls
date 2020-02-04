@@ -149,7 +149,6 @@ typedef struct	s_ls
 int             main(int ac, char **av);
 
 char			**check_flags(t_ls *ls, char **av);
-t_ls            *init_ls(void);
 
 void			put_line_with_l(t_ls *ls, t_path *curr_d);
 void			put_line_without(t_ls *ls, t_path *curr_d);
@@ -170,25 +169,26 @@ void            error(int code, char *file);
 
 
 /*ft_sort.c*/
-t_files     *revive_t_files(t_files **arr);
-void        sort_files_t(t_files **arr, int max);
-void        sort_files_l(t_files **arr, int max);
-void        sort_files_S(t_files **arr, int max);
+t_files		*revive_t_files(t_files **arr);
+void		sort_files_t(t_files **arr, int max);
+void		sort_files_l(t_files **arr, int max);
+void		sort_files_S(t_files **arr, int max);
 t_files		*sort_files(t_ls *ls, t_files *start, int max);
 
 /*ft_reverse.c*/
 t_files		*reverse_order_files(t_files *start);
 
 /*ft_check_perm.c*/
-int         check_permission(struct stat stats);
-int         check_permission_for_dir(t_path *curr_d);
-DIR         *check_dir_and_permission(t_path *curr_d);
+int			check_permission(struct stat stats);
+int			check_permission_for_dir(t_path *curr_d);
+DIR			*check_dir_and_permission(t_path *curr_d);
 int			check_args(char *name, t_path **arr);
 
 /*ft_init.c*/
 t_files		*init_files(void);
 t_info		*init_info(void);
 t_path		*init_path(char *path);
+t_ls		*init_ls(void);
 
 
 
