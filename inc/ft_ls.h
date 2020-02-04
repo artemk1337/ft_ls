@@ -185,6 +185,10 @@ int         check_permission_for_dir(t_path *curr_d);
 DIR         *check_dir_and_permission(t_path *curr_d);
 int			check_args(char *name, t_path **arr);
 
+/*ft_init.c*/
+t_files		*init_files(void);
+t_info		*init_info(void);
+t_path		*init_path(char *path);
 
 
 
