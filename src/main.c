@@ -413,7 +413,6 @@ int         check_permission(struct stat stats)
 {
 	if (stats.st_mode & !S_IWUSR)
 	{
-		ft_putstr("check");
 		return (1);
 	}
 	else if (stats.st_mode & S_IWUSR & !S_IXUSR)
@@ -447,7 +446,7 @@ DIR         *check_dir_and_permission(t_ls *ls, t_path *curr_d)
 {
 	DIR *dir;
 
-	dir = NULL;
+	dir = opendir(curr_d->path);
 	if (S_ISREG(curr_d->stats.st_mode) ||
 	    S_ISDIR(curr_d->stats.st_mode) ||
 	    S_ISLNK(curr_d->stats.st_mode) ||
@@ -467,7 +466,6 @@ DIR         *check_dir_and_permission(t_ls *ls, t_path *curr_d)
 	}
 	else
 	{
-		dir = opendir(curr_d->path);
 		if (!dir && check_permission_for_dir(ls ,curr_d) == 0)
 		{
 			error(2, curr_d->path);
