@@ -411,17 +411,50 @@ size_t      return_time(t_ls *ls, struct stat stats)
 
 int         check_permission(struct stat stats)
 {
-	if (!((stats.st_mode & S_IRUSR) && (stats.st_mode & S_IWUSR)))
+	if (stats.st_mode & !S_IWUSR)
+	{
+		ft_putstr("check");
 		return (1);
-	if (!(stats.st_mode & S_IRUSR))
-		return (1);
-	else if (!((stats.st_mode & S_IRUSR) && (stats.st_mode & S_IWUSR)))
+	}
+	else if (stats.st_mode & S_IWUSR & !S_IXUSR)
 		return (2);
-	return (1);
+	return (0);
 }
 
 
+DIR         *check_dir_and_permission(t_ls *ls, t_path *curr_d)
+{
+	DIR *dir;
 
+	dir = NULL;
+	if (S_ISREG(curr_d->stats.st_mode) ||
+	    S_ISDIR(curr_d->stats.st_mode) ||
+	    S_ISLNK(curr_d->stats.st_mode) ||
+	    S_ISCHR(curr_d->stats.st_mode) ||
+	    S_ISBLK(curr_d->stats.st_mode) ||
+	    S_ISFIFO(curr_d->stats.st_mode) ||
+	    S_ISSOCK(curr_d->stats.st_mode))
+	{
+		if (check_permission(curr_d->stats) == 2)
+			return (NULL);
+		else
+		{
+			ft_putstr(ls->arr[0]->path);
+			error(1, curr_d->path);
+			return (NULL);
+		}
+	}
+	else
+	{
+		dir = opendir(curr_d->path);
+		if (!dir)
+		{
+			error(2, curr_d->path);
+			return (NULL);
+		}
+	}
+	return (dir);
+}
 
 
 
@@ -442,25 +475,9 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	else
 		curr_d->dir_name = ft_strdup(ft_short_name(curr_d->path));
 	lstat(curr_d->path, &(curr_d->stats)); // STAT! Not stats!
-    /// Read and sort
-	dir = opendir(curr_d->path);
-	if (!dir)
-	{
-		if (check_permission(curr_d->stats) == 1)
-		{
-			ft_putstr(ls->arr[0]->path);
-			error(1, curr_d->path);
-			return ;
-		}
-		else if (check_permission(curr_d->stats) == 2)
-			return ;
-		else
-		{
-			error(2, curr_d->path);
-			return ;
-		}
 
-	}
+	if (!(dir = check_dir_and_permission(ls, curr_d)))
+		return ;
 	entry = readdir(dir);
 	/// Current dir
 	if (ls->a == 1)
