@@ -536,31 +536,6 @@ int     main(int ac, char **av)
 
 
 
-/// CORRECT
-char		**check_flags(t_ls *ls, char **av)
-{
-	if (av[1][0] != '-')
-		return (&(av[1]));
-	if (!(av[1][1]))
-		error(2, (av)[1]);
-	(av[1])++;
-	while (*((av)[1]))
-	{
-		ls->flags = 1;
-		(*((av)[1]) == 'a') ? ls->a = 1 : (*((av)[1]) == 'l') ? ls->l = 1 :
-		(*((av)[1]) == 'R') ? ls->R = 1 : (*((av)[1]) == 'r') ? ls->r = 1 :
-		(*((av)[1]) == 't') ? ls->t = 1 : (*((av)[1]) == 'u') ? ls->u = 1 :
-		(*((av)[1]) == '1') ? ls->_1 = 1 : (*((av)[1]) == 'x') ? ls->x = 1 :
-		(*((av)[1]) == 'S') ? ls->S = 1 : error(3, &(*((av)[1])));
-		((av)[1])++;
-	}
-	return (&(av[2]));
-}
-
-
-
-
-
 
 
 
