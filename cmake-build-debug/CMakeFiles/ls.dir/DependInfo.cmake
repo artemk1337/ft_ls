@@ -71,6 +71,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/Users/cchadwic/Documents/ls/libft/srcs/ft_tolower.c" "/Users/cchadwic/Documents/ls/cmake-build-debug/CMakeFiles/ls.dir/libft/srcs/ft_tolower.c.o"
   "/Users/cchadwic/Documents/ls/libft/srcs/ft_toupper.c" "/Users/cchadwic/Documents/ls/cmake-build-debug/CMakeFiles/ls.dir/libft/srcs/ft_toupper.c.o"
   "/Users/cchadwic/Documents/ls/src/main.c" "/Users/cchadwic/Documents/ls/cmake-build-debug/CMakeFiles/ls.dir/src/main.c.o"
+  "/Users/cchadwic/Documents/ls/src/test.c" "/Users/cchadwic/Documents/ls/cmake-build-debug/CMakeFiles/ls.dir/src/test.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")
 

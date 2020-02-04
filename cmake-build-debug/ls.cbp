@@ -291,6 +291,9 @@
 		<Unit filename="/Users/cchadwic/Documents/ls/src/main.c">
 			<Option target="ls"/>
 		</Unit>
+		<Unit filename="/Users/cchadwic/Documents/ls/src/test.c">
+			<Option target="ls"/>
+		</Unit>
 		<Unit filename="/Users/cchadwic/Documents/ls/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

@@ -66,6 +66,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/ls.dir/libft/srcs/ft_tolower.c.o"
   "CMakeFiles/ls.dir/libft/srcs/ft_toupper.c.o"
   "CMakeFiles/ls.dir/src/main.c.o"
+  "CMakeFiles/ls.dir/src/test.c.o"
   "ls"
   "ls.pdb"
 )

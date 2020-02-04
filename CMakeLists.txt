@@ -75,4 +75,4 @@ add_executable(ls
         libft/srcs/ft_strtrim.c
         libft/srcs/ft_tolower.c
         libft/srcs/ft_toupper.c
-        src/main.c)
+        src/main.c src/test.c)
