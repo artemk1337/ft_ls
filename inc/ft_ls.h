@@ -169,17 +169,21 @@ void            error(int code, char *file);
 
 
 
-/*ftsort.c*/
-
+/*ft_sort.c*/
 t_files     *revive_t_files(t_files **arr);
 void        sort_files_t(t_files **arr, int max);
 void        sort_files_l(t_files **arr, int max);
 void        sort_files_S(t_files **arr, int max);
 t_files		*sort_files(t_ls *ls, t_files *start, int max);
 
-/*ftreverse.c*/
+/*ft_reverse.c*/
 t_files		*reverse_order_files(t_files *start);
 
+/*ft_check_perm.c*/
+int         check_permission(struct stat stats);
+int         check_permission_for_dir(t_path *curr_d);
+DIR         *check_dir_and_permission(t_path *curr_d);
+int			check_args(char *name, t_path **arr);
 
 
 

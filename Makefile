@@ -20,9 +20,10 @@ LIBFT_PATH = libft/
 FLAGS = -Wall -Werror -Wextra
 INC = -I ./inc/ -I ./$(LIBFT_PATH)includes/
 
-SRCS_NAME = ftmain.c\
-			ftsort.c\
-			ftreverse.c\
+SRCS_NAME = ft_main.c\
+			ft_sort.c\
+			ft_reverse.c\
+			ft_check_perm.c\
 
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_NAME))
 OBJ = $(addprefix $(OBJ_PATH), $(SRCS_NAME:.c=.o))
