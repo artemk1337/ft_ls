@@ -64,3 +64,5 @@ t_ls    *init_ls(void)
 	ls->max_len_time = 12;
 	return (ls);
 }
+
+

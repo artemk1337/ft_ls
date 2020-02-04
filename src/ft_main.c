@@ -547,13 +547,8 @@ char		**check_flags(t_ls *ls, char **av)
 	while (*((av)[1]))
 	{
 		ls->flags = 1;
-		if (*((av)[1]) == 'a')
-			ls->a = 1;
-		else if (*((av)[1]) == 'l')
-			ls->l = 1;
-		else if (*((av)[1]) == 'R')
-			ls->R = 1;
-		else if (*((av)[1]) == 'r')
+		(*((av)[1]) == 'a') ? (ls->a = 1) : (*((av)[1]) == 'l') ? (ls->l = 1) : (*((av)[1]) == 'R') ? ls->R = 1 : 0;
+		if (*((av)[1]) == 'r')
 			ls->r = 1;
 		else if (*((av)[1]) == 't')
 			ls->t = 1;
@@ -582,6 +577,21 @@ char		**check_flags(t_ls *ls, char **av)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void		show_flag_R(t_path *curr_d)
 {
 	ft_putstr(curr_d->path);
@@ -589,23 +599,6 @@ void		show_flag_R(t_path *curr_d)
 	ft_putchar('\n');
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Correct
 int		get_columns(void)
 {
 	struct winsize w;
@@ -615,31 +608,4 @@ int		get_columns(void)
     // printf ("columns %d\n", w.ws_col);
 	return (w.ws_col);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
