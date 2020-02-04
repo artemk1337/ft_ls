@@ -146,24 +146,23 @@ typedef struct	s_ls
 }				t_ls;
 
 
-int             main(int ac, char **av);
+int			main(int ac, char **av);
 
-char			**check_flags(t_ls *ls, char **av);
+char		**check_flags(t_ls *ls, char **av);
 
-void			put_line_with_l(t_ls *ls, t_path *curr_d);
-void			put_line_without(t_ls *ls, t_path *curr_d);
+void		put_line_with_l(t_ls *ls, t_path *curr_d);
+void		put_line_without(t_ls *ls, t_path *curr_d);
 
 
-void    		show_dir(t_ls *ls, t_path *curr_d);
-void			put_mode(t_ls *ls, struct stat fileStat, char *filename);
-void			put_smth(t_ls *ls, char *tmp, int *ls_len, int k);
-void			put_date(t_ls *ls, time_t time_);
-void	        put_filename(t_ls *ls, char *tmp);
-void		    show_flag_R(t_path *curr_d);
-void            put_owner(t_ls *ls, char *tmp, int *ls_len, int k);
+void		show_dir(t_ls *ls, t_path *curr_d);
+void		put_mode(t_ls *ls, struct stat fileStat, char *filename);
+void		put_smth(t_ls *ls, char *tmp, int *ls_len, int k);
+void		put_date(t_ls *ls, time_t time_);
+void		put_filename(t_ls *ls, char *tmp);
+void		show_flag_R(t_path *curr_d);
+void		put_owner(t_ls *ls, char *tmp, int *ls_len, int k);
 
-int				get_columns(void);
-void            error(int code, char *file);
+int			get_columns(void);
 
 
 
@@ -191,11 +190,14 @@ t_path		*init_path(char *path);
 t_ls		*init_ls(void);
 
 /*ft_put.c*/
-void	put_filename(t_ls *ls, char *tmp);
-void	put_smth(t_ls *ls, char *tmp, int *ls_len, int k);
-void    put_owner(t_ls *ls, char *tmp, int *ls_len, int k);
-void	put_date(t_ls *ls, time_t time_);
-void    put_mode(t_ls *ls, struct stat fileStat, char *filename);
+void		put_filename(t_ls *ls, char *tmp);
+void		put_smth(t_ls *ls, char *tmp, int *ls_len, int k);
+void    	put_owner(t_ls *ls, char *tmp, int *ls_len, int k);
+void		put_date(t_ls *ls, time_t time_);
+void    	put_mode(t_ls *ls, struct stat fileStat, char *filename);
+
+/*ft_error.c*/
+void		error(int code, char *file);
 
 
 
