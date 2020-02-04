@@ -45,13 +45,10 @@ char        *convert_filename(char *s1, char *s2)
 	i = -1;
 	while (s1[++i])
 		;
-
 	k = -1;
 	while (s2[++k])
 		s1[i++] = s2[k];
 	s1[i] = '\0';
-	// printf("CONVERT %s\n", s1);
-	//ft_putstr(s2);
 	return (s1);
 }
 
@@ -64,7 +61,6 @@ char        *prepare_path(char *s)
 	int     k;
 	int     sign;
 
-	// ft_putstr("PREPARE PATH START\n");
 	i = 0;
 	k = 0;
 	sign = 0;
@@ -72,11 +68,8 @@ char        *prepare_path(char *s)
 		ERROR;
 	while (s[i])
 	{
-		if (s[i] != '/')
-		{
-			sign = 0;
+		if (s[i] != '/' && !(sign = 0))
 			s1[k++] = s[i++];
-		}
 		else if (s[i] == '/')
 		{
 			if (sign == 0)
