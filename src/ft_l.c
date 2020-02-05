@@ -33,8 +33,11 @@ void		l_put(t_ls *ls, t_files *curr_f, t_path *curr_d)
 void		l_dop(t_ls *ls, t_path *curr_d, t_files *curr_f)
 {
 	int		i;
-	char	s_tmp[NAME_MAX];
+	char	s_tmp[PATH_MAX];
 
+	i = -1;
+	while (++i < PATH_MAX)
+		s_tmp[i] = '\0';
 	while (curr_f)
 	{
 		l_put(ls, curr_f, curr_d);
@@ -44,7 +47,7 @@ void		l_dop(t_ls *ls, t_path *curr_d, t_files *curr_f)
 		{
 			ft_putstr(" -> ");
 			readlink(convert_filename(prepare_path(curr_d->path),
-			curr_f->filename), s_tmp, NAME_MAX);
+			curr_f->filename), s_tmp, PATH_MAX);
 			ft_putstr(s_tmp);
 		}
 		ft_putchar('\n');

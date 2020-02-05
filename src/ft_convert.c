@@ -56,7 +56,7 @@ char		*prepare_path(char *s)
 	i = 0;
 	k = 0;
 	sign = 0;
-	if (!(s1 = ft_strnew(PATH_MAX)))
+	if (!(s1 = ft_strnew(PATH_MAX + 1000)))
 		ERROR;
 	while (s[i])
 	{
