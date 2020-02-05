@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_error.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iuolo <iuolo@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/04 18:26:25 by cchadwic          #+#    #+#             */
+/*   Updated: 2020/02/04 19:03:10 by iuolo            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/ft_ls.h"
 
-void        error(int code, char *file)
+void		error(int code, char *file)
 {
 	if (code == 1)
 	{
@@ -22,7 +34,8 @@ void        error(int code, char *file)
 		ft_putstr("illegal option -- ");
 		ft_putchar(*file);
 		ft_putchar('\n');
-		ft_putstr("usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n");
+		ft_putstr("usage: ls \
+		[-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n");
 	}
 	exit(1);
 }

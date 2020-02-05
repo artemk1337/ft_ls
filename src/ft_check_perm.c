@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_check_perm.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iuolo <iuolo@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/04 18:25:54 by cchadwic          #+#    #+#             */
+/*   Updated: 2020/02/04 18:56:48 by iuolo            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
 
@@ -15,7 +26,7 @@ int			check_args(char *name, t_path **arr)
 	return (1);
 }
 
-int         check_permission(struct stat stats)
+int			check_permission(struct stat stats)
 {
 	if (stats.st_mode & !S_IWUSR)
 		return (1);
@@ -24,15 +35,15 @@ int         check_permission(struct stat stats)
 	return (0);
 }
 
-int         check_permission_for_dir(t_path *curr_d)
+int			check_permission_for_dir(t_path *curr_d)
 {
 	if (S_ISREG(curr_d->stats.st_mode) ||
-	    S_ISDIR(curr_d->stats.st_mode) ||
-	    S_ISLNK(curr_d->stats.st_mode) ||
-	    S_ISCHR(curr_d->stats.st_mode) ||
-	    S_ISBLK(curr_d->stats.st_mode) ||
-	    S_ISFIFO(curr_d->stats.st_mode) ||
-	    S_ISSOCK(curr_d->stats.st_mode))
+		S_ISDIR(curr_d->stats.st_mode) ||
+		S_ISLNK(curr_d->stats.st_mode) ||
+		S_ISCHR(curr_d->stats.st_mode) ||
+		S_ISBLK(curr_d->stats.st_mode) ||
+		S_ISFIFO(curr_d->stats.st_mode) ||
+		S_ISSOCK(curr_d->stats.st_mode))
 	{
 		if (check_permission(curr_d->stats) == 2)
 			return (1);
@@ -45,18 +56,18 @@ int         check_permission_for_dir(t_path *curr_d)
 	return (0);
 }
 
-DIR         *check_dir_and_permission(t_path *curr_d)
+DIR			*check_dir_and_permission(t_path *curr_d)
 {
 	DIR *dir;
 
 	dir = opendir(curr_d->path);
 	if (S_ISREG(curr_d->stats.st_mode) ||
 		S_ISDIR(curr_d->stats.st_mode) ||
-	    S_ISLNK(curr_d->stats.st_mode) ||
-	    S_ISCHR(curr_d->stats.st_mode) ||
-	    S_ISBLK(curr_d->stats.st_mode) ||
-	    S_ISFIFO(curr_d->stats.st_mode) ||
-	    S_ISSOCK(curr_d->stats.st_mode))
+		S_ISLNK(curr_d->stats.st_mode) ||
+		S_ISCHR(curr_d->stats.st_mode) ||
+		S_ISBLK(curr_d->stats.st_mode) ||
+		S_ISFIFO(curr_d->stats.st_mode) ||
+		S_ISSOCK(curr_d->stats.st_mode))
 	{
 		if (check_permission(curr_d->stats) == 2)
 			return (NULL);
@@ -67,7 +78,9 @@ DIR         *check_dir_and_permission(t_path *curr_d)
 		}
 	}
 	else
-		if (!dir && check_permission_for_dir(curr_d) == 0)
+	{
+		if (!(dir) && check_permission_for_dir(curr_d) == 0)
 			error(2, curr_d->path);
+	}
 	return (dir);
 }

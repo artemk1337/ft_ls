@@ -6,12 +6,12 @@
 /*   By: cchadwic <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 22:10:32 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/01/28 22:11:27 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/04 20:25:33 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _FT_LS_H_
-# define _FT_LS_H_
+#ifndef FT_LS_H
+# define FT_LS_H
 
 # include <../libft/includes/libft.h>
 # include <unistd.h>
@@ -28,9 +28,7 @@
 # include <sys/xattr.h>
 # include <sys/acl.h>
 # include <string.h>
-
 # include <sys/syslimits.h>
-
 
 # define BUFF_SIZE 1024
 # define ERROR exit(1)
@@ -38,78 +36,24 @@
 # define ABS(a) (a < 0 ? -a : a)
 # define MAX(a, b) (a >= b ? a : b)
 
-
-enum	{ERRNO, USAGE, MALL_ERR};
-
-/*
-struct stat {
-    dev_t     st_dev;          ID устройства с файлом 
-    ino_t     st_ino;          номер inode 
-    mode_t    st_mode;         права доступа 
-    nlink_t   st_nlink;        кол-во жёстких ссылок 
-    uid_t     st_uid;          ID пользователя-владельца 
-    gid_t     st_gid;          ID группы-владельца 
-    dev_t     st_rdev;         ID устройства (если это спец. файл) 
-    off_t     st_size;         полный размер в байтах 
-    blksize_t st_blksize;      размер блока ввода-вывода файловой системы 
-    blkcnt_t  st_blocks;       кол-во выделенных блоков по 512Б 
-     Начиная с Linux 2.6, ядро поддерживает точность до
-       наносекунд в следующих полям меток времени.
-       Подробней о версиях до Linux 2.6, смотрите ЗАМЕЧАНИЯ. 
-    struct timespec st_atime;   время последнего доступа 
-    struct timespec st_mtime;   время последнего изменения 
-    struct timespec st_ctime;   время последней смены состояния 
-#define st_atime st_atim.tv_sec       для обратной совместимости 
-#define st_mtime st_mtim.tv_sec
-#define st_ctime st_ctim.tv_sec
-};
-*/
-
-/*
-struct passwd {
-    char   *pw_name;        имя пользователя 
-    char   *pw_passwd;      пароль пользователя 
-    uid_t   pw_uid;         идентификатор пользователя 
-    gid_t   pw_gid;         идентификатор группы 
-    char   *pw_gecos;       информация о пользователе 
-    char   *pw_dir;         домашний каталог 
-    char   *pw_shell;       программная оболочка 
-};
-*/
-
-/*
-struct termios {
- tcflag_t c_iflag;  флаги режима ввода 
- tcflag_t c_oflag;  флаги режима вывода 
- tcflag_t c_cflag;  флаги управляющего режима 
- tcflag_t c_lflag;  флаги локального режима 
- cc_t c_line;       дисциплина линии связи 
- cc_t c_cc[NCCS];  управляющие символы 
-};
-*/
-
-
-
 typedef struct	s_info
 {
-	int				total; 
+	int				total;
 	int				max_len_owner;
 	int				max_len_group;
 	int				max_len_links;
 	int				max_len_size;
 	int				max_len;
-	int             max_len_time;
+	int				max_len_time;
 }				t_info;
-
 
 typedef	struct	s_files
 {
 	char			*filename;
 	int				len_name;
-	struct	s_files	*next;
+	struct s_files	*next;
 	struct stat		stats;
 }				t_files;
-
 
 typedef	struct	s_path
 {
@@ -122,100 +66,120 @@ typedef	struct	s_path
 	t_files			*files;
 }				t_path;
 
-
-
 typedef struct	s_ls
 {
-	int             flags;
-	int             a;
-	int             l;
-	int             R;
-	int             r;
-	int             t;
+	int				flags;
+	int				a;
+	int				l;
+	int				rr;
+	int				r;
+	int				t;
 
-	int             u;
-	int             _1;
-	int             x;
-	int             S;
+	int				u;
+	int				one;
+	int				x;
+	int				s;
 
-	char            buffer[PATH_MAX * 2];
-	int             i;
+	char			buffer[PATH_MAX * 2];
+	int				i;
 	int				max_len_time;
 	struct stat		stats;
 	t_path			**arr;
 }				t_ls;
 
+int				main(int ac, char **av);
 
-int			main(int ac, char **av);
+char			**check_flags(t_ls *ls, char **av);
 
-char		**check_flags(t_ls *ls, char **av);
+int				get_columns(void);
 
-void		put_line_with_l(t_ls *ls, t_path *curr_d);
-void		put_line_without(t_ls *ls, t_path *curr_d);
+/*
+** ft_sort.c
+*/
+t_files			*revive_t_files(t_files **arr);
+void			sort_files_t(t_files **arr, int max);
+void			sort_files_l(t_files **arr, int max);
+void			sort_files_s(t_files **arr, int max);
+t_files			*sort_files(t_ls *ls, t_files *start, int max);
 
+/*
+** ft_reverse.c
+*/
+t_files			*reverse_order_files(t_files *start);
 
-void		show_dir(t_ls *ls, t_path *curr_d);
-void		put_mode(t_ls *ls, struct stat fileStat, char *filename);
-void		put_smth(t_ls *ls, char *tmp, int *ls_len, int k);
-void		put_date(t_ls *ls, time_t time_);
-void		put_filename(t_ls *ls, char *tmp);
-void		show_flag_R(t_path *curr_d);
-void		put_owner(t_ls *ls, char *tmp, int *ls_len, int k);
+/*
+**ft_check_perm.c
+*/
+int				check_permission(struct stat stats);
+int				check_permission_for_dir(t_path *curr_d);
+DIR				*check_dir_and_permission(t_path *curr_d);
+int				check_args(char *name, t_path **arr);
 
-int			get_columns(void);
+/*
+**ft_init.c
+*/
+t_files			*init_files(void);
+t_info			*init_info(void);
+t_path			*init_path(char *path);
+t_ls			*init_ls(void);
+void			put_flags(t_ls *ls, char **av);
+char			**check_flags(t_ls *ls, char **av);
 
+/*
+**ft_put.c
+*/
+void			put_filename(t_ls *ls, char *tmp);
+void			put_smth(t_ls *ls, char *tmp, int *ls_len, int k);
+void			put_owner(t_ls *ls, char *tmp, int *ls_len, int k);
+void			put_date(t_ls *ls, time_t time_);
+void			put_mode(t_ls *ls, struct stat filestat, char *filename);
 
+/*
+**ft_error.c
+*/
+void			error(int code, char *file);
 
+/*
+**ft_convert.c
+*/
+char			*ft_short_name(char *path);
+char			*convert_filename(char *s1, char *s2);
+char			*prepare_path(char *s);
 
-/*ft_sort.c*/
-t_files		*revive_t_files(t_files **arr);
-void		sort_files_t(t_files **arr, int max);
-void		sort_files_l(t_files **arr, int max);
-void		sort_files_S(t_files **arr, int max);
-t_files		*sort_files(t_ls *ls, t_files *start, int max);
+/*
+**get_term_size.c
+*/
+void			show_flag_r(t_path *curr_d);
+int				get_columns(void);
+int				file_hide(char *file);
+int				get_size_time(time_t time_);
+size_t			return_time(t_ls *ls, struct stat stats);
 
-/*ft_reverse.c*/
-t_files		*reverse_order_files(t_files *start);
+/*
+**ft_check_1.c
+*/
+t_files			*g_f_check_a(t_ls *ls, t_path *curr_d);
+void			g_f_read_files_cheack_stat(t_ls *ls, t_files *curr_f,
+t_path *curr_d);
+t_files			*g_f_read_files_1(t_files *curr_f, t_path *curr_d);
+int				g_f_read_files(t_ls *ls, t_path *curr_d, t_files *curr_f,
+DIR *dir);
 
-/*ft_check_perm.c*/
-int			check_permission(struct stat stats);
-int			check_permission_for_dir(t_path *curr_d);
-DIR			*check_dir_and_permission(t_path *curr_d);
-int			check_args(char *name, t_path **arr);
+/*
+**ft_get_files.c
+*/
+void			g_f_rec(t_ls *ls, t_path *curr_d, t_files *curr_f);
+void			get_files(t_ls *ls, t_path *curr_d);
 
-/*ft_init.c*/
-t_files		*init_files(void);
-t_info		*init_info(void);
-t_path		*init_path(char *path);
-t_ls		*init_ls(void);
-char		**check_flags(t_ls *ls, char **av);
+void			ft_print_l(t_path *curr_d);
+void			ft_print_1(t_path *curr_d, t_files *curr_f);
+int				*get_col(t_path *curr_d, int *max_size, int *columns);
+void			x_dop(int lines, int columns, int max_size, char **arr);
+void			ft_print_x(int counter, t_path *curr_d, t_files *curr_f);
+void			stand_dop(int lines, int columns, int max_size, char **arr);
+void			ft_print_stand(int counter, t_path *curr_d, t_files *curr_f);
+void			main_dop(t_ls *ls, int ac, char **av);
 
-/*ft_put.c*/
-void		put_filename(t_ls *ls, char *tmp);
-void		put_smth(t_ls *ls, char *tmp, int *ls_len, int k);
-void    	put_owner(t_ls *ls, char *tmp, int *ls_len, int k);
-void		put_date(t_ls *ls, time_t time_);
-void    	put_mode(t_ls *ls, struct stat fileStat, char *filename);
-
-/*ft_error.c*/
-void		error(int code, char *file);
-
-/*ft_convert.c*/
-char		*ft_short_name(char *path);
-char        *convert_filename(char *s1, char *s2);
-char        *prepare_path(char *s);
-
-/*get_term_size.c*/
-void		show_flag_R(t_path *curr_d);
-int		get_columns(void);
-int			file_hide(char *file);
-int     get_size_time(time_t time_);
-size_t      return_time(t_ls *ls, struct stat stats);
-
-
-
-
-
-
+t_ls			*g_ls;
 
 #endif

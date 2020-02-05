@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_convert.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cchadwic <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/04 18:26:08 by cchadwic          #+#    #+#             */
+/*   Updated: 2020/02/04 18:26:15 by cchadwic         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/ft_ls.h"
 
 char		*ft_short_name(char *path)
@@ -19,7 +31,7 @@ char		*ft_short_name(char *path)
 	return (&(path[k]));
 }
 
-char        *convert_filename(char *s1, char *s2)
+char		*convert_filename(char *s1, char *s2)
 {
 	int i;
 	int k;
@@ -34,12 +46,12 @@ char        *convert_filename(char *s1, char *s2)
 	return (s1);
 }
 
-char        *prepare_path(char *s)
+char		*prepare_path(char *s)
 {
-	char    *s1;
-	int     i;
-	int     k;
-	int     sign;
+	char	*s1;
+	int		i;
+	int		k;
+	int		sign;
 
 	i = 0;
 	k = 0;

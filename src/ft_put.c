@@ -1,13 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_put.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iuolo <iuolo@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/04 18:28:11 by cchadwic          #+#    #+#             */
+/*   Updated: 2020/02/04 19:32:41 by iuolo            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/ft_ls.h"
 
-void	put_filename(t_ls *ls, char *tmp)
-{
-    ls->buffer[(ls->i)++] = ' ';
-    while (*tmp)
-        ls->buffer[(ls->i)++] = *(tmp++);
-}
-
-void	put_smth(t_ls *ls, char *tmp, int *ls_len, int k)
+void		put_smth(t_ls *ls, char *tmp, int *ls_len, int k)
 {
 	int		len;
 	int		i;
@@ -15,7 +20,7 @@ void	put_smth(t_ls *ls, char *tmp, int *ls_len, int k)
 	i = -1;
 	ls->buffer[(ls->i)++] = ' ';
 	if (k == 2)
-        ls->buffer[(ls->i)++] = ' ';
+		ls->buffer[(ls->i)++] = ' ';
 	len = ft_strlen(tmp);
 	while (++len <= *ls_len)
 		ls->buffer[(ls->i)++] = ' ';
@@ -23,21 +28,21 @@ void	put_smth(t_ls *ls, char *tmp, int *ls_len, int k)
 		ls->buffer[(ls->i)++] = tmp[i];
 }
 
-void    put_owner(t_ls *ls, char *tmp, int *ls_len, int k)
+void		put_owner(t_ls *ls, char *tmp, int *ls_len, int k)
 {
-    int		i;
+	int		i;
 
-    ls->buffer[(ls->i)++] = ' ';
-    if (k == 2)
-        ls->buffer[(ls->i)++] = ' ';
-    i = -1;
-    while (tmp[++i])
-        ls->buffer[(ls->i)++] = tmp[i];
-    while (i++ < *ls_len)
-        ls->buffer[(ls->i)++] = ' ';
+	ls->buffer[(ls->i)++] = ' ';
+	if (k == 2)
+		ls->buffer[(ls->i)++] = ' ';
+	i = -1;
+	while (tmp[++i])
+		ls->buffer[(ls->i)++] = tmp[i];
+	while (i++ < *ls_len)
+		ls->buffer[(ls->i)++] = ' ';
 }
 
-void	put_date(t_ls *ls, time_t time_)
+void		put_date(t_ls *ls, time_t time_)
 {
 	char	*tmp;
 	int		i;
@@ -48,35 +53,38 @@ void	put_date(t_ls *ls, time_t time_)
 	while (++i < 7)
 		ls->buffer[(ls->i)++] = tmp[i];
 	i--;
-	// if >= полгода
 	if (ABS(difftime(time(NULL), time_)) >= 15768000 && (i = 15))
 	{
-        ls->buffer[(ls->i)++] = ' ';
-        while (++i < 20)
-            ls->buffer[(ls->i)++] = tmp[i];
-    }
+		ls->buffer[(ls->i)++] = ' ';
+		while (++i < 20)
+			ls->buffer[(ls->i)++] = tmp[i];
+	}
 	while (++i < 12)
 		ls->buffer[(ls->i)++] = tmp[i];
 }
 
-void    put_mode(t_ls *ls, struct stat fileStat, char *filename)
+static void	dop(t_ls *ls, struct stat filestat)
 {
-	char chr;
-	acl_t acl;
-	acl_entry_t dummy;
-	ssize_t xattr;
+	ls->buffer[(ls->i)++] = (S_ISDIR(filestat.st_mode)) ? 'd' : '-';
+	ls->buffer[(ls->i)++] = (filestat.st_mode & S_IWUSR) ? 'r' : '-';
+	ls->buffer[(ls->i)++] = (filestat.st_mode & S_IWUSR) ? 'w' : '-';
+	ls->buffer[(ls->i)++] = (filestat.st_mode & S_IXUSR) ? 'x' : '-';
+	ls->buffer[(ls->i)++] = (filestat.st_mode & S_IRGRP) ? 'r' : '-';
+	ls->buffer[(ls->i)++] = (filestat.st_mode & S_IWGRP) ? 'w' : '-';
+	ls->buffer[(ls->i)++] = (filestat.st_mode & S_IXGRP) ? 'x' : '-';
+	ls->buffer[(ls->i)++] = (filestat.st_mode & S_IROTH) ? 'r' : '-';
+	ls->buffer[(ls->i)++] = (filestat.st_mode & S_IWOTH) ? 'w' : '-';
+	ls->buffer[(ls->i)++] = (filestat.st_mode & S_IXOTH) ? 'x' : '-';
+}
 
-	ls->buffer[(ls->i)++] = (S_ISDIR(fileStat.st_mode)) ? 'd' : '-';
-	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IWUSR) ? 'r' : '-';
-	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IWUSR) ? 'w' : '-';
-	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IXUSR) ? 'x' : '-';
-	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IRGRP) ? 'r' : '-';
-	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IWGRP) ? 'w' : '-';
-	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IXGRP) ? 'x' : '-';
-	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IROTH) ? 'r' : '-';
-	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IWOTH) ? 'w' : '-';
-	ls->buffer[(ls->i)++] = (fileStat.st_mode & S_IXOTH) ? 'x' : '-';
+void		put_mode(t_ls *ls, struct stat filestat, char *filename)
+{
+	char		chr;
+	acl_t		acl;
+	acl_entry_t	dummy;
+	ssize_t		xattr;
 
+	dop(ls, filestat);
 	acl = acl_get_link_np(filename, ACL_TYPE_EXTENDED);
 	if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1)
 	{
