@@ -48,12 +48,12 @@ $(NAME): $(OBJ)
 $(OBJ_PATH)%.o: $(SRCS_PATH)%.c
 	@mkdir -p obj
 	@gcc -c $(FLAGS) $(INC) $< -o $@
-	@echo "\033[34m\033[1mCompilation of \033[0m\033[36m$(notdir $<)\033[1m\033[34m done.\033[0m"
+	@echo "\033[34m\033[1mCompilation of\t\033[0m\033[36m$(notdir $<)\033[1m\033[34m done.\033[0m"
 
 clean:
 	@make -C $(LIBFT_PATH)/ clean
 	@/bin/rm -rf $(OBJ_PATH)
-	@echo "\033[31mObjects files \033[1;31m$(OBJ)\033[1;0m\033[31m removed.\033[0m"
+	@echo "\033[31mObjects files\t\033[1;31m$(OBJ)\033[1;0m\033[31m removed.\033[0m"
 
 fclean: clean
 	@make -C $(LIBFT_PATH)/ fclean
