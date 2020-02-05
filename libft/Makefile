@@ -12,11 +12,13 @@
 
 NAME = libft.a
 
-INC = -I ./includes/
+CFLAGS = -Wall -Werror -Wextra
 
-FLAGS = -Wall -Wextra -Werror
+INCLUDE = -I ./includes
 
-SRCS_NAME = ft_strsplit.c   ft_strdup.c        ft_lstmap.c\
+HEADER = libft.h
+
+SRC = ft_strsplit.c   ft_strdup.c        ft_lstmap.c\
 ft_memset.c ft_strequ.c        ft_lstnew.c\
 ft_strsub.c ft_striter.c           ft_memalloc.c\
 ft_strtrim.c    ft_striteri.c          ft_memccpy.c\
@@ -39,30 +41,31 @@ ft_strcmp.c ft_lstdel.c        ft_list_last.c\
 ft_strcpy.c ft_lstdelone.c         ft_list_push_back.c\
 ft_strdel.c ft_lstiter.c           ft_list_push_front.c
 
+OBJ = $(SRC:.c=.o)
 
+DSRC = src/
+DOBJ = obj/
+DHEADER = includes/
 
-### PATH ###
-SRCS_PATH = srcs/
-OBJ_PATH  = obj/
-
-SRCS = $(addprefix $(SRCS_PATH), $(SRCS_NAME))
-OBJ = $(addprefix $(OBJ_PATH), $(SRCS_NAME:.c=.o))
+CSRC = $(addprefix $(DSRC),$(SRC))
+COBJ = $(addprefix $(DOBJ),$(OBJ))
+CHEADER = $(addprefix $(DHEADER),$(HEADER))
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	@ar rc $(NAME) $(OBJ)
+$(NAME): $(COBJ)
+	@ar rc $(NAME) $?
 	@ranlib $(NAME)
-	@echo "\033[32mBinary \033[1;32m$(NAME)\033[1;0m\033[32m created.\033[0m"
+	@echo "\033[32mBinary\t\t\033[1;32m$(NAME)\033[1;0m\033[32m created.\033[0m"
 
-$(OBJ_PATH)%.o: $(SRCS_PATH)%.c
-	@mkdir -p obj
-	@gcc -c $(FLAGS) $(INC) $< -o $@
-	@echo "\033[34m\033[1mCompilation of \033[0m\033[36m$(notdir $<)\033[1m\033[34m done.\033[0m"
+$(DOBJ)%.o : $(DSRC)%.c $(CHEADER)
+	@mkdir -p $(DOBJ)
+	@gcc $(CFLAGS) $(INCLUDE) -c $< -o $@
+	@echo "\033[34m\033[1mCompilation of \t\033[0m\033[36m$(notdir $<)\033[1m\033[34m done.\033[0m"
 
 clean:
-	@/bin/rm -rf $(OBJ_PATH)
-	@echo "\033[31mObjects files \033[1;31m$(OBJS_LIST)\033[1;0m\033[31m removed.\033[0m"
+	@/bin/rm -rf $(DOBJ)
+	@echo "\033[31mObjects files \033[1;31m$(OBJ)\033[1;0m\033[31m removed.\033[0m"
 
 fclean: clean
 	@/bin/rm -rf $(NAME)
@@ -70,4 +73,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all, clean, fclean, re
+.PHONY: all clean fclean re
