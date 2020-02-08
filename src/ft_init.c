@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iuolo <iuolo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:27:02 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/04 20:45:19 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/08 22:25:29 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_files		*init_files(void)
 	t_files	*a;
 
 	if (!(a = malloc(sizeof(t_files))))
-		ERROR;
+		ERROR(1);
 	a->filename = NULL;
 	a->len_name = 0;
 	a->next = NULL;
@@ -29,7 +29,7 @@ t_info		*init_info(void)
 	t_info *a;
 
 	if (!(a = malloc(sizeof(t_info))))
-		ERROR;
+		ERROR(1);
 	a->total = 0;
 	a->max_len_owner = 0;
 	a->max_len_group = 0;
@@ -45,10 +45,10 @@ t_path		*init_path(char *path)
 	t_path *a;
 
 	if (!(a = malloc(sizeof(t_path))))
-		ERROR;
+		ERROR(1);
 	a->next = NULL;
 	if (!(a->path = ft_strdup(path)))
-		ERROR;
+		ERROR(1);
 	a->dir_name = NULL;
 	a->depth = 0;
 	a->info = init_info();
@@ -61,7 +61,7 @@ t_ls		*init_ls(void)
 	t_ls	*ls;
 
 	if (!(ls = malloc(sizeof(t_ls))))
-		ERROR;
+		ERROR(1);
 	ls->a = 0;
 	ls->l = 0;
 	ls->rr = 0;

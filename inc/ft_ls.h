@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cchadwic <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 22:10:32 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/04 20:25:33 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/08 22:29:21 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,8 @@
 # include <string.h>
 # include <sys/syslimits.h>
 
-# define BUFF_SIZE 1024
-# define ERROR exit(1)
-
-# define ABS(a) (a < 0 ? -a : a)
-# define MAX(a, b) (a >= b ? a : b)
+# define BUFF_SIZE	1024
+# define ERROR		exit
 
 typedef struct	s_info
 {
@@ -179,6 +176,9 @@ void			ft_print_x(int counter, t_path *curr_d, t_files *curr_f);
 void			stand_dop(int lines, int columns, int max_size, char **arr);
 void			ft_print_stand(int counter, t_path *curr_d, t_files *curr_f);
 void			main_dop(t_ls *ls, int ac, char **av);
+
+int				ft_abs(int a);
+int				ft_max(int a, int b);
 
 t_ls			*g_ls;
 

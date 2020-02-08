@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_other.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cchadwic <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:27:53 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/04 18:28:01 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/08 22:24:02 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void		ft_print_x(int counter, t_path *curr_d, t_files *curr_f)
 	columns = *get_col(curr_d, &max_size, &columns);
 	lines = counter / columns + ((counter % columns > 0) ? 1 : 0);
 	if (!(arr = malloc(sizeof(char *) * (counter + 1))))
-		ERROR;
+		ERROR(1);
 	arr[counter] = NULL;
 	curr_f = curr_d->files;
 	i = 0;
@@ -118,7 +118,7 @@ void		ft_print_stand(int counter, t_path *curr_d, t_files *curr_f)
 	columns = *get_col(curr_d, &max_size, &columns);
 	lines = counter / columns + ((counter % columns > 0) ? 1 : 0);
 	if (!(arr = malloc(sizeof(char *) * (counter + 1))))
-		ERROR;
+		ERROR(1);
 	arr[counter] = NULL;
 	curr_f = curr_d->files;
 	i = 0;

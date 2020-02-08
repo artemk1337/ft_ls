@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cchadwic <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 21:50:49 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/01/28 21:50:51 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/08 22:24:00 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ void		main_dop(t_ls *ls, int ac, char **av)
 	if (ac == 1)
 	{
 		if (!(ls->arr = malloc(sizeof(t_path *) * 2)))
-			ERROR;
+			ERROR(1);
 		ls->arr[0] = init_path(".");
 		ls->arr[1] = NULL;
 	}
 	else if (ac > 1)
 	{
 		if (!(ls->arr = malloc(sizeof(t_path *) * (ac))))
-			ERROR;
+			ERROR(1);
 		i = -1;
 		while (++i < ac - 1)
 			ls->arr[i] = init_path(av[i]);

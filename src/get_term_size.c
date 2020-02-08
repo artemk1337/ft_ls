@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_term_size.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iuolo <iuolo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:28:54 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/04 19:23:41 by iuolo            ###   ########.fr       */
+/*   Updated: 2020/02/08 22:33:36 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		get_size_time(time_t time_)
 
 	i = 7;
 	start = i;
-	if (ABS(difftime(time(NULL), time_)) >= 15768000)
+	if (ft_abs(time(NULL) - time_) >= 15768000)
 	{
 		start = 15;
 		i = 21;

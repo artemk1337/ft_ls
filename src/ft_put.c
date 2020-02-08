@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_put.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iuolo <iuolo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:28:11 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/04 19:32:41 by iuolo            ###   ########.fr       */
+/*   Updated: 2020/02/08 22:29:25 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void		put_date(t_ls *ls, time_t time_)
 	while (++i < 7)
 		ls->buffer[(ls->i)++] = tmp[i];
 	i--;
-	if (ABS(difftime(time(NULL), time_)) >= 15768000 && (i = 15))
+	if (ft_abs(difftime(time(NULL), time_)) >= 15768000 && (i = 15))
 	{
 		ls->buffer[(ls->i)++] = ' ';
 		while (++i < 20)

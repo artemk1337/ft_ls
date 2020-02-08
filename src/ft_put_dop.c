@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   ft_put_dop.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cchadwic <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 20:19:12 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/04 20:19:14 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/08 22:29:15 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
+
+int		ft_abs(int a)
+{
+	return ((a) < 0 ? -(a) : (a));
+}
+
+int		ft_max(int a, int b)
+{
+	return ((a >= b) ? (a) : (b));
+}
 
 void	put_filename(t_ls *ls, char *tmp)
 {

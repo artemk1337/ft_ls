@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_convert.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cchadwic <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:26:08 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/04 18:26:15 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/08 22:23:43 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char		*prepare_path(char *s)
 	k = 0;
 	sign = 0;
 	if (!(s1 = ft_strnew(PATH_MAX + 1000)))
-		ERROR;
+		ERROR(1);
 	while (s[i])
 	{
 		if (s[i] != '/' && !(sign = 0))

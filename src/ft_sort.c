@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_sort.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iuolo <iuolo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:28:33 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/04 20:46:13 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/08 22:24:11 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	t_files	*tmp;
 
 	if (!(arr = (t_files **)malloc(sizeof(t_files *) * (max + 1))))
-		ERROR;
+		ERROR(1);
 	arr[max] = NULL;
 	i = 0;
 	tmp = start;
