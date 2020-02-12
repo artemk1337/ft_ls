@@ -128,4 +128,8 @@ void		ft_print_stand(int counter, t_path *curr_d, t_files *curr_f)
 		curr_f = curr_f->next;
 	}
 	stand_dop(lines, columns, max_size, arr);
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
 }
