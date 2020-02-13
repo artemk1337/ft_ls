@@ -123,7 +123,6 @@ t_files			*init_files(void);
 t_info			*init_info(void);
 t_path			*init_path(char *path);
 t_ls			*init_ls(void);
-void			put_flags(t_ls *ls, char **av);
 char			**check_flags(t_ls *ls, char **av);
 
 /*
@@ -187,8 +186,14 @@ void			stand_dop(int lines, int columns, int max_size, char **arr);
 void			ft_print_stand(int counter, t_path *curr_d, t_files *curr_f);
 void			main_dop(t_ls *ls, int ac, char **av);
 
+/*
+**ft_put_dop.c
+*/
+
 int				ft_abs(int a);
 int				ft_max(int a, int b);
+int				len_arr(char **arr);
+void			put_flags(t_ls *ls, char **av);
 
 t_ls			*g_ls;
 

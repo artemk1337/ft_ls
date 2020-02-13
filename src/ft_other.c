@@ -80,30 +80,30 @@ void		ft_print_x(int counter, t_path *curr_d, t_files *curr_f)
 
 void		stand_dop(int lines, int columns, int max_size, char **arr)
 {
-	int shift;
-	int k;
+	int l;
+	int count_columns;
+	int len;
 	int i;
 
-	shift = 0;
-	while (shift < lines)
+	l = 0;
+	len = len_arr(arr);
+	while (l < lines)
 	{
-		k = 0;
-		while (k < columns && arr[k * lines + shift])
+		count_columns = 0;
+		while (count_columns * lines + l < len && count_columns < columns)
 		{
 			i = 0;
-			while (arr[k * lines + shift] && arr[k * lines + shift][i])
-			{
-				g_ls->buffer[(g_ls->i)++] = arr[k * lines + shift][i++];
-			}
-			while (i++ <= max_size)
+			while (arr[count_columns * lines + l][i])
+				g_ls->buffer[(g_ls->i)++] = arr[count_columns * lines + l][i++];
+			while (i++ < max_size)
 				g_ls->buffer[(g_ls->i)++] = ' ';
-			k++;
+			count_columns++;
 		}
 		g_ls->buffer[(g_ls->i)++] = '\0';
 		ft_putstr(g_ls->buffer);
 		ft_putchar('\n');
 		g_ls->i = 0;
-		shift++;
+		l++;
 	}
 }
 

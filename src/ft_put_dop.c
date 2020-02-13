@@ -22,6 +22,16 @@ int		ft_max(int a, int b)
 	return ((a >= b) ? (a) : (b));
 }
 
+int		len_arr(char **arr)
+{
+	int i;
+
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
+}
+
 void	put_filename(t_ls *ls, char *tmp)
 {
 	ls->buffer[(ls->i)++] = ' ';
