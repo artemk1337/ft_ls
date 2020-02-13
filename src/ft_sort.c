@@ -12,7 +12,7 @@
 
 #include "../inc/ft_ls.h"
 
-t_files		*revive_t_files(t_files **arr)
+t_files		*revive_files(t_files **arr)
 {
 	t_files *start;
 	int		i;
@@ -118,7 +118,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 		sort_files_t(arr, max);
 	else
 		sort_files_l(arr, max);
-	start = revive_t_files(arr);
+	start = revive_files(arr);
 	if (ls->r == 1)
 		return (reverse_order_files(start));
 	return (start);

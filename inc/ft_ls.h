@@ -91,22 +91,25 @@ char			**check_flags(t_ls *ls, char **av);
 int				get_columns(void);
 
 /*
-** ft_sort.c
+** ft_sort.c == Не течет
 */
-t_files			*revive_t_files(t_files **arr);
+
+t_files			*revive_files(t_files **arr);
 void			sort_files_t(t_files **arr, int max);
 void			sort_files_l(t_files **arr, int max);
 void			sort_files_s(t_files **arr, int max);
 t_files			*sort_files(t_ls *ls, t_files *start, int max);
 
 /*
-** ft_reverse.c
+** ft_reverse.c == Не течет
 */
+
 t_files			*reverse_order_files(t_files *start);
 
 /*
-**ft_check_perm.c
+**ft_check_perm.c == Не течет
 */
+
 int				check_permission(struct stat stats);
 int				check_permission_for_dir(t_path *curr_d);
 DIR				*check_dir_and_permission(t_path *curr_d);
@@ -115,6 +118,7 @@ int				check_args(char *name, t_path **arr);
 /*
 **ft_init.c
 */
+
 t_files			*init_files(void);
 t_info			*init_info(void);
 t_path			*init_path(char *path);
@@ -125,6 +129,7 @@ char			**check_flags(t_ls *ls, char **av);
 /*
 **ft_put.c
 */
+
 void			put_filename(t_ls *ls, char *tmp);
 void			put_smth(t_ls *ls, char *tmp, int *ls_len, int k);
 void			put_owner(t_ls *ls, char *tmp, int *ls_len, int k);
@@ -132,13 +137,15 @@ void			put_date(t_ls *ls, time_t time_);
 void			put_mode(t_ls *ls, struct stat filestat, char *filename);
 
 /*
-**ft_error.c
+**ft_error.c == Отлично
 */
+
 void			error(int code, char *file);
 
 /*
 **ft_convert.c
 */
+
 char			*ft_short_name(char *path);
 char			*convert_filename(char *s1, char *s2);
 char			*prepare_path(char *s);
@@ -146,6 +153,7 @@ char			*prepare_path(char *s);
 /*
 **get_term_size.c
 */
+
 void			show_flag_r(t_path *curr_d);
 int				get_columns(void);
 int				file_hide(char *file);
@@ -155,6 +163,7 @@ size_t			return_time(t_ls *ls, struct stat stats);
 /*
 **ft_check_1.c
 */
+
 t_files			*g_f_check_a(t_ls *ls, t_path *curr_d);
 void			g_f_read_files_cheack_stat(t_ls *ls, t_files *curr_f,
 t_path *curr_d);
@@ -165,10 +174,11 @@ DIR *dir);
 /*
 **ft_get_files.c
 */
+
 void			g_f_rec(t_ls *ls, t_path *curr_d, t_files *curr_f);
 void			get_files(t_ls *ls, t_path *curr_d);
 
-void			ft_print_l(t_path *curr_d);
+
 void			ft_print_1(t_path *curr_d, t_files *curr_f);
 int				*get_col(t_path *curr_d, int *max_size, int *columns);
 void			x_dop(int lines, int columns, int max_size, char **arr);
