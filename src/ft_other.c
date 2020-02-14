@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:27:53 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/08 22:24:02 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/14 14:40:13 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,5 @@ void		ft_print_stand(int counter, t_path *curr_d, t_files *curr_f)
 		curr_f = curr_f->next;
 	}
 	stand_dop(lines, columns, max_size, arr);
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
 	free(arr);
 }

@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 22:10:32 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/08 22:29:21 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/14 14:38:56 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,11 @@ typedef struct	s_ls
 }				t_ls;
 
 int				main(int ac, char **av);
-
 char			**check_flags(t_ls *ls, char **av);
-
 int				get_columns(void);
 
 /*
-** ft_sort.c == Не течет
+** ft_sort.c
 */
 
 t_files			*revive_files(t_files **arr);
@@ -101,13 +99,13 @@ void			sort_files_s(t_files **arr, int max);
 t_files			*sort_files(t_ls *ls, t_files *start, int max);
 
 /*
-** ft_reverse.c == Не течет
+** ft_reverse.c
 */
 
 t_files			*reverse_order_files(t_files *start);
 
 /*
-**ft_check_perm.c == Не течет
+**ft_check_perm.c
 */
 
 int				check_permission(struct stat stats);
@@ -136,7 +134,7 @@ void			put_date(t_ls *ls, time_t time_);
 void			put_mode(t_ls *ls, struct stat filestat, char *filename);
 
 /*
-**ft_error.c == Отлично
+**ft_error.c
 */
 
 void			error(int code, char *file);
@@ -178,6 +176,7 @@ void			g_f_rec(t_ls *ls, t_path *curr_d, t_files *curr_f);
 void			get_files(t_ls *ls, t_path *curr_d);
 
 
+void			ft_print_l(t_path *curr_d);
 void			ft_print_1(t_path *curr_d, t_files *curr_f);
 int				*get_col(t_path *curr_d, int *max_size, int *columns);
 void			x_dop(int lines, int columns, int max_size, char **arr);

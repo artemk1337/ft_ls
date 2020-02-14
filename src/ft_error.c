@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:26:25 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/08 22:24:34 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/14 14:43:36 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void		error(int code, char *file)
 		ft_putstr("ls: ");
 		ft_putstr(file);
 		ft_putstr(": No such file or directory\n");
-		return ;
+		exit(1);
 	}
 	else if (code == 3)
 	{
