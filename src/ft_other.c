@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:27:53 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/27 15:31:34 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/27 16:29:18 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		x_dop(int lines, int columns, int max_size, char **arr)
 			i = 0;
 			while (arr[i_lines * columns + k][i])
 				g_ls->buffer[(g_ls->i)++] = arr[i_lines * columns + k][i++];
-			while (i++ < max_size)
+			while (i++ <= max_size)
 				g_ls->buffer[(g_ls->i)++] = ' ';
 			k++;
 		}
@@ -79,6 +79,20 @@ void		ft_print_x(int counter, t_path *curr_d, t_files *curr_f)
 	free(arr);
 }
 
+void		flag_p(t_path *curr_d)
+{
+	t_files *curr_p;
+
+	curr_d->info->max_len += 1;
+	curr_p = curr_d->files;
+	while (curr_p)
+	{
+		if (S_ISDIR(curr_p->stats.st_mode))
+			curr_p->filename = ft_strjoin(curr_p->filename, "/");
+		curr_p = curr_p->next;
+	}
+}
+
 void		stand_dop(int lines, int columns, int max_size, char **arr)
 {
 	int l;
@@ -96,7 +110,7 @@ void		stand_dop(int lines, int columns, int max_size, char **arr)
 			i = 0;
 			while (arr[count_columns * lines + l][i])
 				g_ls->buffer[(g_ls->i)++] = arr[count_columns * lines + l][i++];
-			while (i++ < max_size)
+			while (i++ <= max_size)
 				g_ls->buffer[(g_ls->i)++] = ' ';
 			count_columns++;
 		}

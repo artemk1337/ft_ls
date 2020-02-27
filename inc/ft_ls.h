@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 22:10:32 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/14 14:38:56 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/27 16:27:48 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct	s_ls
 	int				one;
 	int				x;
 	int				s;
+	int				p;
 
 	char			buffer[PATH_MAX * 2];
 	int				i;
@@ -184,6 +185,7 @@ void			ft_print_x(int counter, t_path *curr_d, t_files *curr_f);
 void			stand_dop(int lines, int columns, int max_size, char **arr);
 void			ft_print_stand(int counter, t_path *curr_d, t_files *curr_f);
 void			main_dop(t_ls *ls, int ac, char **av);
+void			flag_p(t_path *curr_d);
 
 /*
 **ft_put_dop.c

@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:27:02 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/08 22:25:29 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/27 16:21:21 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ t_ls		*init_ls(void)
 	ls->x = 0;
 	ls->flags = 0;
 	ls->i = 0;
+	ls->p = 0;
 	ls->arr = NULL;
 	ls->max_len_time = 12;
 	return (ls);

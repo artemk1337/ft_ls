@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 20:19:12 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/08 22:29:15 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/27 16:23:55 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	put_flags(t_ls *ls, char **av)
 		ls->x = 1;
 	else if (*((av)[1]) == 'S')
 		ls->s = 1;
+	else if (*((av)[1]) == 'p')
+		ls->p = 1;
 	else
 		error(3, &(*((av)[1])));
 }

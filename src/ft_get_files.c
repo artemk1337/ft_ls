@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_files.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iuolo <iuolo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:26:36 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/04 19:01:24 by iuolo            ###   ########.fr       */
+/*   Updated: 2020/02/27 16:26:25 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	counter = g_f_read_files(ls, curr_d, curr_f, dir);
 	closedir(dir);
 	curr_f = curr_d->files;
+	if (ls->p == 1)
+		flag_p(curr_d);
 	if (ls->l == 1)
 		ft_print_l(curr_d);
 	else if (ls->one == 1)
