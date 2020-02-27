@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:28:54 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/08 22:33:36 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/27 17:51:39 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	show_flag_r(t_path *curr_d)
 
 int		get_columns(void)
 {
-	struct winsize w;
+	struct winsize	w;
 
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 	return (w.ws_col);

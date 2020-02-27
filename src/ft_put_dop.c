@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 20:19:12 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/27 16:23:55 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/27 18:42:39 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,12 @@ int		len_arr(char **arr)
 
 void	put_filename(t_ls *ls, char *tmp)
 {
+	int	i;
+
+	i = 0;
 	ls->buffer[(ls->i)++] = ' ';
-	while (*tmp)
-		ls->buffer[(ls->i)++] = *(tmp++);
+	while (tmp[i])
+		ls->buffer[(ls->i)++] = tmp[i++];
 }
 
 void	put_flags(t_ls *ls, char **av)

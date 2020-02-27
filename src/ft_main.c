@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 21:50:49 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/14 14:41:35 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/27 19:18:09 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_ls *g_ls;
 
-int			*get_col(t_path *curr_d, int *max_size, int *columns)
+void		get_col(t_path *curr_d, int *max_size, int *columns)
 {
 	int k;
 
@@ -26,7 +26,6 @@ int			*get_col(t_path *curr_d, int *max_size, int *columns)
 	while (((*max_size) * (*columns) + (*columns)) <= k)
 		(*columns)++;
 	(*columns)--;
-	return (columns);
 }
 
 void		main_dop(t_ls *ls, int ac, char **av)

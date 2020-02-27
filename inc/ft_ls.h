@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 22:10:32 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/27 16:27:48 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/27 17:53:17 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ void			get_files(t_ls *ls, t_path *curr_d);
 
 void			ft_print_l(t_path *curr_d);
 void			ft_print_1(t_path *curr_d, t_files *curr_f);
-int				*get_col(t_path *curr_d, int *max_size, int *columns);
+void			get_col(t_path *curr_d, int *max_size, int *columns);
 void			x_dop(int lines, int columns, int max_size, char **arr);
 void			ft_print_x(int counter, t_path *curr_d, t_files *curr_f);
 void			stand_dop(int lines, int columns, int max_size, char **arr);

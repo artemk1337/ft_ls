@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:27:53 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/27 16:29:18 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/27 18:39:06 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void		ft_print_x(int counter, t_path *curr_d, t_files *curr_f)
 	char	**arr;
 	int		i;
 
-	columns = *get_col(curr_d, &max_size, &columns);
+	get_col(curr_d, &max_size, &columns);
 	lines = counter / columns + ((counter % columns > 0) ? 1 : 0);
 	if (!(arr = malloc(sizeof(char *) * (counter + 1))))
 		ERROR(1);
@@ -81,14 +81,17 @@ void		ft_print_x(int counter, t_path *curr_d, t_files *curr_f)
 
 void		flag_p(t_path *curr_d)
 {
-	t_files *curr_p;
+	t_files	*curr_p;
+	char	*s;
 
 	curr_d->info->max_len += 1;
 	curr_p = curr_d->files;
 	while (curr_p)
 	{
 		if (S_ISDIR(curr_p->stats.st_mode))
-			curr_p->filename = ft_strjoin(curr_p->filename, "/");
+			s = ft_strjoin(curr_p->filename, "/");
+		free(curr_p->filename);
+		curr_p->filename = s;
 		curr_p = curr_p->next;
 	}
 }
@@ -130,9 +133,12 @@ void		ft_print_stand(int counter, t_path *curr_d, t_files *curr_f)
 	char	**arr;
 	int		i;
 
-	columns = *get_col(curr_d, &max_size, &columns);
-	lines = counter / columns + ((counter % columns > 0) ? 1 : 0);
-	if (!(arr = malloc(sizeof(char *) * (counter + 1))))
+	get_col(curr_d, &max_size, &columns);
+	if (counter % columns > 0)
+		lines = counter / columns + 1;
+	else
+		lines = counter / columns;
+	if (!(arr = (char **)malloc(sizeof(char *) * (counter + 1))))
 		ERROR(1);
 	arr[counter] = NULL;
 	curr_f = curr_d->files;

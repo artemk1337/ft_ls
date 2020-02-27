@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:28:33 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/27 16:26:12 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/27 19:29:00 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ t_files		*sort_files(t_ls *ls, t_files *start, int max)
 	else
 		sort_files_l(arr, max);
 	start = revive_files(arr);
+	free(arr);
 	if (ls->r == 1)
 		return (reverse_order_files(start));
 	return (start);

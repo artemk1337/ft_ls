@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:26:36 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/27 16:26:25 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/27 19:19:23 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void		get_files(t_ls *ls, t_path *curr_d)
 		return ;
 	curr_f = g_f_check_a(ls, curr_d);
 	counter = g_f_read_files(ls, curr_d, curr_f, dir);
-	closedir(dir);
 	curr_f = curr_d->files;
 	if (ls->p == 1)
 		flag_p(curr_d);
@@ -43,10 +42,32 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	g_f_rec(ls, curr_d, curr_f);
 }
 
+void		cleaner(t_path *curr_d)
+{
+	t_path *c_p_cl;
+	t_files *c_f_cl;
+	t_files *c_f_cl_f;
+
+	c_p_cl = curr_d->next;
+	free(curr_d->next->dir_name);
+	free(curr_d->next->path);
+	free(curr_d->next->info);
+	c_f_cl = curr_d->next->files;
+	while (c_f_cl)
+	{
+		free(c_f_cl->filename);
+		c_f_cl_f = c_f_cl->next;
+		free(c_f_cl);
+		c_f_cl = c_f_cl_f;
+	}
+	free(c_p_cl);
+}
+
 void		g_f_rec(t_ls *ls, t_path *curr_d, t_files *curr_f)
 {
 	t_path	*tmp_d;
 	t_files *tmp_f;
+	char	*s;
 
 	curr_f = curr_d->files;
 	while (curr_f)
@@ -58,15 +79,16 @@ void		g_f_rec(t_ls *ls, t_path *curr_d, t_files *curr_f)
 		ls->rr == 1)
 		{
 			ft_putchar('\n');
-			curr_d->next = init_path(convert_filename(
+			curr_d->next = init_path(s = convert_filename(
 				prepare_path(tmp_d->path), curr_f->filename));
-			curr_d->next->depth = tmp_d->depth + 1;
+			free(s);
+			curr_d->next->depth = curr_d->depth + 1;
 			curr_d->next->info->max_len_size = 0;
 			get_files(ls, curr_d->next);
+			cleaner(curr_d);
 		}
 		curr_d = tmp_d;
 		tmp_f = curr_f;
 		curr_f = curr_f->next;
-		free(tmp_f);
 	}
 }
