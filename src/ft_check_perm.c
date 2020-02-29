@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:25:54 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/14 14:58:38 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/29 14:18:04 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,26 @@ int			check_permission_for_dir(t_path *curr_d)
 	return (0);
 }
 
+DIR			*check_dop(DIR *dir, t_path *curr_d)
+{
+	if (S_ISDIR(curr_d->stats.st_mode))
+	{
+		if (!(dir) && check_permission_for_dir(curr_d) == 0)
+			error(2, curr_d->path);
+	}
+	else
+	{
+		if (check_permission(curr_d->stats) == 2)
+			return (NULL);
+		else if (check_permission(curr_d->stats) == 1)
+		{
+			error(1, curr_d->path);
+			return (NULL);
+		}
+	}
+	return (dir);
+}
+
 DIR			*check_dir_and_permission(t_path *curr_d)
 {
 	DIR *dir;
@@ -69,13 +89,7 @@ DIR			*check_dir_and_permission(t_path *curr_d)
 		S_ISFIFO(curr_d->stats.st_mode) ||
 		S_ISSOCK(curr_d->stats.st_mode))
 	{
-		if (check_permission(curr_d->stats) == 2)
-			return (NULL);
-		else if (check_permission(curr_d->stats) == 1)
-		{
-			error(1, curr_d->path);
-			return (NULL);
-		}
+		dir = check_dop(dir, curr_d);
 	}
 	else
 	{
