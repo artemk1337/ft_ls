@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 20:19:01 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/27 19:19:59 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/29 12:56:35 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void		l_dop(t_ls *ls, t_path *curr_d, t_files *curr_f)
 	while (curr_f)
 	{
 		l_put(ls, curr_f, curr_d);
-		i = readlink(s = convert_filename(prepare_path(curr_d->path),
-		curr_f->filename), NULL, 0);
+		s = convert_filename(prepare_path(curr_d->path), curr_f->filename);
+		i = readlink(s, NULL, 0);
 		free(s);
 		if (i >= 0)
 		{

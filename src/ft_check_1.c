@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:25:29 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/27 18:51:21 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/29 13:17:51 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static void	dop(t_ls *ls, t_path *curr_d)
 	int		tmp;
 	char	*s;
 
-	if (curr_d->info->max_len_links <
-		(tmp = ft_strlen(s = ft_itoa(curr_d->stats.st_nlink))))
+	s = ft_itoa(curr_d->stats.st_nlink);
+	if (curr_d->info->max_len_links < (tmp = ft_strlen(s)))
 		curr_d->info->max_len_links = tmp;
 	if (s)
 		free(s);
@@ -28,8 +28,8 @@ static void	dop(t_ls *ls, t_path *curr_d)
 	if (curr_d->info->max_len_group <
 		(tmp = ft_strlen(getgrgid((gid_t)(curr_d->stats.st_gid))->gr_name)))
 		curr_d->info->max_len_group = tmp;
-	if (curr_d->info->max_len_size <
-		(tmp = ft_strlen(s = ft_itoa(curr_d->stats.st_size))))
+	s = ft_itoa(curr_d->stats.st_size);
+	if (curr_d->info->max_len_size < (tmp = ft_strlen(s)))
 		curr_d->info->max_len_size = tmp;
 	if (s)
 		free(s);
@@ -38,26 +38,23 @@ static void	dop(t_ls *ls, t_path *curr_d)
 		curr_d->info->max_len_time = tmp;
 }
 
-t_files		*g_f_check_a(t_ls *ls, t_path *curr_d)
+static void	g_f_read_files_check_st_dop(t_ls *ls, t_files *curr_f,
+t_path *curr_d)
 {
-	t_files	*curr_f;
+	char	*s;
+	int		tmp;
 
-	if (ls->a == 1)
-	{
-		dop(ls, curr_d);
-		
-		curr_d->files = init_files();
-		curr_f = curr_d->files;
-		curr_f->filename = ft_strdup(".");
-		curr_f->len_name = 1;
-		curr_f->stats = curr_d->stats;
-	}
-	else
-		curr_f = curr_d->files;
-	return (curr_f);
+	s = ft_itoa(curr_f->stats.st_size);
+	if (curr_d->info->max_len_size < (tmp = ft_strlen(s)))
+		curr_d->info->max_len_size = tmp;
+	if (s)
+		free(s);
+	if (curr_d->info->max_len_time <
+	(tmp = get_size_time(return_time(ls, curr_f->stats))))
+		curr_d->info->max_len_time = tmp;
 }
 
-void		g_f_read_files_cheack_stat(t_ls *ls, t_files *curr_f,
+void		g_f_read_files_check_stat(t_ls *ls, t_files *curr_f,
 t_path *curr_d)
 {
 	int		tmp;
@@ -68,8 +65,8 @@ t_path *curr_d)
 	&(curr_f->stats));
 	if (s)
 		free(s);
-	if (curr_d->info->max_len_links <
-	(tmp = ft_strlen(s = ft_itoa(curr_f->stats.st_nlink))))
+	s = ft_itoa(curr_f->stats.st_nlink);
+	if (curr_d->info->max_len_links < (tmp = ft_strlen(s)))
 		curr_d->info->max_len_links = tmp;
 	if (s)
 		free(s);
@@ -82,14 +79,7 @@ t_path *curr_d)
 	if (curr_d->info->max_len_group <
 	(tmp = ft_strlen(getgrgid((gid_t)(curr_f->stats.st_gid))->gr_name)))
 		curr_d->info->max_len_group = tmp;
-	if (curr_d->info->max_len_size <
-	(tmp = ft_strlen(s = ft_itoa(curr_f->stats.st_size))))
-		curr_d->info->max_len_size = tmp;
-	if (s)
-		free(s);
-	if (curr_d->info->max_len_time <
-	(tmp = get_size_time(return_time(ls, curr_f->stats))))
-		curr_d->info->max_len_time = tmp;
+	g_f_read_files_check_st_dop(ls, curr_f, curr_d);
 }
 
 t_files		*g_f_read_files_1(t_files *curr_f, t_path *curr_d)
@@ -117,19 +107,17 @@ int			g_f_read_files(t_ls *ls, t_path *curr_d, t_files *curr_f, DIR *dir)
 	DIR				*dir_cp;
 
 	dir_cp = dir;
-	entry = readdir(dir);
 	tmp = 0;
 	counter = 0;
 	while ((entry = readdir(dir)))
 	{
 		if ((ls->a == 1 || file_hide(entry->d_name) == 0) &&
-		ft_strcmp(entry->d_name, "."))
+		ft_strcmp(entry->d_name, ".") && (++counter))
 		{
 			curr_f = g_f_read_files_1(curr_f, curr_d);
 			curr_f->filename = ft_strdup(ft_short_name(entry->d_name));
 			curr_f->len_name = ft_strlen(curr_f->filename);
-			g_f_read_files_cheack_stat(ls, curr_f, curr_d);
-			counter++;
+			g_f_read_files_check_stat(ls, curr_f, curr_d);
 		}
 	}
 	dir = dir_cp;

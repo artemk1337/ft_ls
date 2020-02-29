@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cchadwic <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/28 21:47:34 by cchadwic          #+#    #+#              #
-#    Updated: 2020/02/05 16:19:21 by cchadwic         ###   ########.fr        #
+#    Updated: 2020/02/29 12:36:38 by cchadwic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ SRCS_NAME = ft_main.c\
 			ft_l.c\
 			ft_other.c\
 			ft_put_dop.c\
+			flag_p.c\
 
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_NAME))
 OBJ = $(addprefix $(OBJ_PATH), $(SRCS_NAME:.c=.o))

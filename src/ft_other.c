@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:27:53 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/27 18:39:06 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/29 12:35:36 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,23 +77,6 @@ void		ft_print_x(int counter, t_path *curr_d, t_files *curr_f)
 	}
 	x_dop(lines, columns, max_size, arr);
 	free(arr);
-}
-
-void		flag_p(t_path *curr_d)
-{
-	t_files	*curr_p;
-	char	*s;
-
-	curr_d->info->max_len += 1;
-	curr_p = curr_d->files;
-	while (curr_p)
-	{
-		if (S_ISDIR(curr_p->stats.st_mode))
-			s = ft_strjoin(curr_p->filename, "/");
-		free(curr_p->filename);
-		curr_p->filename = s;
-		curr_p = curr_p->next;
-	}
 }
 
 void		stand_dop(int lines, int columns, int max_size, char **arr)

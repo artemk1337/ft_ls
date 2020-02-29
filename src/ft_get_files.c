@@ -6,11 +6,25 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:26:36 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/27 19:19:23 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/29 13:13:44 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
+
+void		vivod(int counter, t_path *curr_d, t_files *curr_f)
+{
+	if (g_ls->p == 1)
+		flag_p(curr_d);
+	if (g_ls->l == 1)
+		ft_print_l(curr_d);
+	else if (g_ls->one == 1)
+		ft_print_1(curr_d, curr_f);
+	else if (g_ls->x == 1)
+		ft_print_x(counter, curr_d, curr_f);
+	else
+		ft_print_stand(counter, curr_d, curr_f);
+}
 
 void		get_files(t_ls *ls, t_path *curr_d)
 {
@@ -29,24 +43,15 @@ void		get_files(t_ls *ls, t_path *curr_d)
 	curr_f = g_f_check_a(ls, curr_d);
 	counter = g_f_read_files(ls, curr_d, curr_f, dir);
 	curr_f = curr_d->files;
-	if (ls->p == 1)
-		flag_p(curr_d);
-	if (ls->l == 1)
-		ft_print_l(curr_d);
-	else if (ls->one == 1)
-		ft_print_1(curr_d, curr_f);
-	else if (ls->x == 1)
-		ft_print_x(counter, curr_d, curr_f);
-	else
-		ft_print_stand(counter, curr_d, curr_f);
+	vivod(counter, curr_d, curr_f);
 	g_f_rec(ls, curr_d, curr_f);
 }
 
 void		cleaner(t_path *curr_d)
 {
-	t_path *c_p_cl;
-	t_files *c_f_cl;
-	t_files *c_f_cl_f;
+	t_path	*c_p_cl;
+	t_files	*c_f_cl;
+	t_files	*c_f_cl_f;
 
 	c_p_cl = curr_d->next;
 	free(curr_d->next->dir_name);
@@ -73,14 +78,13 @@ void		g_f_rec(t_ls *ls, t_path *curr_d, t_files *curr_f)
 	while (curr_f)
 	{
 		tmp_d = curr_d;
-		if (S_ISDIR(curr_f->stats.st_mode) &&
-		ft_strcmp((const char *)curr_f->filename, (const char *)"..") != 0 &&
-		ft_strcmp((const char *)curr_f->filename, (const char *)".") != 0 &&
-		ls->rr == 1)
+		if (S_ISDIR(curr_f->stats.st_mode) && ft_strcmp((const char *)
+		curr_f->filename, (const char *)"..") != 0 && ft_strcmp((const char *)
+		curr_f->filename, (const char *)".") != 0 && ls->rr == 1)
 		{
 			ft_putchar('\n');
-			curr_d->next = init_path(s = convert_filename(
-				prepare_path(tmp_d->path), curr_f->filename));
+			s = convert_filename(prepare_path(tmp_d->path), curr_f->filename);
+			curr_d->next = init_path(s);
 			free(s);
 			curr_d->next->depth = curr_d->depth + 1;
 			curr_d->next->info->max_len_size = 0;

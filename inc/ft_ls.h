@@ -6,7 +6,7 @@
 /*   By: cchadwic <cchadwic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 22:10:32 by cchadwic          #+#    #+#             */
-/*   Updated: 2020/02/27 17:53:17 by cchadwic         ###   ########.fr       */
+/*   Updated: 2020/02/29 13:14:32 by cchadwic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ size_t			return_time(t_ls *ls, struct stat stats);
 */
 
 t_files			*g_f_check_a(t_ls *ls, t_path *curr_d);
-void			g_f_read_files_cheack_stat(t_ls *ls, t_files *curr_f,
+void			g_f_read_files_check_stat(t_ls *ls, t_files *curr_f,
 t_path *curr_d);
 t_files			*g_f_read_files_1(t_files *curr_f, t_path *curr_d);
 int				g_f_read_files(t_ls *ls, t_path *curr_d, t_files *curr_f,
@@ -176,6 +176,11 @@ DIR *dir);
 void			g_f_rec(t_ls *ls, t_path *curr_d, t_files *curr_f);
 void			get_files(t_ls *ls, t_path *curr_d);
 
+/*
+**flag_p.c
+*/
+
+void			flag_p(t_path *curr_d);
 
 void			ft_print_l(t_path *curr_d);
 void			ft_print_1(t_path *curr_d, t_files *curr_f);
@@ -185,7 +190,6 @@ void			ft_print_x(int counter, t_path *curr_d, t_files *curr_f);
 void			stand_dop(int lines, int columns, int max_size, char **arr);
 void			ft_print_stand(int counter, t_path *curr_d, t_files *curr_f);
 void			main_dop(t_ls *ls, int ac, char **av);
-void			flag_p(t_path *curr_d);
 
 /*
 **ft_put_dop.c
